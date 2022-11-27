@@ -12,6 +12,8 @@ namespace Nianyi {
 		public static bool Serializable(Type type) {
 			if(type.IsSubclassOf(typeof(UnityEngine.Object)) || type == typeof(UnityEngine.Object))
 				return true;
+			if(type.IsEnum)
+				return true;
 			if(type.GetCustomAttributes<SerializableAttribute>().Count() != 0) {
 				if(specialUnserializableTypes.Contains(type))
 					return false;
@@ -62,6 +64,8 @@ namespace Nianyi {
 		public static byte[] StructToBytes(Type type, object value) {
 			if(value == null)
 				return new byte[0];
+			if(type.IsEnum)
+				type = typeof(int);
 			int size = Marshal.SizeOf(type);
 			byte[] bytes = new byte[size];
 			IntPtr ptr = IntPtr.Zero;
@@ -80,6 +84,8 @@ namespace Nianyi {
 		public static object BytesToStruct(Type type, byte[] bytes) {
 			if(bytes == null)
 				return DefaultValue(type);
+			if(type.IsEnum)
+				type = typeof(int);
 			object obj = null;
 			int size = Marshal.SizeOf(type);
 			if(size > bytes.Length)

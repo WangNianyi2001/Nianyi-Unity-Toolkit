@@ -59,11 +59,11 @@
     <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBase.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SimpleCallbackDrawer.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Editor\CallbackDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\GuiUtility.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Font\Editor\FontFilterEditor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\Editor\EditorReflectionUtility.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SerializableParameterDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\GuiUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBaseDrawing.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SerializableParameterDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Font\Editor\FontFilterEditor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Editor\ComposedCallbackDrawer.cs" />
   </ItemGroup>
   <ItemGroup>

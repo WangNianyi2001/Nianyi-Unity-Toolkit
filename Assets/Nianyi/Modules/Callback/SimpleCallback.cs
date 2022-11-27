@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Reflection;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,14 +51,15 @@ namespace Nianyi {
 			}
 		}
 
-		public override Coroutine Invoke() {
+		public override IEnumerator Invoke() {
 			var method = Method;
 			if(target == null || method == null)
 				return null;
-			var result = method.Invoke(isStatic ? null : target, parameters.Select(parameter => parameter.value).ToArray());
-			if(!asynchrnous)
-				return null;
-			return MakeCoroutine(result);
+			var result = method.Invoke(
+				isStatic ? null : target,
+				parameters.Select(parameter => parameter.value).ToArray()
+			);
+			return CoroutineHelper.Make(result);
 		}
 	}
 }

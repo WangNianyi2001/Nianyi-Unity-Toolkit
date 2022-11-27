@@ -32,7 +32,8 @@ namespace Nianyi.Editor {
 					parameter.value = LayerField((int)parameter.value, label);
 					break;
 				case DT.Enum:
-					parameter.value = EnumPopUp((Enum)parameter.value, label);
+					Enum enumValue = (Enum)Enum.Parse(parameter.type, Enum.GetName(parameter.type, parameter.value));
+					parameter.value = EnumPopUp(enumValue, label);
 					break;
 				case DT.Vector2:
 					parameter.value = Vector2Field((Vector2)parameter.value, label);
