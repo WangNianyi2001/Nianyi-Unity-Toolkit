@@ -22,5 +22,9 @@ namespace Nianyi {
 					return StartCoroutine(new WaitUntil(() => task.IsCompleted));
 			}
 		}
+
+		public static IEnumerable WaitForSeconds(float seconds) {
+			yield return new WaitForSeconds(seconds);
+		}
 	}
 }

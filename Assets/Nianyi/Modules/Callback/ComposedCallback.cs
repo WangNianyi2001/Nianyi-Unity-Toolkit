@@ -1,19 +1,21 @@
-﻿using System;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Nianyi {
 	public class ComposedCallback : Callback {
-		[Serializable]
-		public struct Step {
-			public Callback callback;
-			public bool asynchronous;
+		public List<Callback> sequence = new List<Callback>();
+
+		IEnumerator InvokeCoroutine() {
+			foreach(var callback in sequence)
+				yield return callback.Invoke();
 		}
 
-		public List<Step> stepSequence;
-
 		public override Coroutine Invoke() {
-			// TODO
+			if(asynchrnous)
+				return StartCoroutine(InvokeCoroutine());
+			foreach(var callback in sequence)
+				callback.Invoke();
 			return null;
 		}
 	}

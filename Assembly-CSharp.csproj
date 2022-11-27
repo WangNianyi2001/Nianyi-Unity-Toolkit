@@ -66,6 +66,7 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\LegacyCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\DataUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

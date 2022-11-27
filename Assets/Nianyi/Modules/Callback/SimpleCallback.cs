@@ -3,13 +3,12 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
 
 namespace Nianyi {
 	public class SimpleCallback : Callback {
 		public UnityEngine.Object target = null;
 
-		[SerializeField] bool isStatic = false;
+		public bool isStatic = false;
 		[SerializeField] string typeName = null;
 		[SerializeField] string methodName = null;
 		[SerializeField] string[] parameterTypes = new string[0];

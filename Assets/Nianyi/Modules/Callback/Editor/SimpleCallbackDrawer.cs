@@ -9,15 +9,6 @@ namespace Nianyi.Editor {
 	public class SimpleCallbackDrawer : PropertyDrawerBase {
 		List<SerializableParameterDrawer> parameterDrawers = new List<SerializableParameterDrawer>();
 
-		static void SetLength<T>(List<T> list, int count) {
-			if(list.Count != count) {
-				if(list.Count > count)
-					list.RemoveRange(count, list.Count - count);
-				else for(int i = list.Count; i < count; ++i)
-						list.Add(default);
-			}
-		}
-
 		bool parametersExpanded = true;
 
 		protected override void Draw(MemberAccessor member, GUIContent label) {
@@ -36,13 +27,6 @@ namespace Nianyi.Editor {
 				simple.Method = null;
 			}
 			else {
-				// Reset method if target has changed
-				if(simple.Method != null) {
-					if(!simple.Method.DeclaringType.IsAssignableFrom(simple.target.GetType())) {
-						simple.Method = null;
-						EditorUtility.SetDirty(simple);
-					}
-				}
 				string buttonText = simple.Method == null ? "(None)" : simple.Method.Name;
 				if(DropdownButton(new GUIContent(buttonText), new GUIContent("Method"))) {
 					var target = simple.target;
@@ -91,7 +75,7 @@ namespace Nianyi.Editor {
 							}
 							break;
 						default:
-							foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(simple.target.GetType())) {
+							foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(target.GetType())) {
 								menu.AddItem(
 									new GUIContent(ReflectionUtility.MethodSignature(method)),
 									method == simple.Method,
@@ -113,8 +97,8 @@ namespace Nianyi.Editor {
 			if(simple.Method != null) {
 				ParameterInfo[] parameterInfos = simple.Method.GetParameters();
 				var parameters = simple.parameters;
-				SetLength(parameters, parameterInfos.Length);
-				SetLength(parameterDrawers, parameterInfos.Length);
+				parameters.SetLength(parameterInfos.Length);
+				parameterDrawers.SetLength(parameterInfos.Length);
 				for(int i = 0; i < parameterInfos.Length; ++i) {
 					ParameterInfo parameterInfo = parameterInfos[i];
 					if(parameters[i] == null || !parameterInfo.ParameterType.IsAssignableFrom(parameters[i].type)) {

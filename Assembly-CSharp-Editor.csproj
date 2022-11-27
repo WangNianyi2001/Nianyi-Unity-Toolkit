@@ -64,6 +64,7 @@
     <Compile Include="Assets\Nianyi\Modules\Reflection\Editor\EditorReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SerializableParameterDrawer.cs" />
     <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBaseDrawing.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\ComposedCallbackDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

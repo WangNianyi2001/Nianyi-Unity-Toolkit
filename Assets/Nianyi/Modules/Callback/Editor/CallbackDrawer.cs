@@ -12,8 +12,9 @@ namespace Nianyi.Editor {
 			typeof(ComposedCallback),
 		};
 
-		SimpleCallbackDrawer simpleDrawer;
 		UnityEventDrawer legacyDrawer;
+		SimpleCallbackDrawer simpleDrawer;
+		ComposedCallbackDrawer composedDrawer;
 
 		protected override void Draw(MemberAccessor member, GUIContent label) {
 			Callback callback = member.Get<Callback>();
@@ -44,7 +45,7 @@ namespace Nianyi.Editor {
 				case LegacyCallback _:
 					if(legacyDrawer == null)
 						legacyDrawer = new UnityEventDrawer();
-					DrawWith(legacyDrawer, member.Navigate("unityEvent").Simplify(), new GUIContent("Legacy Callback"));
+					DrawWith(legacyDrawer, member.Navigate(".unityEvent").Simplify(), new GUIContent("Legacy Callback"));
 					return;
 				case SimpleCallback _:
 					if(simpleDrawer == null)
@@ -52,6 +53,9 @@ namespace Nianyi.Editor {
 					DrawWith(simpleDrawer, member, new GUIContent("Simple Callback"));
 					return;
 				case ComposedCallback _:
+					if(composedDrawer == null)
+						composedDrawer = new ComposedCallbackDrawer();
+					DrawWith(composedDrawer, member, new GUIContent("Composed Callback"));
 					return;
 			}
 		}
