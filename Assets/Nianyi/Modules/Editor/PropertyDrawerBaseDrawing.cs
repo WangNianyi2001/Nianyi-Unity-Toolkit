@@ -90,17 +90,27 @@ namespace Nianyi.Editor {
 		}
 
 		#region Interactable controls
-		protected bool DropdownButton(GUIContent content, FocusType focusType = FocusType.Keyboard)
-			=> DropdownButton(content, focusType, GuiUtility.guiStyles.DropdownButton);
-		protected bool DropdownButton(GUIContent content, FocusType focusType, GUIStyle style) {
+		protected bool DropdownButton(GUIContent content, GUIContent label = null) {
+			GUIStyle style = GuiUtility.guiStyles.DropdownButton;
 			MakeHeight(style.CalcHeight(content, space.width));
-			return Rendering ? EditorGUI.DropdownButton(Next, content, focusType, style) : false;
+			if(!Rendering)
+				return false;
+			bool labelEmpty = label == null || label.Equals(GUIContent.none);
+			Rect position = labelEmpty ? Next : EditorGUI.PrefixLabel(Next, label);
+			return EditorGUI.DropdownButton(position, content, FocusType.Keyboard, style);
 		}
-		protected bool Button(GUIContent content)
-			=> Button(content, GuiUtility.guiStyles.Button);
-		protected bool Button(GUIContent content, GUIStyle style) {
+		protected bool Button(GUIContent content, GUIContent label = null) {
+			GUIStyle style = GuiUtility.guiStyles.Button;
 			MakeHeight(style.CalcHeight(content, space.width));
-			return Rendering ? GUI.Button(Next, content, style) : false;
+			if(!Rendering)
+				return false;
+			bool labelEmpty = label == null || label.Equals(GUIContent.none);
+			Rect position = labelEmpty ? Next : EditorGUI.PrefixLabel(Next, label);
+			return GUI.Button(position, content, style);
+		}
+		protected bool Foldout(bool value, GUIContent content) {
+			MakeLine();
+			return Rendering ? EditorGUI.Foldout(Next, value, content) : value;
 		}
 		protected bool Alert(string title, string message, string ok, string cancel = "")
 			=> EditorUtility.DisplayDialog(title, message, ok, cancel);

@@ -17,9 +17,8 @@ namespace Nianyi.Editor {
 
 		protected override void Draw(MemberAccessor member, GUIContent label) {
 			Callback callback = member.Get<Callback>();
-			LabelField(label);
 			if(callback == null) {
-				if(DropdownButton(new GUIContent("Create Callback"))) {
+				if(DropdownButton(new GUIContent("Create Callback"), label)) {
 					GenericMenu menu = new GenericMenu();
 					foreach(Type type in types) {
 						menu.AddItem(
@@ -33,7 +32,7 @@ namespace Nianyi.Editor {
 				return;
 			}
 			else {
-				if(Button(new GUIContent("Clear"))) {
+				if(Button(new GUIContent("Clear"), label)) {
 					if(Alert("Clearing a callback", "This operation is inreversible, proceed?", "Proceed", "Cancel")) {
 						member.Set<Callback>(null);
 						return;

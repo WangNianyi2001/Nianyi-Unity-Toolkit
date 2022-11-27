@@ -18,6 +18,8 @@ namespace Nianyi.Editor {
 			}
 		}
 
+		bool parametersExpanded = true;
+
 		protected override void Draw(MemberAccessor member, GUIContent label) {
 			var simple = member.Get<SimpleCallback>();
 			if(simple == null)
@@ -34,7 +36,6 @@ namespace Nianyi.Editor {
 				simple.Method = null;
 			}
 			else {
-				LabelField(new GUIContent("Method"));
 				// Reset method if target has changed
 				if(simple.Method != null) {
 					if(!simple.Method.DeclaringType.IsAssignableFrom(simple.target.GetType())) {
@@ -43,7 +44,7 @@ namespace Nianyi.Editor {
 					}
 				}
 				string buttonText = simple.Method == null ? "(None)" : simple.Method.Name;
-				if(DropdownButton(new GUIContent(buttonText))) {
+				if(DropdownButton(new GUIContent(buttonText), new GUIContent("Method"))) {
 					var target = simple.target;
 					if(target is Component)
 						target = (target as Component).gameObject;
@@ -124,13 +125,15 @@ namespace Nianyi.Editor {
 						parameterDrawers[i] = new SerializableParameterDrawer();
 				}
 				if(simple.Method.GetParameters().Length > 0) {
-					LabelField(new GUIContent("Parameters"));
-					for(int i = 0; i < parameterInfos.Length; ++i) {
-						DrawWith(
-							parameterDrawers[i],
-							new SerializedObject(simple).FindProperty("parameters").GetArrayElementAtIndex(i),
-							new GUIContent(parameterInfos[i].Name)
-						);
+					parametersExpanded = Foldout(parametersExpanded, new GUIContent("Parameters"));
+					if(parametersExpanded) {
+						for(int i = 0; i < parameterInfos.Length; ++i) {
+							DrawWith(
+								parameterDrawers[i],
+								new SerializedObject(simple).FindProperty("parameters").GetArrayElementAtIndex(i),
+								new GUIContent(parameterInfos[i].Name)
+							);
+						}
 					}
 				}
 			}
