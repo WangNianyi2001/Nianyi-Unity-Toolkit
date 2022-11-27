@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
 
 namespace Nianyi {
 	public class LegacyCallback : Callback {
 		public UnityEvent unityEvent;
 
-		public override IEnumerator Invoke() {
+		public override Coroutine Invoke() {
 			unityEvent.Invoke();
 			return null;
 		}

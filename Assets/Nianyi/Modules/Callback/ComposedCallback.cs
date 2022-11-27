@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Nianyi {
 	public class ComposedCallback : Callback {
@@ -12,7 +12,7 @@ namespace Nianyi {
 
 		public List<Step> stepSequence;
 
-		public override IEnumerator Invoke() {
+		public override Coroutine Invoke() {
 			// TODO
 			return null;
 		}

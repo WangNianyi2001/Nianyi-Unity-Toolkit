@@ -40,9 +40,7 @@ namespace Nianyi.Editor {
 					}
 				}
 			}
-			if(Button(new GUIContent("Invoke Manually"))) {
-				callback.Invoke();
-			}
+
 			switch(callback) {
 				case LegacyCallback _:
 					if(legacyDrawer == null)

@@ -6,11 +6,14 @@ using System.Runtime.InteropServices;
 
 namespace Nianyi {
 	public static class ReflectionUtility {
+		static Type[] specialUnserializableTypes = {
+			typeof(Type), typeof(object)
+		};
 		public static bool Serializable(Type type) {
 			if(type.IsSubclassOf(typeof(UnityEngine.Object)) || type == typeof(UnityEngine.Object))
 				return true;
 			if(type.GetCustomAttributes<SerializableAttribute>().Count() != 0) {
-				if(type == typeof(Type))
+				if(specialUnserializableTypes.Contains(type))
 					return false;
 				return true;
 			}
@@ -40,10 +43,12 @@ namespace Nianyi {
 
 		public static string MethodSignature(MethodInfo method) {
 			var methodNames = method.GetParameters().Select(parameter => $"{parameter.ParameterType.Name} {parameter.Name}");
-			return $"{method.ReturnType.Name} {method.Name}({string.Join(",", methodNames)})";
+			return $"{method.Name}({string.Join(", ", methodNames)})";
 		}
 
 		public static Type GetTypeByName(string name) {
+			if(string.IsNullOrEmpty(name))
+				return null;
 			foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies().Reverse()) {
 				var type = assembly.GetType(name);
 				if(type != null)

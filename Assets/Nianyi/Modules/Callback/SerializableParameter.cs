@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 
 namespace Nianyi {
 	public class SerializableParameter : ScriptableObject {
@@ -60,36 +62,46 @@ namespace Nianyi {
 			}
 			return DrawerType.Generic;
 		}
+		static Dictionary<Type, FieldInfo> valueAccessorMap = new Dictionary<Type, FieldInfo>(
+			new Dictionary<Type, string> {
+				{ typeof(string), "serializedString" },
+				{ typeof(UnityEngine.Object), "serializedUnityObject" },
+				{ typeof(AnimationCurve), "serializedAnimationCurve" },
+				{ typeof(Gradient), "serializedGradient" },
+			}.Select(pair => new KeyValuePair<Type, FieldInfo>(
+				pair.Key,
+				typeof(SerializableParameter).GetField(pair.Value, BindingFlags.Instance | BindingFlags.NonPublic)
+			))
+		);
 
 		/* Core fields */
 		[SerializeField] string typeName;
 		Type _type;
 		[SerializeField] DrawerType _drawerType;
-		[SerializeField] byte[] bytes;
-		[SerializeField] string stringValue;
+		[SerializeField] byte[] serializedBytes;
+		[SerializeField] string serializedString;
+		[SerializeField] UnityEngine.Object serializedUnityObject;
+		[SerializeField] AnimationCurve serializedAnimationCurve;
+		[SerializeField] Gradient serializedGradient;
 
 		/* Properties */
+		FieldInfo valueAccessor;
 		public object value {
 			get {
-				if(type.IsValueType) {
-					return ReflectionUtility.BytesToStruct(type, bytes);
-				}
-				if(type == typeof(string)) {
-					return stringValue;
-				}
-				// TODO
-				return null;
+				if(type.IsValueType)
+					return ReflectionUtility.BytesToStruct(type, serializedBytes);
+				if(valueAccessor == null)
+					type = _type;
+				return valueAccessor.GetValue(this);
 			}
 			set {
 				if(type.IsValueType) {
-					bytes = ReflectionUtility.StructToBytes(type, value);
+					serializedBytes = ReflectionUtility.StructToBytes(type, value);
 					return;
 				}
-				if(type == typeof(string)) {
-					stringValue = value as string;
-					return;
-				}
-				// TODO
+				if(valueAccessor == null)
+					type = _type;
+				valueAccessor.SetValue(this, value);
 			}
 		}
 		public DrawerType drawerType => _drawerType;
@@ -98,6 +110,13 @@ namespace Nianyi {
 				_type = value;
 				typeName = type.AssemblyQualifiedName;
 				_drawerType = GetDrawerTypeOfType(_type);
+				valueAccessor = null;
+				foreach(var key in valueAccessorMap.Keys) {
+					if(key.IsAssignableFrom(_type)) {
+						valueAccessor = valueAccessorMap[key];
+						break;
+					}
+				}
 			}
 			get {
 				if(_type == null && typeName != null)

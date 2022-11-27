@@ -1,23 +1,29 @@
 using UnityEngine;
 using System;
 using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 namespace Nianyi {
 	public class SimpleCallback : Callback {
 		public UnityEngine.Object target = null;
+
+		[SerializeField] bool isStatic = false;
 		[SerializeField] string typeName = null;
 		[SerializeField] string methodName = null;
 		[SerializeField] string[] parameterTypes = new string[0];
 		public List<SerializableParameter> parameters = new List<SerializableParameter>();
+
+		public bool asynchronous = false;
 
 		public MethodInfo Method {
 			get {
 				if(typeName == null || methodName == null)
 					return null;
 				Type type = ReflectionUtility.GetTypeByName(typeName);
+				if(type == null)
+					return null;
 				foreach(var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {
 					if(method.Name != methodName)
 						continue;
@@ -41,15 +47,18 @@ namespace Nianyi {
 				typeName = value?.DeclaringType.FullName;
 				methodName = value?.Name;
 				parameterTypes = value?.GetParameters().Select(p => p.ParameterType.Name).ToArray() ?? new string[0];
+				isStatic = value?.IsStatic ?? false;
 			}
 		}
 
-		public override IEnumerator Invoke() {
+		public override Coroutine Invoke() {
 			var method = Method;
 			if(target == null || method == null)
 				return null;
-			method.Invoke(target, parameters.Select(parameter => parameter.value).ToArray());
-			return null;
+			var result = method.Invoke(isStatic ? null : target, parameters.Select(parameter => parameter.value).ToArray());
+			if(!asynchrnous)
+				return null;
+			return MakeCoroutine(result);
 		}
 	}
 }

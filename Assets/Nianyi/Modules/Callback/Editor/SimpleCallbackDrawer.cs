@@ -23,8 +23,13 @@ namespace Nianyi.Editor {
 			if(simple == null)
 				member.Set(simple = new SimpleCallback());
 
+			// Target slot
 			simple.target = ObjectField(simple.target, new GUIContent("Target"), typeof(UnityEngine.Object), true);
 
+			// Asynchronicity toggle
+			simple.asynchrnous = Toggle(simple.asynchrnous, new GUIContent("Asynchronous"));
+
+			// Method choice button
 			if(simple.target == null) {
 				simple.Method = null;
 			}
@@ -63,6 +68,7 @@ namespace Nianyi.Editor {
 									new GUIContent($"GameObject/{ReflectionUtility.MethodSignature(method)}"),
 									method == simple.Method,
 									() => {
+										simple.target = gameObject;
 										simple.Method = method;
 										EditorUtility.SetDirty(simple);
 									}
@@ -100,6 +106,7 @@ namespace Nianyi.Editor {
 				}
 			}
 
+			// Parameter list
 			if(simple.parameters == null)
 				simple.parameters = new List<SerializableParameter>();
 			if(simple.Method != null) {
