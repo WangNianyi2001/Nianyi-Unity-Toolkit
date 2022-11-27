@@ -18,7 +18,7 @@ namespace Nianyi {
 		[ContextMenu("Invoke")]
 		public void InvokeFromInspector() {
 #if UNITY_EDITOR
-			if(callback.asynchrnous && !Application.isPlaying) {
+			if(callback.asynchronous && !Application.isPlaying) {
 				EditorUtility.DisplayDialog(
 					"Warning",
 					"Unity application is now in edit mode, cannot invoke asynchronous callback.",

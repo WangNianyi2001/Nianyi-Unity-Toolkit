@@ -60,6 +60,8 @@
     <Compile Include="Assets\Nianyi\Modules\Font\FontFilter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SimpleCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\LegacyCallback.cs" />
+    <Compile Include="Assets\Nianyi\Modules\DebugHelper.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\CoroutineHelper.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\DataUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\MemberAccessor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Callback.cs" />
@@ -67,8 +69,6 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Font\FontMap.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Callback\CoroutineHelper.cs" />
-    <Compile Include="Assets\Nianyi\Modules\DebugHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

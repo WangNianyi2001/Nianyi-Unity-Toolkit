@@ -14,13 +14,14 @@ namespace Nianyi.Editor {
 				space.height += height;
 			}
 		}
+		protected void MakeSpacing() => MakeHeight(EditorGUIUtility.standardVerticalSpacing);
 		protected void MakeLine(int count = 1) {
 			if(count < 1)
 				return;
-			MakeHeight(lineHeight);
+			MakeHeight(EditorGUIUtility.singleLineHeight);
 			for(int i = 1; i < count; ++i) {
-				MakeHeight(lineSpacing);
-				MakeHeight(lineHeight);
+				MakeSpacing();
+				MakeHeight(EditorGUIUtility.singleLineHeight);
 			}
 		}
 		#endregion

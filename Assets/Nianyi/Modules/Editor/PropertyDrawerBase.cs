@@ -4,11 +4,6 @@ using System;
 
 namespace Nianyi.Editor {
 	public abstract partial class PropertyDrawerBase : PropertyDrawer {
-		#region Static
-		static protected float lineHeight => EditorGUIUtility.singleLineHeight;
-		static protected float lineSpacing => EditorGUIUtility.standardVerticalSpacing;
-		#endregion
-
 		#region Core fields
 		Rect space, next;
 		bool rendering;

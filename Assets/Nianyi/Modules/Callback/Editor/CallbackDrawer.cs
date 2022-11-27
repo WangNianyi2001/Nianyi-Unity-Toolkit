@@ -18,6 +18,15 @@ namespace Nianyi.Editor {
 
 		protected override void Draw(MemberAccessor member, GUIContent label) {
 			Callback callback = member.Get<Callback>();
+
+			if(label == null) {
+				label = new GUIContent(callback?.GetType().Name ?? "null");
+			}
+			else {
+				label = new GUIContent(label);
+				label.text += $" ({callback?.GetType().Name ?? "null"})";
+			}
+
 			if(callback == null) {
 				if(DropdownButton(new GUIContent("Create Callback"), label)) {
 					GenericMenu menu = new GenericMenu();
@@ -40,6 +49,7 @@ namespace Nianyi.Editor {
 					}
 				}
 			}
+			MakeSpacing();
 
 			switch(callback) {
 				case LegacyCallback _:

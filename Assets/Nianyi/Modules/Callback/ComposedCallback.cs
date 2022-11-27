@@ -6,7 +6,7 @@ namespace Nianyi {
 		public List<Callback> sequence = new List<Callback>();
 
 		public override IEnumerator Invoke() {
-			if(!asynchrnous) {
+			if(!asynchronous) {
 				foreach(var callback in sequence)
 					callback.Invoke();
 				yield break;

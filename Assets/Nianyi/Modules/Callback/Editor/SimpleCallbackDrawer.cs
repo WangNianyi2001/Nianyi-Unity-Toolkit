@@ -3,7 +3,6 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Nianyi.Editor {
 	[CustomPropertyDrawer(typeof(SimpleCallback), true)]
@@ -16,19 +15,25 @@ namespace Nianyi.Editor {
 			var simple = member.Get<SimpleCallback>();
 			if(simple == null)
 				member.Set(simple = new SimpleCallback());
-
+			
 			// Target slot
 			simple.target = ObjectField(simple.target, new GUIContent("Target"), typeof(UnityEngine.Object), true);
+			MakeSpacing();
 
 			// Asynchronicity toggle
-			simple.asynchrnous = Toggle(simple.asynchrnous, new GUIContent("Asynchronous"));
+			if(!simple.CanBeAsynchronous)
+				simple.asynchronous = false;
+			else {
+				simple.asynchronous = Toggle(simple.asynchronous, new GUIContent("Asynchronous"));
+				MakeSpacing();
+			}
 
 			// Method choice button
 			if(simple.target == null) {
-				simple.Method = null;
+				simple.method = null;
 			}
 			else {
-				string buttonText = simple.Method == null ? "(None)" : simple.Method.Name;
+				string buttonText = simple.method == null ? "(None)" : simple.method.Name;
 				if(DropdownButton(new GUIContent(buttonText), new GUIContent("Method"))) {
 					var target = simple.target;
 					if(target is Component)
@@ -40,9 +45,9 @@ namespace Nianyi.Editor {
 							foreach(var method in ReflectionUtility.GetInspectableStaticMethods(underlyingClass)) {
 								menu.AddItem(
 									new GUIContent(ReflectionUtility.MethodSignature(method)),
-									method == simple.Method,
+									method == simple.method,
 									() => {
-										simple.Method = method;
+										simple.method = method;
 										EditorUtility.SetDirty(simple);
 									}
 								);
@@ -52,10 +57,10 @@ namespace Nianyi.Editor {
 							foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(typeof(GameObject))) {
 								menu.AddItem(
 									new GUIContent($"GameObject/{ReflectionUtility.MethodSignature(method)}"),
-									method == simple.Method,
+									method == simple.method,
 									() => {
 										simple.target = gameObject;
-										simple.Method = method;
+										simple.method = method;
 										EditorUtility.SetDirty(simple);
 									}
 								);
@@ -65,10 +70,10 @@ namespace Nianyi.Editor {
 								foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(componentType)) {
 									menu.AddItem(
 										new GUIContent($"{componentType.Name}/{ReflectionUtility.MethodSignature(method)}"),
-										method == simple.Method,
+										method == simple.method,
 										() => {
 											simple.target = component;
-											simple.Method = method;
+											simple.method = method;
 											EditorUtility.SetDirty(simple);
 										}
 									);
@@ -79,9 +84,9 @@ namespace Nianyi.Editor {
 							foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(target.GetType())) {
 								menu.AddItem(
 									new GUIContent(ReflectionUtility.MethodSignature(method)),
-									method == simple.Method,
+									method == simple.method,
 									() => {
-										simple.Method = method;
+										simple.method = method;
 										EditorUtility.SetDirty(simple);
 									}
 								);
@@ -90,13 +95,14 @@ namespace Nianyi.Editor {
 					}
 					menu.ShowAsContext();
 				}
+				MakeSpacing();
 			}
 
 			// Parameter list
 			if(simple.parameters == null)
 				simple.parameters = new List<SerializableParameter>();
-			if(simple.Method != null) {
-				ParameterInfo[] parameterInfos = simple.Method.GetParameters();
+			if(simple.method != null) {
+				ParameterInfo[] parameterInfos = simple.method.GetParameters();
 				var parameters = simple.parameters;
 				parameters.SetLength(parameterInfos.Length);
 				parameterDrawers.SetLength(parameterInfos.Length);
@@ -109,16 +115,19 @@ namespace Nianyi.Editor {
 					if(parameterDrawers[i] == null)
 						parameterDrawers[i] = new SerializableParameterDrawer();
 				}
-				if(simple.Method.GetParameters().Length > 0) {
+				if(simple.method.GetParameters().Length > 0) {
 					parametersExpanded = Foldout(parametersExpanded, new GUIContent("Parameters"));
 					if(parametersExpanded) {
+						++EditorGUI.indentLevel;
 						for(int i = 0; i < parameterInfos.Length; ++i) {
 							DrawWith(
 								parameterDrawers[i],
 								new SerializedObject(simple).FindProperty("parameters").GetArrayElementAtIndex(i),
 								new GUIContent(parameterInfos[i].Name)
 							);
+							MakeSpacing();
 						}
+						--EditorGUI.indentLevel;
 					}
 				}
 			}

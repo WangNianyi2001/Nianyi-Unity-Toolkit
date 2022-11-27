@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System;
 using System.Reflection;
 
 namespace Nianyi.Editor {
@@ -15,7 +14,11 @@ namespace Nianyi.Editor {
 			},
 			Label = EditorStyles.whiteLabel,
 			DropdownButton = new GUIStyle("dropdownbutton") {
-				alignment = TextAnchor.MiddleCenter,
+				alignment = TextAnchor.MiddleLeft,
+				padding = new RectOffset() {
+					left = 4,
+					right = 4,
+				}
 			},
 			Button = new GUIStyle("button") {
 				alignment = TextAnchor.MiddleCenter,

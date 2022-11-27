@@ -15,9 +15,7 @@ namespace Nianyi {
 		[SerializeField] string[] parameterTypes = new string[0];
 		public List<SerializableParameter> parameters = new List<SerializableParameter>();
 
-		public bool asynchronous = false;
-
-		public MethodInfo Method {
+		public MethodInfo method {
 			get {
 				if(typeName == null || methodName == null)
 					return null;
@@ -50,16 +48,28 @@ namespace Nianyi {
 				isStatic = value?.IsStatic ?? false;
 			}
 		}
+		static Type[] asynchronousTypes = new Type[] {
+			typeof(IEnumerator),
+			typeof(Coroutine),
+			typeof(System.Threading.Tasks.Task),
+			typeof(YieldInstruction),
+		};
+		public bool CanBeAsynchronous {
+			get {
+				if(typeName == null)
+					return false;
+				return asynchronousTypes.Contains(method.ReturnType);
+			}
+		}
 
 		public override IEnumerator Invoke() {
-			var method = Method;
-			if(target == null || method == null)
+			if(target == null || methodName == null)
 				return null;
 			var result = method.Invoke(
 				isStatic ? null : target,
 				parameters.Select(parameter => parameter.value).ToArray()
 			);
-			return CoroutineHelper.Make(result);
+			return asynchronous ? CoroutineHelper.Make(result) : null;
 		}
 	}
 }

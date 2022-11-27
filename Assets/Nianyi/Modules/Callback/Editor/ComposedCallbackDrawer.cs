@@ -2,6 +2,7 @@
 using UnityEditorInternal;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Nianyi.Editor {
 	[CustomPropertyDrawer(typeof(ComposedCallback))]
@@ -13,35 +14,70 @@ namespace Nianyi.Editor {
 		List<GUIContent> labels = new List<GUIContent>();
 		GUIContent label;
 
+		void Update(int i) {
+			if(i >= labels.Count)
+				labels.SetLength(i + 1);
+			labels[i] = new GUIContent($"#{i}");
+			if(i >= callbackDrawers.Count)
+				callbackDrawers.SetLength(i + 1);
+			if(callbackDrawers[i] == null)
+				callbackDrawers[i] = new CallbackDrawer();
+		}
+		void UpdateAll() {
+			labels.SetLength(reorderableList.count);
+			callbackDrawers.SetLength(reorderableList.count);
+			for(int i = 0; i < composed.sequence.Count; ++i)
+				Update(i);
+		}
+
 		protected override void Draw(MemberAccessor member, GUIContent label) {
 			composed = member.Get<ComposedCallback>();
 			if(composed == null)
 				member.Set(composed = new ComposedCallback());
 			this.label = label;
 
-			composed.asynchrnous = Toggle(composed.asynchrnous, new GUIContent("Asynchronous"));
+			composed.asynchronous = Toggle(composed.asynchronous, new GUIContent("Asynchronous"));
+			MakeSpacing();
 
 			if(reorderableList == null) {
 				reorderableList = new ReorderableList(composed.sequence, typeof(Callback));
-				reorderableList.drawHeaderCallback = rect => EditorGUI.LabelField(rect, this.label);
-				reorderableList.onAddCallback = (ReorderableList list) => composed.sequence.Add(null);
-				reorderableList.elementHeightCallback = (int index) => {
-					callbackDrawers.SetLength(composed.sequence.Count);
-					labels.SetLength(composed.sequence.Count);
-					for(int i = 0; i < callbackDrawers.Count; ++i) {
-						if(callbackDrawers[i] == null)
-							callbackDrawers[i] = new CallbackDrawer();
-					}
-					var so = new SerializedObject(composed);
-					SerializedProperty sp = so.FindProperty("sequence").GetArrayElementAtIndex(index);
-					labels[index] = new GUIContent($"Sub-callback {index}");
-					return callbackDrawers[index].GetPropertyHeight(sp, labels[index]);
+
+				reorderableList.onAddCallback = list => {
+					list.list.Add(null);
+					Update(composed.sequence.Count - 1);
 				};
-				reorderableList.drawElementCallback = (Rect position, int index, bool isActive, bool isFocused) => {
-					var so = new SerializedObject(composed);
-					SerializedProperty sp = so.FindProperty("sequence").GetArrayElementAtIndex(index);
-					callbackDrawers[index].OnGUI(position, sp, labels[index]);
+				reorderableList.onReorderCallbackWithDetails = (ReorderableList list, int oldIndex, int newIndex) => {
+					Update(oldIndex);
+					Update(newIndex);
 				};
+				reorderableList.onRemoveCallback = list => {
+					if(list.list.Count == 0)
+						return;
+					var indices = list.selectedIndices.ToList();
+					if(indices.Count == 0)
+						indices.Add(list.list.Count - 1);
+					indices.Sort();
+					indices.Reverse();
+					foreach(int index in indices)
+						list.list.RemoveAt(index);
+					UpdateAll();
+				};
+
+				reorderableList.drawHeaderCallback = rect => EditorGUI.LabelField(rect, this.label, EditorStyles.label);
+				reorderableList.elementHeightCallback = (int i) => {
+					Update(i);
+					var so = new SerializedObject(composed);
+					SerializedProperty sp = so.FindProperty("sequence").GetArrayElementAtIndex(i);
+					return callbackDrawers[i].GetPropertyHeight(sp, labels[i]);
+				};
+				reorderableList.drawElementCallback = (Rect position, int i, bool isActive, bool isFocused) => {
+					Update(i);
+					var so = new SerializedObject(composed);
+					SerializedProperty sp = so.FindProperty("sequence").GetArrayElementAtIndex(i);
+					callbackDrawers[i].OnGUI(position, sp, labels[i]);
+				};
+
+				UpdateAll();
 			}
 
 			MakeHeight(reorderableList.GetHeight());
