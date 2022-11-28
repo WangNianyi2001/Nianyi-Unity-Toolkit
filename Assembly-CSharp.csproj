@@ -70,7 +70,7 @@
     <Compile Include="Assets\Nianyi\Modules\Font\FontMap.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\SingletonAttribute.cs" />
-    <Compile Include="Assets\Nianyi\Demos\Modules\DummySingleton.cs" />
+    <Compile Include="Assets\Nianyi\Demos\Scripts\DummySingleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
