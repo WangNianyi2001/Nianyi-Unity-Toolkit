@@ -8,11 +8,32 @@ namespace Nianyi.Editor {
 	[CustomPropertyDrawer(typeof(SimpleCallback), true)]
 	public class SimpleCallbackDrawer : PropertyDrawerBase {
 		List<SerializableParameterDrawer> parameterDrawers = new List<SerializableParameterDrawer>();
-
 		bool parametersExpanded = true;
+		SimpleCallback simple;
+		GenericMenu menu;
+
+		void AddMethodsToMenu(
+			UnityEngine.Object target,
+			IEnumerable<MethodInfo> methods,
+			SimpleCallback.InvocationType invocationType,
+			string path = ""
+		) {
+			foreach(var method in methods) {
+				menu.AddItem(
+					new GUIContent(path + ReflectionUtility.MethodSignature(method)),
+					simple.method == method,
+					() => {
+						simple.target = target;
+						simple.method = method;
+						simple.invocationType = invocationType;
+						EditorUtility.SetDirty(simple);
+					}
+				);
+			}
+		}
 
 		protected override void Draw(MemberAccessor member, GUIContent label) {
-			var simple = member.Get<SimpleCallback>();
+			simple = member.Get<SimpleCallback>();
 			if(simple == null)
 				member.Set(simple = new SimpleCallback());
 			
@@ -38,59 +59,55 @@ namespace Nianyi.Editor {
 					var target = simple.target;
 					if(target is Component)
 						target = (target as Component).gameObject;
-					var menu = new GenericMenu();
+					menu = new GenericMenu();
 					switch(target) {
 						case MonoScript script:
-							var underlyingClass = script.GetClass();
-							foreach(var method in ReflectionUtility.GetInspectableStaticMethods(underlyingClass)) {
-								menu.AddItem(
-									new GUIContent(ReflectionUtility.MethodSignature(method)),
-									method == simple.method,
-									() => {
-										simple.method = method;
-										EditorUtility.SetDirty(simple);
-									}
+							var type = script.GetClass();
+							if(!SingletonAttribute.HasOn(type)) {
+								AddMethodsToMenu(
+									script,
+									ReflectionUtility.GetInspectableStaticMethods(type),
+									SimpleCallback.InvocationType.Static
+								);
+							}
+							else {
+								AddMethodsToMenu(
+									script,
+									ReflectionUtility.GetInspectableStaticMethods(type),
+									SimpleCallback.InvocationType.Static,
+									"MonoScript Static/"
+								);
+								AddMethodsToMenu(
+									script,
+									ReflectionUtility.GetInspectableInstanceMethods(type),
+									SimpleCallback.InvocationType.Singleton,
+									"Singleton/"
 								);
 							}
 							break;
 						case GameObject gameObject:
-							foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(typeof(GameObject))) {
-								menu.AddItem(
-									new GUIContent($"GameObject/{ReflectionUtility.MethodSignature(method)}"),
-									method == simple.method,
-									() => {
-										simple.target = gameObject;
-										simple.method = method;
-										EditorUtility.SetDirty(simple);
-									}
-								);
-							}
+							AddMethodsToMenu(
+								gameObject,
+								ReflectionUtility.GetInspectableInstanceMethods(typeof(GameObject)),
+								SimpleCallback.InvocationType.Instance,
+								"GameObject/"
+							);
 							foreach(var component in gameObject.GetComponents<Component>()) {
 								Type componentType = component.GetType();
-								foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(componentType)) {
-									menu.AddItem(
-										new GUIContent($"{componentType.Name}/{ReflectionUtility.MethodSignature(method)}"),
-										method == simple.method,
-										() => {
-											simple.target = component;
-											simple.method = method;
-											EditorUtility.SetDirty(simple);
-										}
-									);
-								}
+								AddMethodsToMenu(
+									component,
+									ReflectionUtility.GetInspectableInstanceMethods(componentType),
+									SimpleCallback.InvocationType.Instance,
+									$"{componentType.Name}/"
+								);
 							}
 							break;
 						default:
-							foreach(var method in ReflectionUtility.GetInspectableInstanceMethods(target.GetType())) {
-								menu.AddItem(
-									new GUIContent(ReflectionUtility.MethodSignature(method)),
-									method == simple.method,
-									() => {
-										simple.method = method;
-										EditorUtility.SetDirty(simple);
-									}
-								);
-							}
+							AddMethodsToMenu(
+								target,
+								ReflectionUtility.GetInspectableInstanceMethods(target.GetType()),
+								SimpleCallback.InvocationType.Instance
+							);
 							break;
 					}
 					menu.ShowAsContext();
