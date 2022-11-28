@@ -65,6 +65,7 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SerializableParameterDrawer.cs" />
     <Compile Include="Assets\Nianyi\Modules\Font\Editor\FontFilterEditor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Editor\ComposedCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\CallbackFilterEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

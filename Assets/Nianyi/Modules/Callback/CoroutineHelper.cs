@@ -53,6 +53,8 @@ namespace Nianyi {
 			switch(value) {
 				default:
 					return MakeSingle(value);
+				case null:
+					return null;
 				case IEnumerator enumerator:
 					return enumerator;
 				case Task task:

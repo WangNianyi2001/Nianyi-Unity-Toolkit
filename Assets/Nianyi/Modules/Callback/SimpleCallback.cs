@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Nianyi {
+	[CreateAssetMenu(menuName = "Nianyi/Callback/Simple")]
 	public class SimpleCallback : Callback {
 		public enum InvocationType {
 			Instance, Static, Singleton

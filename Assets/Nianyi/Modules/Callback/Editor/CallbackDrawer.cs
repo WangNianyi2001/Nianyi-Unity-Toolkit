@@ -39,6 +39,9 @@ namespace Nianyi.Editor {
 					}
 					menu.ShowAsContext();
 				}
+				var asset = ObjectField(null, new GUIContent("Or choose an existing asset"), typeof(Callback), false) as Callback;
+				if(asset != null)
+					member.Set(asset);
 				return;
 			}
 			else {
