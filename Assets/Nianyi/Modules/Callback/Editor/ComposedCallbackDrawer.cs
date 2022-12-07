@@ -33,7 +33,7 @@ namespace Nianyi.Editor {
 		protected override void Draw(MemberAccessor member, GUIContent label) {
 			composed = member.Get<ComposedCallback>();
 			if(composed == null)
-				member.Set(composed = new ComposedCallback());
+				member.Set(composed = ScriptableObject.CreateInstance<ComposedCallback>());
 			this.label = label;
 
 			composed.asynchronous = Toggle(composed.asynchronous, new GUIContent("Asynchronous"));

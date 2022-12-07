@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 #if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
 #endif
 
@@ -74,19 +73,20 @@ namespace Nianyi {
 				Init(step);
 			}
 
+			const BindingFlags bindingFlagsDontCare = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
 			public T Get<T>(object from) {
 				switch(type) {
 					case Type.Index:
 						return (T)((IList)from)[index];
 					case Type.Member:
 						System.Type type = from.GetType();
-						FieldInfo field = type.GetField(member);
+						FieldInfo field = type.GetField(member, bindingFlagsDontCare);
 						if(field != null)
 							return (T)field.GetValue(from);
-						PropertyInfo property = type.GetProperty(member);
+						PropertyInfo property = type.GetProperty(member, bindingFlagsDontCare);
 						if(property != null)
 							return (T)property.GetValue(from);
-						throw new MemberAccessException($"Invalid member step in accessor path: ({type.Name}) {member}");
+						throw new MemberAccessException($"Cannot find member {member} in {type.Name}");
 				}
 				throw new MemberAccessException($"Invalid accessor path step: {member}");
 			}
@@ -97,17 +97,17 @@ namespace Nianyi {
 						return;
 					case Type.Member:
 						System.Type type = from.GetType();
-						FieldInfo field = type.GetField(member);
+						FieldInfo field = type.GetField(member, bindingFlagsDontCare);
 						if(field != null) {
 							field.SetValue(from, value);
 							return;
 						}
-						PropertyInfo property = type.GetProperty(member);
+						PropertyInfo property = type.GetProperty(member, bindingFlagsDontCare);
 						if(property != null) {
 							property.SetValue(from, value);
 							return;
 						}
-						throw new MemberAccessException($"Invalid member step in accessor path: ({type.Name}) {member}");
+						throw new MemberAccessException($"Cannot find member {member} in {type.Name}");
 				}
 			}
 
