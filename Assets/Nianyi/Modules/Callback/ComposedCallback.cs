@@ -7,14 +7,22 @@ namespace Nianyi {
 	public class ComposedCallback : Callback {
 		public List<Callback> sequence = new List<Callback>();
 
-		public override IEnumerator Invoke() {
-			if(!asynchronous) {
-				foreach(var callback in sequence)
-					callback.Invoke();
-				yield break;
+		public override void InvokeSync() {
+			if(asynchronous) {
+				CoroutineHelper.Run(InvokeAsync());
+				return;
 			}
 			foreach(var callback in sequence)
-				yield return callback.Invoke();
+				callback.InvokeSync();
+		}
+
+		public override IEnumerator InvokeAsync() {
+			foreach(var callback in sequence) {
+				if(asynchronous)
+					yield return callback.InvokeAsync();
+				else
+					callback.InvokeSync();
+			}
 		}
 	}
 }

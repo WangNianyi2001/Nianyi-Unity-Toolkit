@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 
 namespace Nianyi {
 	public static class ReflectionUtility {
+		public const BindingFlags bindingFlagsDontCare = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+
 		static Type[] specialUnserializableTypes = {
 			typeof(Type), typeof(object)
 		};

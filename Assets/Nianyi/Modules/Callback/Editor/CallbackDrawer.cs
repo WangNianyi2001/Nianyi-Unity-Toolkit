@@ -16,8 +16,26 @@ namespace Nianyi.Editor {
 		SimpleCallbackDrawer simpleDrawer;
 		ComposedCallbackDrawer composedDrawer;
 
-		protected override void Draw(MemberAccessor member, GUIContent label) {
-			Callback callback = member.Get<Callback>();
+		protected override void DrawNull(SerializedProperty property, GUIContent label) {
+			if(DropdownButton(new GUIContent("Create Callback"), label)) {
+				GenericMenu menu = new GenericMenu();
+				foreach(Type type in types) {
+					menu.AddItem(
+						new GUIContent(type.Name),
+						false,
+						() => property.SetUnderlyingMember(ScriptableObject.CreateInstance(type))
+					);
+				}
+				menu.ShowAsContext();
+			}
+			var asset = ObjectField(null, new GUIContent("Or choose an existing asset"), typeof(Callback), false) as Callback;
+			if(asset != null)
+				property.SetUnderlyingMember(asset);
+			return;
+		}
+
+		protected override void Draw(SerializedProperty property, GUIContent label) {
+			Callback callback = property.objectReferenceValue as Callback;
 
 			if(label == null) {
 				label = new GUIContent(callback?.GetType().Name ?? "null");
@@ -27,29 +45,10 @@ namespace Nianyi.Editor {
 				label.text += $" ({callback?.GetType().Name ?? "null"})";
 			}
 
-			if(callback == null) {
-				if(DropdownButton(new GUIContent("Create Callback"), label)) {
-					GenericMenu menu = new GenericMenu();
-					foreach(Type type in types) {
-						menu.AddItem(
-							new GUIContent(type.Name),
-							false,
-							() => member.Set(ScriptableObject.CreateInstance(type))
-						);
-					}
-					menu.ShowAsContext();
-				}
-				var asset = ObjectField(null, new GUIContent("Or choose an existing asset"), typeof(Callback), false) as Callback;
-				if(asset != null)
-					member.Set(asset);
-				return;
-			}
-			else {
-				if(Button(new GUIContent("Clear"), label)) {
-					if(Alert("Clearing a callback", "This operation is inreversible, proceed?", "Proceed", "Cancel")) {
-						member.Set<Callback>(null);
-						return;
-					}
+			if(Button(new GUIContent("Clear"), label)) {
+				if(Alert("Clearing a callback", "This operation is irreversible, proceed?", "Proceed", "Cancel")) {
+					property.SetUnderlyingMember<Callback>(null);
+					return;
 				}
 			}
 			MakeSpacing();
@@ -58,17 +57,21 @@ namespace Nianyi.Editor {
 				case LegacyCallback _:
 					if(legacyDrawer == null)
 						legacyDrawer = new UnityEventDrawer();
-					DrawWith(legacyDrawer, member.Navigate(".unityEvent").Simplify(), new GUIContent("Legacy Callback"));
+					DrawWith(
+						legacyDrawer,
+						new MemberAccessor(property).Navigate(".unityEvent").Simplify(),
+						new GUIContent("Legacy Callback")
+					);
 					return;
 				case SimpleCallback _:
 					if(simpleDrawer == null)
 						simpleDrawer = new SimpleCallbackDrawer();
-					DrawWith(simpleDrawer, member, new GUIContent("Simple Callback"));
+					DrawWith(simpleDrawer, property, new GUIContent("Simple Callback"));
 					return;
 				case ComposedCallback _:
 					if(composedDrawer == null)
 						composedDrawer = new ComposedCallbackDrawer();
-					DrawWith(composedDrawer, member, new GUIContent("Composed Callback"));
+					DrawWith(composedDrawer, property, new GUIContent("Composed Callback"));
 					return;
 			}
 		}

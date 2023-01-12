@@ -30,10 +30,13 @@ namespace Nianyi.Editor {
 				Update(i);
 		}
 
-		protected override void Draw(MemberAccessor member, GUIContent label) {
-			composed = member.Get<ComposedCallback>();
-			if(composed == null)
-				member.Set(composed = ScriptableObject.CreateInstance<ComposedCallback>());
+		protected override void DrawNull(SerializedProperty property, GUIContent label) {
+			property.SetUnderlyingMember(ScriptableObject.CreateInstance<ComposedCallback>());
+			composed = property.GetUnderlyingMember<ComposedCallback>();
+		}
+
+		protected override void Draw(SerializedProperty property, GUIContent label) {
+			composed = property.objectReferenceValue as ComposedCallback;
 			this.label = label;
 
 			composed.asynchronous = Toggle(composed.asynchronous, new GUIContent("Asynchronous"));

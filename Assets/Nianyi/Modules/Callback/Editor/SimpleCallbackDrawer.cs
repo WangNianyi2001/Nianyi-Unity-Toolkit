@@ -32,10 +32,10 @@ namespace Nianyi.Editor {
 			}
 		}
 
-		protected override void Draw(MemberAccessor member, GUIContent label) {
-			simple = member.Get<SimpleCallback>();
+		protected override void Draw(SerializedProperty property, GUIContent label) {
+			simple = property.objectReferenceValue as SimpleCallback;
 			if(simple == null)
-				member.Set(simple = new SimpleCallback());
+				property.SetUnderlyingMember(simple = new SimpleCallback());
 			
 			// Target slot
 			simple.target = ObjectField(simple.target, new GUIContent("Target"), typeof(UnityEngine.Object), true);

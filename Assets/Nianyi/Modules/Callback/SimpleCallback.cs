@@ -91,7 +91,16 @@ namespace Nianyi {
 			}
 		}
 
-		public override IEnumerator Invoke() {
+		public override void InvokeSync() {
+			if(target == null || methodName == null)
+				return;
+			method.Invoke(
+				Target,
+				parameters.Select(parameter => parameter.value).ToArray()
+			);
+		}
+
+		public override IEnumerator InvokeAsync() {
 			if(target == null || methodName == null)
 				return null;
 			var result = method.Invoke(

@@ -5,7 +5,6 @@ namespace Nianyi {
 	public class CallbackFilter : MonoBehaviour {
 		public Callback callback;
 
-		public void Invoke()
-			=> CoroutineHelper.Run(callback?.Invoke());
+		public void Invoke() => callback?.InvokeSync();
 	}
 }

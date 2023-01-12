@@ -3,7 +3,9 @@ using System.Collections;
 
 namespace Nianyi {
 	public abstract class Callback : ScriptableObject {
-		public abstract IEnumerator Invoke();
 		public bool asynchronous;
+
+		public abstract void InvokeSync();
+		public abstract IEnumerator InvokeAsync();
 	}
 }

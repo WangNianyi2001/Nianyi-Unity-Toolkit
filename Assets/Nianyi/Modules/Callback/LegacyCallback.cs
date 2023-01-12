@@ -7,7 +7,11 @@ namespace Nianyi {
 	public class LegacyCallback : Callback {
 		public UnityEvent unityEvent;
 
-		public override IEnumerator Invoke() {
+		public override void InvokeSync() {
+			unityEvent.Invoke();
+		}
+
+		public override IEnumerator InvokeAsync() {
 			unityEvent.Invoke();
 			return null;
 		}

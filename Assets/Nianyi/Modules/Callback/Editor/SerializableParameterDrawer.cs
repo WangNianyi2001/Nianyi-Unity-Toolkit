@@ -7,8 +7,9 @@ namespace Nianyi.Editor {
 	[CustomPropertyDrawer(typeof(SerializableParameter))]
 	public class SerializableParameterDrawer : PropertyDrawerBase {
 		SerializableParameter parameter;
-		protected override void Draw(MemberAccessor member, GUIContent label) {
-			parameter = member.Get<SerializableParameter>();
+
+		protected override void Draw(SerializedProperty property, GUIContent label) {
+			parameter = property.objectReferenceValue as SerializableParameter;
 			switch(parameter.drawerType) {
 				case DT.Integer:
 					parameter.value = IntField((int)parameter.value, label);

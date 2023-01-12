@@ -27,19 +27,23 @@ namespace Nianyi.Editor {
 
 		#region SerializedProperty
 		public static T GetUnderlyingMember<T>(this SerializedProperty property) {
-			UnityEngine.Object rootObject = property.serializedObject.targetObject;
+			Object rootObject = property.serializedObject.targetObject;
 			string path = property.propertyPath;
 			// TODO: Fully resolve property path
-			FieldInfo accessor = rootObject.GetType().GetField(path);
+			System.Type type = rootObject.GetType();
+			FieldInfo accessor = type.GetField(path, ReflectionUtility.bindingFlagsDontCare);
 			if(accessor == null)
-				return default;
+				throw new TargetException($"Cannot find {path} in type {type}");
 			return (T)accessor.GetValue(rootObject);
 		}
 		public static void SetUnderlyingMember<T>(this SerializedProperty property, T value) {
-			UnityEngine.Object rootObject = property.serializedObject.targetObject;
+			Object rootObject = property.serializedObject.targetObject;
 			string path = property.propertyPath;
 			// TODO: Fully resolve property path
-			FieldInfo accessor = rootObject.GetType().GetField(path);
+			System.Type type = rootObject.GetType();
+			FieldInfo accessor = type.GetField(path, ReflectionUtility.bindingFlagsDontCare);
+			if(accessor == null)
+				throw new TargetException($"Cannot find {path} in type {type}");
 			accessor.SetValue(rootObject, value);
 		}
 		#endregion
