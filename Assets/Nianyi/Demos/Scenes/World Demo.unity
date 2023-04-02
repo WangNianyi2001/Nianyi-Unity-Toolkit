@@ -414,8 +414,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1565720510}
   aimPosition: 1
-  finiteSelectDistance: 1
-  maxSelectDistance: 10
+  finiteInteractingDistance: 1
+  maxInteractingDistance: 10
   castThrough: 0
 --- !u!1 &1693923879
 GameObject:
@@ -465,7 +465,6 @@ GameObject:
   - component: {fileID: 1941055117}
   - component: {fileID: 1941055116}
   - component: {fileID: 1941055115}
-  - component: {fileID: 1941055119}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -503,6 +502,7 @@ MonoBehaviour:
   onFocus: {fileID: 0}
   onBlur: {fileID: 0}
   onInteract: {fileID: 0}
+  onRelease: {fileID: 0}
 --- !u!65 &1941055116
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -566,16 +566,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941055113}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1941055119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1941055113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6647e86d6be0cee4fbbedb9a39950e6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  callback: {fileID: 0}

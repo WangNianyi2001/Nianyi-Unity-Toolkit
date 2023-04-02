@@ -6,6 +6,7 @@ namespace Nianyi {
 	public abstract class Interactor : MonoBehaviour {
 		#region Core fields
 		IEnumerable<Interactive> previousTargets = new List<Interactive>();
+		bool interacting = false;
 		#endregion
 
 		#region Public interfaces
@@ -13,9 +14,16 @@ namespace Nianyi {
 			get;
 		}
 
-		public void Interact() {
-			foreach(var target in Targets)
-				target.SendMessage("OnInteract");
+		public bool Interacting {
+			get => isActiveAndEnabled && interacting;
+			set {
+				if(!isActiveAndEnabled)
+					value = false;
+				if(value == interacting)
+					return;
+				foreach(var target in Targets)
+					target.Interacting = value;
+			}
 		}
 		#endregion
 
@@ -24,26 +32,14 @@ namespace Nianyi {
 			var currentTargets = Targets;
 			foreach(var previousTarget in previousTargets) {
 				if(!currentTargets.Contains(previousTarget))
-					previousTarget.SendMessage("OnBlur");
+					previousTarget.Focused = false;
 			}
 			foreach(var currentTarget in currentTargets) {
-				if(!previousTargets.Contains(currentTarget))
-					currentTarget.SendMessage("OnFocus");
-			}
-			previousTargets = currentTargets;
-		}
-
-		protected void OnDrawGizmos() {
-			if(!Application.isPlaying)
-				return;
-
-			Gizmos.color = new Color(1, 0, 0, .2f);
-			foreach(var target in Targets) {
-				foreach(var mesh in target.GetComponentsInChildren<MeshFilter>()) {
-					var tr = mesh.transform;
-					Gizmos.DrawMesh(mesh.sharedMesh, tr.position, tr.rotation, tr.lossyScale);
+				if(!previousTargets.Contains(currentTarget)) {
+					currentTarget.Focused = true;
 				}
 			}
+			previousTargets = currentTargets.ToArray();
 		}
 		#endregion
 	}

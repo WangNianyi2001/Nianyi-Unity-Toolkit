@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Nianyi {
 	[RequireComponent(typeof(Camera))]
@@ -72,9 +71,7 @@ namespace Nianyi {
 			}
 		}
 
-		protected new void OnDrawGizmos() {
-			base.OnDrawGizmos();
-
+		protected void OnDrawGizmos() {
 			if(!Application.isPlaying)
 				return;
 
@@ -82,7 +79,7 @@ namespace Nianyi {
 			Vector3 from = ray.origin, direction = ray.direction;
 			float maxHitDistance = -Mathf.Infinity;
 
-			Gizmos.color = new Color(1, 1, 0, .3f);
+			Gizmos.color = new Color(1, 1, 0, .2f);
 			foreach(var hit in raycastHits.Values) {
 				Vector3 to = hit.point;
 				Gizmos.DrawSphere(to, .05f);

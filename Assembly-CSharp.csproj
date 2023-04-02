@@ -42,7 +42,6 @@
      <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
      <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
      <Compile Include="Assets\Nianyi\Modules\Font\FontMap.cs" />
-     <Compile Include="Assets\Nianyi\Modules\Callback\CallbackFilter.cs" />
      <Compile Include="Assets\Nianyi\Modules\Font\FontFilter.cs" />
      <Compile Include="Assets\Nianyi\Modules\Callback\SimpleCallback.cs" />
      <Compile Include="Assets\Nianyi\Modules\Inspector\ShowChildrenAttribute.cs" />
