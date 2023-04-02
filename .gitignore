@@ -4,6 +4,9 @@
 /[Tt]emp
 /[Uu]serSettings
 
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db*
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers*
+
 **/.DS_Store
 
 /.vs*
