@@ -32,11 +32,11 @@ namespace Nianyi {
 		#endregion
 
 		#region Life cycle
-		void Start() {
+		protected void Start() {
 			TrySetFont();
 		}
 
-		void Update() {
+		protected void Update() {
 			if(!Application.isPlaying) {
 				if(fontMap) {
 					if(fontSet == null) {

@@ -20,12 +20,12 @@ namespace Nianyi {
 		#endregion
 
 		#region Life cycle
-		void Start() {
+		protected void Start() {
 			camera = GetComponent<Camera>();
 			input = GetComponent<InputFilter>();
 		}
 
-		void Update() {
+		protected new void Update() {
 			Vector3 point;
 			switch(aimPosition) {
 				case AimPosition.CenterOfScreen:
@@ -42,6 +42,8 @@ namespace Nianyi {
 			float distance = finiteSelectDistance ? maxSelectDistance : Mathf.Infinity;
 			Physics.Raycast(ray, out RaycastHit hit, distance);
 			Target = hit.transform?.GetComponent<Interactive>();
+
+			base.Update();
 		}
 		#endregion
 	}

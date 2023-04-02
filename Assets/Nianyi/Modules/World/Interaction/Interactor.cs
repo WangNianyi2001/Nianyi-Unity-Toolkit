@@ -19,17 +19,17 @@ namespace Nianyi {
 					target.Selected = true;
 			}
 		}
-#endregion
+		#endregion
 
-#region Core fields
+		#region Core fields
 		Interactive target = null;
-#endregion
+		#endregion
 
-#region Life cycle
-		void Update() {
-			if(!target.isActiveAndEnabled)
+		#region Life cycle
+		protected void Update() {
+			if(!target?.isActiveAndEnabled ?? false)
 				target = null;
 		}
-#endregion
+		#endregion
 	}
 }

@@ -42,7 +42,7 @@ namespace Nianyi {
 		#endregion
 
 		#region Life cycle
-		void OnDisable() {
+		protected void OnDisable() {
 			SetSelectingState(false);
 		}
 		#endregion
