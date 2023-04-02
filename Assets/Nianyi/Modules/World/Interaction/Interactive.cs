@@ -4,46 +4,38 @@ namespace Nianyi {
 	[RequireComponent(typeof(Collider))]
 	public class Interactive : MonoBehaviour {
 		#region Inspector fields
-		[SerializeField] ComposedCallback onSelect;
-		[SerializeField] ComposedCallback onDeselect;
-		[SerializeField] ComposedCallback onUse;
+		[SerializeField] ComposedCallback onFocus;
+		[SerializeField] ComposedCallback onBlur;
+		[SerializeField] ComposedCallback onInteract;
 		#endregion
 
 		#region Core fields
-		bool selected = false;
-		#endregion
-
-		#region Auxiliary
-		public void SetSelectingState(bool value) {
-			if(selected == value)
-				return;
-			if(selected = value)
-				onSelect.InvokeSync();
-			else
-				onDeselect.InvokeSync();
-		}
+		bool focused = false;
 		#endregion
 
 		#region Public interfaces
-		public bool Selected {
-			get => isActiveAndEnabled && selected;
+		public bool Focused {
+			get => isActiveAndEnabled && focused;
 			set {
 				if(!isActiveAndEnabled)
+					value = false;
+				if(focused == value)
 					return;
-				SetSelectingState(value);
+				if(focused = value)
+					onFocus.InvokeSync();
+				else
+					onBlur.InvokeSync();
 			}
 		}
 
-		public void Use() {
-			if(!isActiveAndEnabled)
-				return;
-			onUse.InvokeSync();
-		}
+		public void OnFocus() => onInteract.InvokeSync();
+		public void OnBlur() => onInteract.InvokeSync();
+		public void OnInteract() => onInteract.InvokeSync();
 		#endregion
 
 		#region Life cycle
 		protected void OnDisable() {
-			SetSelectingState(false);
+			Focused = false;
 		}
 		#endregion
 	}
