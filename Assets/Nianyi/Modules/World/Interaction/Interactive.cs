@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Nianyi {
 	[RequireComponent(typeof(Collider))]
-	public class SelectTarget : MonoBehaviour {
+	public class Interactive : MonoBehaviour {
 		#region Inspector fields
 		[SerializeField] ComposedCallback onSelect;
 		[SerializeField] ComposedCallback onDeselect;

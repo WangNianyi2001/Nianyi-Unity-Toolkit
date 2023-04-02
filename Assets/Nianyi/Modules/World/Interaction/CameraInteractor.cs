@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Nianyi {
 	[RequireComponent(typeof(Camera))]
-	public class CameraSelector : Selector {
+	public class CameraInteractor : Interactor {
 		public enum AimPosition {
 			CenterOfScreen,
 			MousePosition,
@@ -41,7 +41,7 @@ namespace Nianyi {
 			Ray ray = camera.ScreenPointToRay(point);
 			float distance = finiteSelectDistance ? maxSelectDistance : Mathf.Infinity;
 			Physics.Raycast(ray, out RaycastHit hit, distance);
-			Target = hit.transform?.GetComponent<SelectTarget>();
+			Target = hit.transform?.GetComponent<Interactive>();
 		}
 		#endregion
 	}

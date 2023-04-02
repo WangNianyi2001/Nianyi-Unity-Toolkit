@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Nianyi {
 	[RequireComponent(typeof(InputFilter))]
-	public class Selector : MonoBehaviour {
+	public class Interactor : MonoBehaviour {
 		#region Core fields
 		#endregion
 
 		#region Public interfaces
-		public SelectTarget Target {
+		public Interactive Target {
 			get => target;
 			set {
 				if(target == value)
@@ -22,7 +22,7 @@ namespace Nianyi {
 #endregion
 
 #region Core fields
-		SelectTarget target = null;
+		Interactive target = null;
 #endregion
 
 #region Life cycle
