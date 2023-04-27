@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Reflection;
 
 namespace Nianyi.Editor {
 	public static class GuiUtility {

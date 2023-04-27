@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Nianyi {
-	public static class DebugHelper {
+	public static class DebugUtility {
 		public enum LogType { Message, Warning, Error }
 		public static void PrintLog(object msg, LogType type = LogType.Message)
 			=> PrintLog(msg.ToString(), type);

@@ -6,7 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace Nianyi {
 	public static class ReflectionUtility {
-		public const BindingFlags bindingFlagsDontCare = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+		public const BindingFlags
+			bindingFlagsDontCare = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance,
+			bindingFlagsInstance = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
 		static Type[] specialUnserializableTypes = {
 			typeof(Type), typeof(object)
@@ -102,6 +104,16 @@ namespace Nianyi {
 				Marshal.FreeHGlobal(ptr);
 			}
 			return obj;
+		}
+
+		public static void Call(this object target, string name, params object[] parameters) {
+			if(target == null)
+				throw new NullReferenceException($"Cannot call function \"{name}\" on null");
+			var type = target.GetType();
+			var method = type.GetMethod(name, bindingFlagsInstance);
+			if(method == null)
+				throw new MissingMethodException($"Object has no method named \"{name}\"");
+			method.Invoke(target, parameters);
 		}
 	}
 }
