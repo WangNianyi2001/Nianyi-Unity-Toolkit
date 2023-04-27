@@ -2,16 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Nianyi {
-	[ExecuteInEditMode]
-	[RequireComponent(typeof(Text))]
-	public class FontFilter : MonoBehaviour {
-		#region Inspector fields
+	[ExecuteAlways]
+	public class FontFilter : BehaviourBase {
+		#region Serialized fields
 		public FontMap fontMap;
 		public Text target;
 		public FontMap.FontSet fontSet;
 		#endregion
 
-		#region Auxiliary methods
+		#region Internal functions
 		bool TryFetchTarget() {
 			if(target)
 				return true;
@@ -31,25 +30,22 @@ namespace Nianyi {
 		}
 		#endregion
 
-		#region Life cycle
+		#region Message handlers
 		protected void Start() {
 			TrySetFont();
 		}
 
-		protected void Update() {
-			if(!Application.isPlaying) {
-				if(fontMap) {
-					if(fontSet == null) {
-						if(fontMap.fontsets.Count != 0)
-							fontSet = fontMap.fontsets[0];
-					}
+		protected void OnEditUpdate() {
+			if(fontMap) {
+				if(fontSet == null) {
+					if(fontMap.fontsets.Count != 0)
+						fontSet = fontMap.fontsets[0];
 				}
-				if(!target)
-					TryFetchTarget();
-				if(fontMap && target)
-					TrySetFont();
-				return;
 			}
+			if(!target)
+				TryFetchTarget();
+			if(fontMap && target)
+				TrySetFont();
 		}
 		#endregion
 	}
