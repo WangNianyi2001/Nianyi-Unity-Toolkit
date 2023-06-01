@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Nianyi {
@@ -28,6 +30,9 @@ namespace Nianyi {
 				return true;
 			return false;
 		}
+		static Type[] nonGetterReturnTypes = {
+			null, typeof(IEnumerable), typeof(Task), typeof(Coroutine)
+		};
 		public static bool FilterNonSerializableMethod(MethodInfo method) {
 			// Reject generic methods
 			if(method.ContainsGenericParameters)
@@ -35,6 +40,9 @@ namespace Nianyi {
 			ParameterInfo[] parameterInfos = method.GetParameters();
 			// Reject if any parameter is non-serializable
 			if(!parameterInfos.All(parameterInfo => Serializable(parameterInfo.ParameterType)))
+				return false;
+			// Reject if is getter
+			if(parameterInfos.Length == 0 && !nonGetterReturnTypes.Contains(method.ReturnType))
 				return false;
 			return true;
 		}
