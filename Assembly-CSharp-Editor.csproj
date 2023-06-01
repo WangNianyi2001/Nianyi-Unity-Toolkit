@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Nianyi\Scripts\Attributes\Editor\ShowChildrenAttributeDrawer.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Reflection\Editor\EditorReflectionUtility.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Utilities\Editor\GuiUtility.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\SerializableParameterDrawer.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Font\Editor\FontFilterEditor.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Attributes\Editor\ShowIfEnumAttributeDrawer.cs" />

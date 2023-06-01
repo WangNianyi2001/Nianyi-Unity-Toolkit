@@ -60,7 +60,6 @@
     <Compile Include="Assets\Nianyi\Scripts\Utilities\DataUtility.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Interaction\InteractionSystem.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
-    <Compile Include="Assets\Nianyi\Scripts\Utilities\GuiUtility.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Interaction\Interaction.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Reflection\ReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Callback\SerializableParameter.cs" />
