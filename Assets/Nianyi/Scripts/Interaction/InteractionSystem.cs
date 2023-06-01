@@ -20,27 +20,39 @@ namespace Nianyi {
 		#endregion
 
 		#region Internal functions
+		private InteractionList RecifyInteractionList(IInteractionList list) {
+			var result = new InteractionList();
+			if(list == null)
+				return result;
+			foreach(var i in list) {
+				if(i == null)
+					continue;
+				if(result.Contains(i))
+					continue;
+				result.Add(i);
+			}
+			return result;
+		}
+
 		private struct SelectionDiff {
 			public InteractionList toBeDeselected, toBeSelected, updated;
 		}
 		private SelectionDiff CalculateSelectionDiff(IInteractionList previous, IInteractionList next) {
+			previous = RecifyInteractionList(previous);
+			next = RecifyInteractionList(next);
 			var diff = new SelectionDiff {
 				toBeDeselected = new InteractionList(),
 				toBeSelected = new InteractionList(),
 				updated = new InteractionList(),
 			};
 			foreach(var i in previous) {
-				if(i == null || i.Invalidated)
-					continue;
-				if(!i.isActiveAndEnabled || !next.Contains(i))
+				if(!next.Contains(i))
 					diff.toBeDeselected.Add(i);
 				else
 					diff.updated.Add(i);
 			}
 			foreach(var i in next) {
-				if(i == null || i.Invalidated)
-					continue;
-				if(i.isActiveAndEnabled && !previous.Contains(i)) {
+				if(!previous.Contains(i)) {
 					diff.toBeSelected.Add(i);
 					diff.updated.Add(i);
 				}
@@ -70,10 +82,35 @@ namespace Nianyi {
 		}
 		#endregion
 
+		#region Public functions
+		public IInteractionList SelectedInteractions {
+			get => previouslySelectedInteractions;
+			set => selectedInteractions = value.ToList();
+		}
+
+		public void Select(Interaction i) {
+			selectedInteractions.Add(i);
+			UpdateSelectedInteractions();
+		}
+
+		public void Deselect(Interaction i) {
+			selectedInteractions.Remove(i);
+			UpdateSelectedInteractions();
+		}
+
+		public void Interact() {
+			foreach(var i in selectedInteractions) {
+				if(i != null)
+					i.SendMessage("OnInteract");
+			}
+		}
+		#endregion
+
 		#region Message handlers
 		protected void OnGameStart() {
 			previouslySelectedInteractions = selectedInteractions;
 		}
+
 		protected void OnGameUpdate() {
 			if(selectedInteractions == null)
 				selectedInteractions = new InteractionList();
@@ -81,6 +118,8 @@ namespace Nianyi {
 				previouslySelectedInteractions = new InteractionList(selectedInteractions);
 			UpdateSelectedInteractions();
 		}
+
+		protected void OnInteract() => Interact();
 		#endregion
 	}
 }

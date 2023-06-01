@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace Nianyi {
 	public static class ReflectionUtility {
@@ -23,16 +24,15 @@ namespace Nianyi {
 					return false;
 				return true;
 			}
+			if(type == typeof(Vector2) || type == typeof(Vector3))
+				return true;
 			return false;
 		}
 		public static bool FilterNonSerializableMethod(MethodInfo method) {
 			// Reject generic methods
 			if(method.ContainsGenericParameters)
 				return false;
-			// Reject pure getters
 			ParameterInfo[] parameterInfos = method.GetParameters();
-			if(parameterInfos.Length == 0 && method.ReturnType != typeof(void))
-				return false;
 			// Reject if any parameter is non-serializable
 			if(!parameterInfos.All(parameterInfo => Serializable(parameterInfo.ParameterType)))
 				return false;

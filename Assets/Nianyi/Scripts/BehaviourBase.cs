@@ -28,11 +28,6 @@ namespace Nianyi {
 		#endregion
 
 		#region Public functions
-		/// <returns>
-		/// True if object is destroyed somehow.
-		/// </returns>
-		public bool Invalidated => gameObject == null;
-
 		/// <summary>
 		/// Send a message to this component only.
 		/// </summary>

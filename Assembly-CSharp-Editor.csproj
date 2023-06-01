@@ -59,13 +59,13 @@
     <Compile Include="Assets\Nianyi\Scripts\Attributes\Editor\ShowChildrenAttributeDrawer.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Reflection\Editor\EditorReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\SerializableParameterDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\ComposedCallbackDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\SimpleCallbackDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Scripts\Editor\PropertyDrawerBaseDrawing.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Font\Editor\FontFilterEditor.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Attributes\Editor\ShowIfEnumAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\ComposedCallbackDrawer.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Editor\PropertyDrawerBase.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\SimpleCallbackDrawer.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\CallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Editor\PropertyDrawerBaseDrawing.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Attributes\Editor\ShowIfBoolAttributeDrawer.cs" />
   </ItemGroup>
   <ItemGroup>

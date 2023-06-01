@@ -3,13 +3,21 @@ using UnityEngine;
 namespace Nianyi {
 	[ExecuteAlways]
 	public class Interaction : BehaviourBase {
+		#region Serialized fields
+		public Callback onInteract;
+		#endregion
+
 		#region Message handlers
 		protected void OnSelect() {
-			Debug.Log($"Selected {this}", this);
+			//
 		}
 
 		protected void OnDeselect() {
-			Debug.Log($"Deselected {this}", this);
+			//
+		}
+
+		protected void OnInteract() {
+			//
 		}
 		#endregion
 	}
