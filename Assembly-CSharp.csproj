@@ -80,6 +80,10 @@
     <Compile Include="Assets\Nianyi\Scripts\Interaction\InteractionSystem.editor.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Scripts\BehaviourBase.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Physics\Dcel.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Physics\Dcel.Unity.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Physics\MeshManifold.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Physics\MeshManifold.editor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
