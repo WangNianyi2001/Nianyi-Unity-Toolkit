@@ -1,10 +1,20 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using System;
 using System.Linq;
 
 namespace Nianyi {
 	public partial class MeshManifold {
+		#region Serialized fields
+		[Serializable]
+		public struct EditorOptions {
+			public bool backCull;
+			public bool vertexOffset;
+		}
+		public EditorOptions editorOptions;
+		#endregion
+
 		#region Internal functions
 		private bool IsFacingCamera(Vector3 position, Vector3 direction) {
 			Camera sceneCamera = SceneView.currentDrawingSceneView.camera;
@@ -40,8 +50,10 @@ namespace Nianyi {
 				Color edgeColor = Color.green, brinkColor = Color.red;
 				edgeColor.a = .2f;
 				foreach(var halfEdge in data.halfEdges) {
-					if(!IsFacingCamera(halfEdge.from.position, halfEdge.surface.normal))
-						continue;
+					if(editorOptions.backCull) {
+						if(!IsFacingCamera(halfEdge.from.position, halfEdge.surface.normal))
+							continue;
+					}
 					var from = toWorld.MultiplyPoint(halfEdge.from.position);
 					var to = toWorld.MultiplyPoint(halfEdge.To.position);
 					// If edge is on brink, draw with red; otherwise green
@@ -59,7 +71,17 @@ namespace Nianyi {
 					if(!vertex.HalfEdges.Any(halfEdge => IsFacingCamera(vertex.position, halfEdge.surface.normal)))
 						continue;
 					Gizmos.color = vertexColor;
-					Vector3 vertexPosition = toWorld.MultiplyPoint(vertex.position);
+					Vector3 vertexPosition = vertex.position;
+					if(editorOptions.vertexOffset) {
+						int index = data.vertices.IndexOf(vertex);
+						Vector3 offset = new Vector3(
+							Mathf.Sin(index),
+							0,
+							Mathf.Cos(index)
+						);
+						vertexPosition += offset * .003f;
+					}
+					vertexPosition = toWorld.MultiplyPoint(vertexPosition);
 					Gizmos.DrawSphere(vertexPosition, vertexSize);
 					Gizmos.color = vertexNormalColor;
 					Gizmos.DrawLine(vertexPosition, vertexPosition + toWorld.MultiplyVector(vertex.normal) * vertexNormalLength);
