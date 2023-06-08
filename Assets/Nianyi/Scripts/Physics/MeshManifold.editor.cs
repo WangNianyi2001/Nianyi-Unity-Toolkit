@@ -9,8 +9,8 @@ namespace Nianyi {
 		#region Serialized fields
 		[Serializable]
 		public struct EditorOptions {
-			public bool backCull;
-			public bool vertexOffset;
+			public bool backFaceCulling;
+			public bool offsetVertices;
 		}
 		public EditorOptions editorOptions;
 		#endregion
@@ -50,7 +50,7 @@ namespace Nianyi {
 				Color edgeColor = Color.green, brinkColor = Color.red;
 				edgeColor.a = .2f;
 				foreach(var halfEdge in data.halfEdges) {
-					if(editorOptions.backCull) {
+					if(editorOptions.backFaceCulling) {
 						if(!IsFacingCamera(halfEdge.from.position, halfEdge.surface.normal))
 							continue;
 					}
@@ -72,7 +72,7 @@ namespace Nianyi {
 						continue;
 					Gizmos.color = vertexColor;
 					Vector3 vertexPosition = vertex.position;
-					if(editorOptions.vertexOffset) {
+					if(editorOptions.offsetVertices) {
 						int index = data.vertices.IndexOf(vertex);
 						Vector3 offset = new Vector3(
 							Mathf.Sin(index),

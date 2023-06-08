@@ -15,6 +15,14 @@ namespace Nianyi {
 
 		#region Serialized fields
 		[SerializeField] private Mesh mesh;
+		[Serializable]
+		public struct ImportOptions {
+			public bool limitVertexCount;
+			[ShowIfBool("limitVertexCount")] [Min(0)] public int maxVertexCount;
+			public bool weldVertices;
+			[ShowIfBool("weldVertices")][Min(0)] public float maxWeldingDistance;
+		}
+		public ImportOptions importOptions;
 		#endregion
 
 		#region Internal functions
@@ -23,48 +31,55 @@ namespace Nianyi {
 				return false;
 			if(!Mesh.isReadable)
 				return false;
-			if(Mesh.vertexCount > 1e3)
-				return false;
+			if(importOptions.limitVertexCount) {
+				if(Mesh.vertexCount > importOptions.maxVertexCount)
+					return false;
+			}
 			return true;
 		}
 
 		protected void RegenerateMeshData() {
 			data = null;
-			if(!mesh || !mesh.isReadable)
+			if(mesh == null || !mesh.isReadable)
 				return;
 			data = new Data.Dcel.Unity.Mesh();
-			if(mesh) {
-				// Add vertices
-				var vertexPositions = new List<Vector3>();
-				mesh.GetVertices(vertexPositions);
-				var vertexNormals = new List<Vector3>();
-				mesh.GetNormals(vertexNormals);
-				for(int i = 0; i < mesh.vertexCount; ++i) {
-					Data.Dcel.Unity.Vertex vertex = data.AddVertex();
-					vertex.position = vertexPositions[i];
-					vertex.normal = vertexNormals[i];
-				}
+			if(mesh == null)
+				return;
 
-				// Add surfaces
-				for(int submeshI = 0; submeshI < mesh.subMeshCount; ++submeshI) {
-					int[] surfaceIndices = mesh.GetTriangles(submeshI);
-					for(int i = 0; i < surfaceIndices.Length; i += 3) {
-						var a = data.vertices[surfaceIndices[i + 0]];
-						var b = data.vertices[surfaceIndices[i + 1]];
-						var c = data.vertices[surfaceIndices[i + 2]];
-						Data.Dcel.Unity.Surface surface = data.AddSurface(a, b, c, true);
-						surface.normal = Vector3.Cross(
-							a.position - b.position,
-							b.position - c.position
-						).normalized;
-						surface.center = (
-							a.position +
-							b.position +
-							c.position
-						) / 3;
-					}
+			// Add vertices
+			var vertexPositions = new List<Vector3>();
+			mesh.GetVertices(vertexPositions);
+			var vertexNormals = new List<Vector3>();
+			mesh.GetNormals(vertexNormals);
+			for(int i = 0; i < mesh.vertexCount; ++i) {
+				Data.Dcel.Unity.Vertex vertex = data.AddVertex();
+				vertex.position = vertexPositions[i];
+				vertex.normal = vertexNormals[i];
+			}
+
+			// Add surfaces
+			for(int submeshI = 0; submeshI < mesh.subMeshCount; ++submeshI) {
+				int[] surfaceIndices = mesh.GetTriangles(submeshI);
+				for(int i = 0; i < surfaceIndices.Length; i += 3) {
+					var a = data.vertices[surfaceIndices[i + 0]];
+					var b = data.vertices[surfaceIndices[i + 1]];
+					var c = data.vertices[surfaceIndices[i + 2]];
+					Data.Dcel.Unity.Surface surface = data.AddSurface(a, b, c, true);
+					surface.normal = Vector3.Cross(
+						a.position - b.position,
+						b.position - c.position
+					).normalized;
+					surface.center = (
+						a.position +
+						b.position +
+						c.position
+					) / 3;
 				}
 			}
+
+			// Post-import process
+			if(importOptions.weldVertices)
+				data.WeldVertices(importOptions.maxWeldingDistance);
 		}
 		#endregion
 

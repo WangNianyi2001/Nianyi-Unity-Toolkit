@@ -68,6 +68,7 @@
     <Compile Include="Assets\Nianyi\Scripts\Callback\Editor\CallbackDrawer.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Editor\PropertyDrawerBaseDrawing.cs" />
     <Compile Include="Assets\Nianyi\Scripts\Attributes\Editor\ShowIfBoolAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Scripts\Physics\Editor\MeshManifoldEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

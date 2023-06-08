@@ -8,8 +8,13 @@ namespace Nianyi.Editor {
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
 			var showIf = attribute as ShowIfBoolAttribute;
-			SerializedProperty showProperty = property.serializedObject.FindProperty(showIf.propertyName);
-			show = showProperty != null ? showProperty.boolValue == showIf.expected : false;
+			try {
+				var accessor = new MemberAccessor(property).Navigate(1, "." + showIf.propertyName);
+				show = accessor.Get<bool>();
+			}
+			catch {
+				show = false;
+			}
 			return show ? EditorGUI.GetPropertyHeight(property, label) : 0;
 		}
 

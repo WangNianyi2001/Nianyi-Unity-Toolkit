@@ -34,6 +34,7 @@ namespace Nianyi.Data.Dcel.Unity {
 	public class Mesh : Mesh<HalfEdge, Vertex, Surface> {
 		public Transform transform;
 
+		#region Internal functions
 		private bool IsInsideTriangle(Vector3 point, Vector3 a, Vector3 b, Vector3 c, out Vector3 land) {
 			Vector3 i = b - a, j = c - a, k = Vector3.Cross(i, j);
 			k.Normalize();
@@ -43,12 +44,14 @@ namespace Nianyi.Data.Dcel.Unity {
 			land = (Vector3)(toTriangle * t) + a;
 			return t.x >= 0 && t.y >= 0 && t.x + t.y <= 1;
 		}
+
 		private Vector3 ClosestPointOnLineSegment(Vector3 point, Vector3 a, Vector3 b) {
 			Vector3 i = b - a, d = point - a;
 			float x = Vector3.Dot(d, i.normalized) / Vector3.Distance(b, a);
 			x = Mathf.Clamp01(x);
 			return a + i * x;
 		}
+		
 		private IEnumerable<SurfacePoint> ClosestPointCandidates(Vector3 point, Surface surface) {
 			var vertices = surface.Vertices.ToArray();
 			if(vertices.Length != 3)
@@ -92,7 +95,9 @@ namespace Nianyi.Data.Dcel.Unity {
 				point = ClosestPointOnLineSegment(point, c, a)
 			};
 		}
+		#endregion
 
+		#region Public interfaces
 		public void ClosestPointOnSurface(Vector3 world, Surface surface, out SurfacePoint info) {
 			info = SurfacePoint.Invalid;
 			var candidates = ClosestPointCandidates(world, surface);
@@ -105,5 +110,10 @@ namespace Nianyi.Data.Dcel.Unity {
 				bestDistance = distance;
 			}
 		}
+
+		public void WeldVertices(float maxDistance) {
+			//TODO
+		}
+		#endregion
 	}
 }
