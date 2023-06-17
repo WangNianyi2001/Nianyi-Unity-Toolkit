@@ -27,6 +27,8 @@ namespace Nianyi.Editor {
 		}
 
 		public override void OnInspectorGUI() {
+			EditorGUI.BeginChangeCheck();
+
 			SerializedProperty it = serializedObject.FindProperty("mesh");
 			EditorGUILayout.PropertyField(it);
 			if(meshManifold.Mesh == null) {
@@ -47,6 +49,9 @@ namespace Nianyi.Editor {
 			for(; it.NextVisible(false);) {
 				EditorGUILayout.PropertyField(it);
 			}
+
+			if(EditorGUI.EndChangeCheck())
+				serializedObject.ApplyModifiedProperties();
 		}
 	}
 }

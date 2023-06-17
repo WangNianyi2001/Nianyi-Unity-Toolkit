@@ -8,7 +8,7 @@ namespace Nianyi {
 	[RequireComponent(typeof(MeshRenderer))]
 	public partial class MeshManifold : BehaviourBase {
 		#region Internal fields
-		[NonSerialized] public Data.Dcel.Unity.Mesh data;
+		[NonSerialized] public Data.DcelUnity data;
 		private MeshFilter filter;
 		private new MeshRenderer renderer;
 		#endregion
@@ -18,7 +18,7 @@ namespace Nianyi {
 		[Serializable]
 		public struct ImportOptions {
 			public bool limitVertexCount;
-			[ShowIfBool("limitVertexCount")] [Min(0)] public int maxVertexCount;
+			[ShowIfBool("limitVertexCount")][Min(0)] public int maxVertexCount;
 			public bool weldVertices;
 			[ShowIfBool("weldVertices")][Min(0)] public float maxWeldingDistance;
 		}
@@ -42,9 +42,8 @@ namespace Nianyi {
 			data = null;
 			if(mesh == null || !mesh.isReadable)
 				return;
-			data = new Data.Dcel.Unity.Mesh();
-			if(mesh == null)
-				return;
+			data = new Data.DcelUnity();
+			data.transform = transform;
 
 			// Add vertices
 			var vertexPositions = new List<Vector3>();
@@ -52,7 +51,7 @@ namespace Nianyi {
 			var vertexNormals = new List<Vector3>();
 			mesh.GetNormals(vertexNormals);
 			for(int i = 0; i < mesh.vertexCount; ++i) {
-				Data.Dcel.Unity.Vertex vertex = data.AddVertex();
+				Data.DcelUnity.Vertex vertex = data.AddVertex();
 				vertex.position = vertexPositions[i];
 				vertex.normal = vertexNormals[i];
 			}
@@ -64,7 +63,7 @@ namespace Nianyi {
 					var a = data.vertices[surfaceIndices[i + 0]];
 					var b = data.vertices[surfaceIndices[i + 1]];
 					var c = data.vertices[surfaceIndices[i + 2]];
-					Data.Dcel.Unity.Surface surface = data.AddSurface(a, b, c, true);
+					Data.DcelUnity.Surface surface = data.CreateSurface(a, b, c);
 					surface.normal = Vector3.Cross(
 						a.position - b.position,
 						b.position - c.position
@@ -79,7 +78,7 @@ namespace Nianyi {
 
 			// Post-import process
 			if(importOptions.weldVertices)
-				data.WeldVertices(importOptions.maxWeldingDistance);
+				data.WeldCloseVertices(importOptions.maxWeldingDistance);
 		}
 		#endregion
 

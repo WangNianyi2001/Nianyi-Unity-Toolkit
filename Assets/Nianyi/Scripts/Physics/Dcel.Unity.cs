@@ -2,36 +2,38 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Nianyi.Data.Dcel.Unity {
-	public class HalfEdge : HalfEdge<HalfEdge, Vertex, Surface> { }
+namespace Nianyi.Data {
+	using Dcel = Dcel<DcelUnity.HalfEdge, DcelUnity.Vertex, DcelUnity.Surface>;
 
-	public class Vertex : Vertex<HalfEdge, Vertex, Surface> {
-		public Vector3 position;
-		public Vector3 normal;
-	}
+	public class DcelUnity : Dcel {
+		public new class HalfEdge : Dcel.HalfEdge { }
 
-	public class Surface : Surface<HalfEdge, Vertex, Surface> {
-		public Vector3 center;
-		public Vector3 normal;
-	}
+		public new class Vertex : Dcel.Vertex {
+			public Vector3 position;
+			public Vector3 normal;
+		}
 
-	public struct SurfacePoint {
-		public static SurfacePoint Invalid = new SurfacePoint {
-			surface = null,
-			halfEdge = null,
-			vertex = null,
-			point = Vector3.zero,
-		};
+		public new class Surface : Dcel.Surface {
+			public Vector3 center;
+			public Vector3 normal;
+		}
 
-		public Surface surface;
-		public HalfEdge halfEdge;
-		public Vertex vertex;
-		public Vector3 point;
+		public struct SurfacePoint {
+			public static SurfacePoint Invalid = new SurfacePoint {
+				surface = null,
+				halfEdge = null,
+				vertex = null,
+				point = Vector3.zero,
+			};
 
-		public bool IsInvalid => surface == null && halfEdge == null && vertex == null;
-	}
+			public Surface surface;
+			public HalfEdge halfEdge;
+			public Vertex vertex;
+			public Vector3 point;
 
-	public class Mesh : Mesh<HalfEdge, Vertex, Surface> {
+			public bool IsInvalid => surface == null && halfEdge == null && vertex == null;
+		}
+
 		public Transform transform;
 
 		#region Internal functions
@@ -51,7 +53,7 @@ namespace Nianyi.Data.Dcel.Unity {
 			x = Mathf.Clamp01(x);
 			return a + i * x;
 		}
-		
+
 		private IEnumerable<SurfacePoint> ClosestPointCandidates(Vector3 point, Surface surface) {
 			var vertices = surface.Vertices.ToArray();
 			if(vertices.Length != 3)
@@ -111,8 +113,32 @@ namespace Nianyi.Data.Dcel.Unity {
 			}
 		}
 
-		public void WeldVertices(float maxDistance) {
-			//TODO
+		public void WeldCloseVertices(float maxDistance) {
+			Matrix4x4 toWorld = transform.localToWorldMatrix;
+			// Classify all vertices
+			var classifications = new DisjointSet<Vertex>();
+			foreach(var vertex in vertices) {
+				var classification = classifications.Sets.FirstOrDefault(
+					classification => classification.Any(representative => {
+						float distance = Vector3.Distance(
+							toWorld.MultiplyPoint(vertex.position),
+							toWorld.MultiplyPoint(representative.position)
+						);
+						return distance < maxDistance;
+					})
+				);
+				if(classification == null)
+					classifications.Add(vertex);
+				else
+					classification.Add(vertex);
+			}
+			// Weld vertices by classification result
+			foreach(var classification in classifications.Sets) {
+				var list = classification.ToList();
+				var first = list[0];
+				list.RemoveAt(0);
+				WeldVertices(first, list);
+			}
 		}
 		#endregion
 	}
