@@ -46,8 +46,10 @@ namespace Nianyi.Editor {
 
 			this.label = label;
 
-			composed.asynchronous = Toggle(composed.asynchronous, new GUIContent("Asynchronous"));
-			MakeSpacing();
+			if(composed.Asynchronousable) {
+				composed.asynchronous = Toggle(composed.asynchronous, new GUIContent("Asynchronous"));
+				MakeSpacing();
+			}
 
 			if(reorderableList == null) {
 				reorderableList = new ReorderableList(composed.sequence, typeof(Callback));

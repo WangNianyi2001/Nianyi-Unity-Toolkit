@@ -31,7 +31,7 @@ namespace Nianyi {
 			return false;
 		}
 		static Type[] nonGetterReturnTypes = {
-			null, typeof(IEnumerable), typeof(Task), typeof(Coroutine)
+			typeof(void), typeof(IEnumerator), typeof(Task), typeof(Coroutine)
 		};
 		public static bool FilterNonSerializableMethod(MethodInfo method) {
 			// Reject generic methods
@@ -114,14 +114,15 @@ namespace Nianyi {
 			return obj;
 		}
 
-		public static void Call(this object target, string name, params object[] parameters) {
+		public static bool Call(this object target, string name, params object[] parameters) {
 			if(target == null)
-				throw new NullReferenceException($"Cannot call function \"{name}\" on null");
+				throw new NullReferenceException($"Target of function call is null");
 			var type = target.GetType();
 			var method = type.GetMethod(name, bindingFlagsInstance);
 			if(method == null)
-				throw new MissingMethodException($"Object has no method named \"{name}\"");
+				return false;
 			method.Invoke(target, parameters);
+			return true;
 		}
 	}
 }

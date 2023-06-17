@@ -34,10 +34,7 @@ namespace Nianyi {
 		public void SendPrivateMessage(string name, params object[] parameters) {
 			if(!isActiveAndEnabled)
 				return;
-			try {
-				this.Call(name, parameters);
-			}
-			catch { }
+			this.Call(name, parameters);
 		}
 		#endregion
 

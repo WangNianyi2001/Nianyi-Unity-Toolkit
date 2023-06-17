@@ -70,13 +70,6 @@ namespace Nianyi {
 			typeof(System.Threading.Tasks.Task),
 			typeof(YieldInstruction),
 		};
-		public bool CanBeAsynchronous {
-			get {
-				if(typeName == null)
-					return false;
-				return asynchronousTypes.Contains(method?.ReturnType);
-			}
-		}
 		public object Target {
 			get {
 				switch(invocationType) {
@@ -90,6 +83,8 @@ namespace Nianyi {
 				return target;
 			}
 		}
+
+		public override bool Asynchronousable => typeName != null && asynchronousTypes.Contains(method?.ReturnType);
 
 		public override void InvokeSync() {
 			if(target == null || methodName == null)

@@ -7,6 +7,8 @@ namespace Nianyi {
 	public class LegacyCallback : Callback {
 		public UnityEvent unityEvent;
 
+		public override bool Asynchronousable => false;
+
 		public override void InvokeSync() {
 			unityEvent.Invoke();
 		}

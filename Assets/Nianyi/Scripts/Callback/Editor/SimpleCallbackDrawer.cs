@@ -42,7 +42,7 @@ namespace Nianyi.Editor {
 			MakeSpacing();
 
 			// Asynchronicity toggle
-			if(!simple.CanBeAsynchronous)
+			if(!simple.Asynchronousable)
 				simple.asynchronous = false;
 			else {
 				simple.asynchronous = Toggle(simple.asynchronous, new GUIContent("Asynchronous"));
