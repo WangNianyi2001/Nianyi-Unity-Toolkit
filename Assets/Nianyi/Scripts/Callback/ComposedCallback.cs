@@ -15,7 +15,7 @@ namespace Nianyi {
 				callback.Invoke();
 		}
 
-		public override IEnumerator InvokeAsync() {
+		private IEnumerator InvokeAsyncCoroutine() {
 			if(asynchronous) {
 				foreach(var callback in sequence)
 					yield return callback.InvokeAsync();
@@ -23,5 +23,7 @@ namespace Nianyi {
 			else
 				InvokeSync();
 		}
+
+		public override Coroutine InvokeAsync() => CoroutineHelper.Run(InvokeAsyncCoroutine());
 	}
 }

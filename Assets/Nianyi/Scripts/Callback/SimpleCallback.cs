@@ -95,14 +95,14 @@ namespace Nianyi {
 			);
 		}
 
-		public override IEnumerator InvokeAsync() {
+		public override Coroutine InvokeAsync() {
 			if(target == null || methodName == null)
 				return null;
 			var result = method.Invoke(
 				Target,
 				parameters.Select(parameter => parameter.value).ToArray()
 			);
-			return asynchronous ? CoroutineHelper.Make(result) : null;
+			return asynchronous ? CoroutineHelper.Run(CoroutineHelper.Make(result)) : null;
 		}
 	}
 }

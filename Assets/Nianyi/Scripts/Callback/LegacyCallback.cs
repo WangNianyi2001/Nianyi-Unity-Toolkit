@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
 
 namespace Nianyi {
 	[CreateAssetMenu(menuName = "Nianyi/Callback/Legacy")]
@@ -13,7 +12,7 @@ namespace Nianyi {
 			unityEvent.Invoke();
 		}
 
-		public override IEnumerator InvokeAsync() {
+		public override Coroutine InvokeAsync() {
 			unityEvent.Invoke();
 			return null;
 		}

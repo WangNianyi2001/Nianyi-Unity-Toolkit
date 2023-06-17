@@ -9,11 +9,11 @@ namespace Nianyi {
 		}
 
 		public abstract void InvokeSync();
-		public abstract IEnumerator InvokeAsync();
+		public abstract Coroutine InvokeAsync();
 
 		private IEnumerator InvokeCoroutine() {
 			if(Asynchronousable)
-				return InvokeAsync();
+				return CoroutineHelper.Make(InvokeAsync());
 			InvokeSync();
 			return null;
 		}

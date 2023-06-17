@@ -57,7 +57,7 @@ namespace Nianyi {
 					var from = toWorld.MultiplyPoint(halfEdge.from.position);
 					var to = toWorld.MultiplyPoint(halfEdge.To.position);
 					// If edge is on brink, draw with red; otherwise green
-					Gizmos.color = halfEdge.twin != null ? edgeColor : brinkColor;
+					Gizmos.color = halfEdge.twins.Count != 0 ? edgeColor : brinkColor;
 					Gizmos.DrawLine(from, to);
 				}
 				// Draw vertices
@@ -68,7 +68,7 @@ namespace Nianyi {
 				Color vertexNormalColor = Color.yellow;
 				vertexNormalColor.a = .3f;
 				foreach(var vertex in data.vertices) {
-					if(!vertex.HalfEdges.Any(halfEdge => IsFacingCamera(vertex.position, halfEdge.surface.normal)))
+					if(!vertex.outGoingHalfEdges.Any(halfEdge => IsFacingCamera(vertex.position, halfEdge.surface.normal)))
 						continue;
 					Gizmos.color = vertexColor;
 					Vector3 vertexPosition = vertex.position;
