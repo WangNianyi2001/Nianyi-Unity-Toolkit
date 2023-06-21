@@ -7,17 +7,14 @@ namespace Nianyi.Data {
 	using Dcel = Dcel<UnityDcel.HalfEdge, UnityDcel.Vertex, UnityDcel.Surface>;
 
 	[Serializable]
-	public class UnityDcel : Dcel {
-		[Serializable]
+	public partial class UnityDcel : Dcel {
 		public new class HalfEdge : Dcel.HalfEdge { }
 
-		[Serializable]
 		public new class Vertex : Dcel.Vertex {
 			public Vector3 position;
 			public Vector3 normal;
 		}
 
-		[Serializable]
 		public new class Surface : Dcel.Surface {
 			public Vector3 center;
 			public Vector3 normal;

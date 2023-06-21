@@ -7,13 +7,12 @@ namespace Nianyi.Data {
 	public class Mesh : ScriptableObject {
 		#region Serialized fields
 		public UnityEngine.Mesh sourceMesh;
-		// TODO: Custom serialization of UnityDcel
-		[NonSerialized] [HideInInspector] public UnityDcel data;
+		[HideInInspector] public UnityDcel data;
 
 		[Serializable]
 		public struct ImportOptions {
 			[Tooltip("Auto re-import mesh data when source mesh changes")]
-			public bool autoReimport;
+			public bool autoReimport;	// TODO: auto detect mesh change
 
 			public bool limitVertexCount;
 			[ShowIfBool("limitVertexCount")][Min(0)] public int maxVertexCount;
