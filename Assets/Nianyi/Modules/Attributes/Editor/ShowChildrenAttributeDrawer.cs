@@ -12,7 +12,7 @@ namespace Nianyi.Editor {
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
 			heights = new List<float>();
 			labels = new List<GUIContent>();
-			UnityEngine.Object targetObject = property.objectReferenceValue;
+			Object targetObject = property.objectReferenceValue;
 			if(targetObject == null) {
 				so = null;
 				return EditorGUIUtility.singleLineHeight;

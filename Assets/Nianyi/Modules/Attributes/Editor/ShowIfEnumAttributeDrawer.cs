@@ -26,9 +26,9 @@ namespace Nianyi.Editor {
 
 		protected override void Draw(SerializedProperty member, GUIContent label) {
 			if(!Rendering)
-				show = DetermineVisibility(base.attribute as ShowIfEnumAttribute, member);
+				show = DetermineVisibility(attribute as ShowIfEnumAttribute, member);
 			if(show)
-				PropertyField(member, label);
+				PropertyField(member, label, true);
 		}
 	}
 }

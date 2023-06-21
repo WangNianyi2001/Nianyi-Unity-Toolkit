@@ -22,7 +22,7 @@ namespace Nianyi.Editor {
 			if(!show)
 				return;
 			EditorGUI.BeginChangeCheck();
-			EditorGUI.PropertyField(position, property, label);
+			EditorGUI.PropertyField(position, property, label, true);
 			if(EditorGUI.EndChangeCheck())
 				property.serializedObject.ApplyModifiedProperties();
 		}
