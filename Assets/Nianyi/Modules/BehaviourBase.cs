@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 namespace Nianyi {
 	public abstract class BehaviourBase : MonoBehaviour {
 		#region Internal functions
-		private static string
+		private const string
 			gameModeMessagePrefix = "OnGame",
 			editModeMessagePrefix = "OnEdit",
 			sceneModeMessagePrefix = "OnScene",
@@ -36,6 +36,8 @@ namespace Nianyi {
 				return;
 			this.Call(name, parameters);
 		}
+
+		public T EnsureComponent<T>(T result = null) where T : Component => gameObject.EnsureComponent<T>(result);
 		#endregion
 
 		#region Message handlers
@@ -58,7 +60,6 @@ namespace Nianyi {
 
 		// See https://docs.unity3d.com/Manual/ExecutionOrder.html
 		// Initialization
-		private void Awake() => SendPrivateMessageByMode("Awake");
 		private void OnEnable() => SendPrivateMessageByMode("Enable");
 		// Editor
 		// Initialization

@@ -88,6 +88,7 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshEntity.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\HierarchyUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
