@@ -56,17 +56,20 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Nianyi\Modules\Physics\Entity.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\DummySingleton.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\UnityDcel.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\DataUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\Interaction.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\MeshEntity.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\DisjointSet.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\CameraInteractor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Font\FontMap.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Physics\Dcel.Unity.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.cs" />
     <Compile Include="Assets\Nianyi\Modules\Font\FontFilter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SimpleCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowChildrenAttribute.cs" />
@@ -77,13 +80,12 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\CoroutineHelper.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\Dcel.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\SingletonAttribute.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Physics\MeshManifold.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\MemberAccessor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowIfBoolAttribute.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\Callback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Physics\MeshManifold.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\MeshEntity.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
   </ItemGroup>
   <ItemGroup>

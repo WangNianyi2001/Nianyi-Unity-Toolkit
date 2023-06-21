@@ -1,18 +1,23 @@
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Nianyi.Data {
-	using Dcel = Dcel<DcelUnity.HalfEdge, DcelUnity.Vertex, DcelUnity.Surface>;
+	using Dcel = Dcel<UnityDcel.HalfEdge, UnityDcel.Vertex, UnityDcel.Surface>;
 
-	public class DcelUnity : Dcel {
+	[Serializable]
+	public class UnityDcel : Dcel {
+		[Serializable]
 		public new class HalfEdge : Dcel.HalfEdge { }
 
+		[Serializable]
 		public new class Vertex : Dcel.Vertex {
 			public Vector3 position;
 			public Vector3 normal;
 		}
 
+		[Serializable]
 		public new class Surface : Dcel.Surface {
 			public Vector3 center;
 			public Vector3 normal;
@@ -34,8 +39,6 @@ namespace Nianyi.Data {
 			public bool IsInvalid => surface == null && halfEdge == null && vertex == null;
 		}
 
-		public Transform transform;
-
 		#region Internal functions
 		private bool IsInsideTriangle(Vector3 point, Vector3 a, Vector3 b, Vector3 c, out Vector3 land) {
 			Vector3 i = b - a, j = c - a, k = Vector3.Cross(i, j);
@@ -54,15 +57,14 @@ namespace Nianyi.Data {
 			return a + i * x;
 		}
 
-		private IEnumerable<SurfacePoint> ClosestPointCandidates(Vector3 point, Surface surface) {
+		private IEnumerable<SurfacePoint> ClosestPointCandidates(Vector3 point, Matrix4x4 under, Surface surface) {
 			var vertices = surface.Vertices.ToArray();
 			if(vertices.Length != 3)
 				yield break;
-			Matrix4x4 localToWorld = transform.localToWorldMatrix;
 			Vector3
-				a = localToWorld * vertices[0].position,
-				b = localToWorld * vertices[1].position,
-				c = localToWorld * vertices[2].position;
+				a = under * vertices[0].position,
+				b = under * vertices[1].position,
+				c = under * vertices[2].position;
 
 			Vector3 land;
 			if(IsInsideTriangle(point, a, b, c, out land)) {
@@ -100,9 +102,9 @@ namespace Nianyi.Data {
 		#endregion
 
 		#region Public interfaces
-		public void ClosestPointOnSurface(Vector3 world, Surface surface, out SurfacePoint info) {
+		public void ClosestPointOnSurface(Vector3 world, Matrix4x4 under, Surface surface, out SurfacePoint info) {
 			info = SurfacePoint.Invalid;
-			var candidates = ClosestPointCandidates(world, surface);
+			var candidates = ClosestPointCandidates(world, under, surface);
 			float bestDistance = Mathf.Infinity;
 			foreach(var candidate in candidates) {
 				float distance = Vector3.Distance(candidate.point, world);
@@ -110,34 +112,6 @@ namespace Nianyi.Data {
 					continue;
 				info = candidate;
 				bestDistance = distance;
-			}
-		}
-
-		public void WeldCloseVertices(float maxDistance) {
-			Matrix4x4 toWorld = transform.localToWorldMatrix;
-			// Classify all vertices
-			var classifications = new DisjointSet<Vertex>();
-			foreach(var vertex in vertices) {
-				var classification = classifications.Sets.FirstOrDefault(
-					classification => classification.Any(representative => {
-						float distance = Vector3.Distance(
-							toWorld.MultiplyPoint(vertex.position),
-							toWorld.MultiplyPoint(representative.position)
-						);
-						return distance < maxDistance;
-					})
-				);
-				if(classification == null)
-					classifications.Add(vertex);
-				else
-					classification.Add(vertex);
-			}
-			// Weld vertices by classification result
-			foreach(var classification in classifications.Sets) {
-				var list = classification.ToList();
-				var first = list[0];
-				list.RemoveAt(0);
-				WeldVertices(first, list);
 			}
 		}
 		#endregion

@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 
 namespace Nianyi {
-	public partial class MeshManifold {
+	public partial class MeshEntity {
 		#region Serialized fields
 		[Serializable]
 		public struct EditorOptions {
@@ -25,31 +25,16 @@ namespace Nianyi {
 		#endregion
 
 		#region Life cycle
-		protected void OnEditUpdate() {
-			filter = GetComponent<MeshFilter>();
-			renderer = GetComponent<MeshRenderer>();
-
-			Mesh = Mesh;
-			if(Mesh == null)
-				data = null;
-			else {
-				if(IsMeshHandlable())
-					RegenerateMeshData();
-				else
-					data = null;
-			}
-		}
-
 		protected void OnDrawGizmos() {
 			if(!isActiveAndEnabled)
 				return;
 			Matrix4x4 toWorld = transform.localToWorldMatrix;
-			if(data != null) {
+			if(mesh != null) {
 				Gizmos.color = Color.white;
 				// Draw edges
 				Color edgeColor = Color.green, brinkColor = Color.red;
 				edgeColor.a = .2f;
-				foreach(var halfEdge in data.halfEdges) {
+				foreach(var halfEdge in mesh.data.halfEdges) {
 					if(editorOptions.backFaceCulling) {
 						if(!IsFacingCamera(halfEdge.from.position, halfEdge.surface.normal))
 							continue;
@@ -67,13 +52,13 @@ namespace Nianyi {
 				float vertexNormalLength = .02f;
 				Color vertexNormalColor = Color.yellow;
 				vertexNormalColor.a = .3f;
-				foreach(var vertex in data.vertices) {
+				foreach(var vertex in mesh.data.vertices) {
 					if(!vertex.outGoingHalfEdges.Any(halfEdge => IsFacingCamera(vertex.position, halfEdge.surface.normal)))
 						continue;
 					Gizmos.color = vertexColor;
 					Vector3 vertexPosition = vertex.position;
 					if(editorOptions.offsetVertices) {
-						int index = data.vertices.IndexOf(vertex);
+						int index = mesh.data.vertices.IndexOf(vertex);
 						Vector3 offset = new Vector3(
 							Mathf.Sin(index),
 							0,
@@ -91,7 +76,7 @@ namespace Nianyi {
 				Color surfaceNormalColor = Color.cyan;
 				surfaceNormalColor.a = .7f;
 				Gizmos.color = surfaceNormalColor;
-				foreach(var surface in data.surfaces) {
+				foreach(var surface in mesh.data.surfaces) {
 					if(!IsFacingCamera(surface.center, surface.normal))
 						continue;
 					Vector3 center = toWorld.MultiplyPoint(surface.center);

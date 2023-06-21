@@ -69,36 +69,6 @@ namespace Nianyi.Data {
 			}
 			return halfEdge;
 		}
-
-		private void WeldTwoVertices(V to, V target) {
-			// Dissolve all surfaces on the edge [target<->to]
-			foreach(var halfEdge in FindHalfEdges(to, target).Union(FindHalfEdges(target, to)))
-				RemoveSurface(halfEdge.surface);
-			// Dissolve all triangles of form [to->inbetween->target]
-			foreach(var outEdge in to.outGoingHalfEdges) {
-				var inbetween = outEdge.To;
-				foreach(var inEdge in inbetween.outGoingHalfEdges) {
-					if(inEdge.To != target)
-						continue;
-					inEdge.To = to;
-					inEdge.twins.Add(outEdge);
-					outEdge.twins.Add(inEdge);
-				}
-			}
-			// Dissolve all triangles of form [target->inbetween->to]
-			foreach(var outEdge in target.outGoingHalfEdges) {
-				var inbetween = outEdge.To;
-				foreach(var inEdge in inbetween.outGoingHalfEdges) {
-					if(inEdge.To != to)
-						continue;
-					outEdge.from = to;
-					inEdge.twins.Add(outEdge);
-					outEdge.twins.Add(inEdge);
-				}
-			}
-			// Remove the target vertex
-			vertices.Remove(target);
-		}
 		#endregion
 
 		#region Public interfaces
@@ -147,12 +117,6 @@ namespace Nianyi.Data {
 			}
 			surfaces.Remove(surface);
 		}
-
-		public void WeldVertices(V to, IEnumerable<V> targets) {
-			foreach(var target in targets)
-				WeldTwoVertices(to, target);
-		}
-		public void WeldVertices(V to, params V[] targets) => WeldVertices(to, targets as IEnumerable<V>);
 		#endregion
 	}
 }
