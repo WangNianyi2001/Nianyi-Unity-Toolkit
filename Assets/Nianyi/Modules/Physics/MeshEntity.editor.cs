@@ -5,17 +5,60 @@ using System;
 using System.Linq;
 
 namespace Nianyi {
+	[ExecuteAlways]
 	public partial class MeshEntity {
+		#region Internal fields
+		private GameObject gizmosObject;
+		private MeshFilter gizmosFilter;
+		private MeshRenderer gizmosRenderer;
+		#endregion
+
 		#region Serialized fields
 		[Serializable]
-		public struct EditorOptions {
+		public struct GizmosOptions {
 			public bool backFaceCulling;
 			public bool offsetVertices;
 		}
-		public EditorOptions editorOptions;
+		public GizmosOptions gizmosOptions;
 		#endregion
 
 		#region Internal functions
+		private GameObject GizmosObject {
+			get {
+				if(gizmosObject != null)
+					return gizmosObject;
+
+				gizmosObject = new GameObject($"${gameObject.name} (Gizmos)");
+				gizmosObject.hideFlags = HideFlags.HideAndDontSave;
+
+				gizmosRenderer = gizmosObject.AddComponent<MeshRenderer>();
+				gizmosFilter = gizmosObject.AddComponent<MeshFilter>();
+
+				return gizmosObject;
+			}
+		}
+		private Transform GizmosTransform => GizmosObject.transform;
+		private MeshFilter GizmosFilter {
+			get {
+				if(gizmosFilter && gizmosFilter.gameObject == GizmosObject)
+					return gizmosFilter;
+				gizmosFilter = GizmosObject.GetComponent<MeshFilter>();
+				if(!gizmosFilter)
+					gizmosFilter = GizmosObject.AddComponent<MeshFilter>();
+				return gizmosFilter;
+			}
+		}
+		private MeshRenderer GizmosRenderer {
+			get {
+				if(gizmosRenderer && gizmosRenderer.gameObject == GizmosObject)
+					return gizmosRenderer;
+				gizmosRenderer = GizmosObject.GetComponent<MeshRenderer>();
+				if(!gizmosRenderer)
+					gizmosRenderer = GizmosObject.AddComponent<MeshRenderer>();
+				return gizmosRenderer;
+			}
+		}
+
 		private bool IsFacingCamera(Vector3 position, Vector3 direction) {
 			Camera sceneCamera = SceneView.currentDrawingSceneView.camera;
 			Vector3 cameraPosition = sceneCamera.transform.position;
@@ -25,6 +68,16 @@ namespace Nianyi {
 		#endregion
 
 		#region Life cycle
+		protected void OnEditUpdate() {
+			GizmosTransform.parent = transform;
+			GizmosTransform.localPosition = Vector3.zero;
+			GizmosTransform.localRotation = Quaternion.identity;
+			GizmosTransform.localScale = Vector3.one;
+
+			GizmosFilter.sharedMesh = mesh.sourceMesh;
+			GizmosRenderer.sharedMaterials = materials;
+		}
+
 		protected void OnDrawGizmos() {
 			if(!isActiveAndEnabled)
 				return;
@@ -35,7 +88,7 @@ namespace Nianyi {
 				Color edgeColor = Color.green, brinkColor = Color.red;
 				edgeColor.a = .2f;
 				foreach(var halfEdge in mesh.data.halfEdges) {
-					if(editorOptions.backFaceCulling) {
+					if(gizmosOptions.backFaceCulling) {
 						if(!IsFacingCamera(halfEdge.from.position, halfEdge.surface.normal))
 							continue;
 					}
@@ -57,7 +110,7 @@ namespace Nianyi {
 						continue;
 					Gizmos.color = vertexColor;
 					Vector3 vertexPosition = vertex.position;
-					if(editorOptions.offsetVertices) {
+					if(gizmosOptions.offsetVertices) {
 						int index = mesh.data.vertices.IndexOf(vertex);
 						Vector3 offset = new Vector3(
 							Mathf.Sin(index),
