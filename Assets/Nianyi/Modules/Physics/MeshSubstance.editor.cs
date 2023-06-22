@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Nianyi {
 	[ExecuteAlways]
-	public partial class MeshEntity {
+	public partial class MeshSubstance {
 		#region Internal fields
 		private GameObject gizmosObject;
 		private MeshFilter gizmosFilter;

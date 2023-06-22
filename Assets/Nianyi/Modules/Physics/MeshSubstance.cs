@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Nianyi {
-	public partial class MeshEntity : Entity {
+	public partial class MeshSubstance : Substance {
 		#region Serialized fields
 		public Data.Mesh mesh;
 		public Material[] materials;

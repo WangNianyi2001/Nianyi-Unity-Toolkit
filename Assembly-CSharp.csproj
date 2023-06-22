@@ -57,14 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Nianyi\Modules\Data\UnityDcel.serialization.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Physics\Entity.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\Substance.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\DummySingleton.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\UnityDcel.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\DataUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\Interaction.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Physics\MeshEntity.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\DisjointSet.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\Callback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Physics\MeshEntity.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\HierarchyUtility.cs" />
   </ItemGroup>
