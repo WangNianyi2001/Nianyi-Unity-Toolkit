@@ -88,6 +88,8 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Grid3d.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.algorithm.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

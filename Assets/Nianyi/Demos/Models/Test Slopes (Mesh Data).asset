@@ -340,3 +340,6 @@ MonoBehaviour:
     autoReimport: 0
     limitVertexCount: 1
     maxVertexCount: 82
+    useGridOptimization: 1
+    controlGridSize: 1
+    desiredVerticeCountPerGrid: 10
