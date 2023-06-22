@@ -56,7 +56,7 @@ namespace Nianyi.Data {
 			return GridAt(i);
 		}
 
-		public void AddPoint<T>(Point point, Vector3 coordinates) {
+		public void AddPoint(Point point, Vector3 coordinates) {
 			var grid = GridAt(coordinates);
 			if(!grid.Contains(point))
 				grid.Add(point);

@@ -7,6 +7,8 @@ namespace Nianyi.Data {
 	public partial class Mesh : ScriptableObject {
 		#region Internal fields
 		private UnityEngine.Mesh importedMesh;
+		private MinMaxRange<Vector3> range;
+		private Grid3d<UnityDcel.Vertex> vertexGrid;
 		#endregion
 
 		#region Serialized fields
@@ -27,7 +29,8 @@ namespace Nianyi.Data {
 			public bool controlGridSize;
 			[ShowIfBool("useGridOptimization")]
 			[ShowIfBool("controlGridSize")]
-			[Min(2)] public int desiredVerticeCountPerGrid;
+			[Tooltip("Desired vertex count per grid")]
+			[Min(2)] public int desiredGridSize;
 		}
 		public ImportOptions importOptions;
 		#endregion
@@ -40,6 +43,33 @@ namespace Nianyi.Data {
 				if(importedMesh == null)
 					importedMesh = data.MakeMesh();
 				return importedMesh;
+			}
+		}
+		public Vector3 Size => new Vector3(
+			Mathf.Abs(range.max[0] - range.min[0]),
+			Mathf.Abs(range.max[1] - range.min[1]),
+			Mathf.Abs(range.max[2] - range.min[2])
+		);
+
+		public void Reset() {
+			data = null;
+			importedMesh = null;
+			range = new MinMaxRange<Vector3>(Vector3.one * Mathf.Infinity, -Vector3.one * Mathf.Infinity);
+			vertexGrid = null;
+		}
+
+		public void ReimportMeshData() {
+			Reset();
+			if(sourceMesh == null || !sourceMesh.isReadable)
+				return;
+
+			data = ConstructDataFromMesh(sourceMesh);
+			range = CalculateVertexRange(data);
+			if(importOptions.useGridOptimization) {
+				int gridSize = importOptions.controlGridSize
+					? importOptions.desiredGridSize
+					: CalculateReasonableGridSize(this);
+				vertexGrid = GenerateVertexGrid(this, gridSize);
 			}
 		}
 		#endregion

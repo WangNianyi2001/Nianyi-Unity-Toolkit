@@ -60,6 +60,7 @@
     <Compile Include="Assets\Nianyi\Modules\Physics\Substance.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\DummySingleton.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\UnityDcel.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\MathUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\DataUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.cs" />
     <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
@@ -72,14 +73,17 @@
     <Compile Include="Assets\Nianyi\Modules\Data\Mesh.cs" />
     <Compile Include="Assets\Nianyi\Modules\Font\FontFilter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SimpleCallback.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Grid3d.cs" />
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowChildrenAttribute.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\LegacyCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\Interactor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\HierarchyUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.algorithm.cs" />
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowIfEnumAttribute.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\DebugUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\CoroutineHelper.cs" />
     <Compile Include="Assets\Nianyi\Modules\Data\Dcel.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\MinMaxRange.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\SingletonAttribute.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\MemberAccessor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowIfBoolAttribute.cs" />
@@ -88,8 +92,9 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Data\Grid3d.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.algorithm.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.gizmos.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\TransformUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\TransformUtility.editor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
