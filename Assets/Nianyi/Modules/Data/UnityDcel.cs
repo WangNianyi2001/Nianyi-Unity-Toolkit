@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,6 +111,20 @@ namespace Nianyi.Data {
 				info = candidate;
 				bestDistance = distance;
 			}
+		}
+
+		public UnityEngine.Mesh MakeMesh() {
+			var mesh = new UnityEngine.Mesh();
+
+			mesh.SetVertices(vertices.Select(v => v.position).ToList());
+			var triangles = new List<int>();
+			foreach(var surface in surfaces) {
+				foreach(var vertex in surface.Vertices)
+					triangles.Add(vertices.IndexOf(vertex));
+			}
+			mesh.SetTriangles(triangles, 0);
+
+			return mesh;
 		}
 		#endregion
 	}

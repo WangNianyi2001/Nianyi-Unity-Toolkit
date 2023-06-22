@@ -5,6 +5,10 @@ using System.Collections.Generic;
 namespace Nianyi.Data {
 	[CreateAssetMenu(menuName = "Nianyi/Physics/Mesh Data")]
 	public class Mesh : ScriptableObject {
+		#region Internal fields
+		private UnityEngine.Mesh importedMesh;
+		#endregion
+
 		#region Serialized fields
 		public UnityEngine.Mesh sourceMesh;
 		[HideInInspector] public UnityDcel data;
@@ -21,7 +25,20 @@ namespace Nianyi.Data {
 		#endregion
 
 		#region Public interfaces
+		public UnityEngine.Mesh ImportedMesh {
+			get {
+				if(data == null)
+					return null;
+				if(importedMesh == null)
+					importedMesh = data.MakeMesh();
+				return importedMesh;
+			}
+		}
+
 		public void ReimportMeshData() {
+			data = null;
+			importedMesh = null;
+
 			if(sourceMesh == null || !sourceMesh.isReadable)
 				return;
 			data = new UnityDcel();
