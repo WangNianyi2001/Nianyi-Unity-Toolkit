@@ -65,7 +65,6 @@
     <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\Interaction.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Data\DisjointSet.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\CameraInteractor.cs" />
@@ -76,6 +75,7 @@
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowChildrenAttribute.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\LegacyCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\Interactor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\HierarchyUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Attributes\ShowIfEnumAttribute.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\DebugUtility.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\CoroutineHelper.cs" />
@@ -88,7 +88,6 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Utilities\HierarchyUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
