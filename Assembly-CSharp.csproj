@@ -67,7 +67,7 @@
     <Compile Include="Assets\Nianyi\Modules\Interaction\Interaction.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.cs" />
     <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.gizmos.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
     <Compile Include="Assets\Nianyi\Modules\Interaction\CameraInteractor.cs" />
     <Compile Include="Assets\Nianyi\Modules\Utilities\TransformUtility.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
     <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.editor.cs" />
     <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Grid3d.editor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

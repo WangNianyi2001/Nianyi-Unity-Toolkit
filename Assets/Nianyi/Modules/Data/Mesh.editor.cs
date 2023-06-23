@@ -70,12 +70,10 @@ namespace Nianyi.Data {
 		}
 
 		protected void DrawGrids(Transform transform, in GizmosOptions meshGizmosOptions) {
-			Gizmos.color = Color.blue;
-			foreach(var index in GridIndices(this)) {
-				var vertices = GridVertices(this, index, transform.localToWorldMatrix).ToArray();
-				for(int i = 1; i < vertices.Length; ++i)
-					Gizmos.DrawLine(vertices[i - 1], vertices[i]);
-			}
+			var color = Color.blue;
+			color.a = .3f;
+			Gizmos.color = color;
+			vertexGrid.DrawGizmos(transform.localToWorldMatrix * gridToLocalMatrix);
 		}
 
 		public void DrawGizmos(Transform transform, in GizmosOptions meshGizmosOptions) {

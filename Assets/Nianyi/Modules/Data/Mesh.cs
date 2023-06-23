@@ -9,6 +9,7 @@ namespace Nianyi.Data {
 		private UnityEngine.Mesh importedMesh;
 		private MinMaxRange<Vector3> range;
 		private Grid3d<UnityDcel.Vertex> vertexGrid;
+		private Matrix4x4 gridToLocalMatrix;
 		#endregion
 
 		#region Serialized fields

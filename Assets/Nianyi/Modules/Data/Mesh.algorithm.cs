@@ -67,11 +67,11 @@ namespace Nianyi.Data {
 
 		public static Grid3d<UnityDcel.Vertex> GenerateVertexGrid(Mesh mesh, int gridSize) {
 			var size = mesh.Size;
-			float volume = size.x * size.y * size.z;
-			if(volume <= 0)
+			float realVolume = size[0] * size[1] * size[2];
+			if(realVolume <= 0)
 				return null;
 			int vertexCount = mesh.data.vertices.Count;
-			float desiredGridVolume = volume / vertexCount * gridSize;
+			float desiredGridVolume = realVolume / vertexCount * gridSize;
 			float desiredGridSideLength = Mathf.Pow(desiredGridVolume, 1f / 3);
 			var gridDimensions = new Vector3Int(
 				Mathf.FloorToInt(size[0] / desiredGridSideLength),
@@ -81,12 +81,16 @@ namespace Nianyi.Data {
 			gridDimensions += Vector3Int.one;
 
 			var grid = new Grid3d<UnityDcel.Vertex>(gridDimensions);
-
-			var sizeReciprocal = size.Reciprocal();
 			foreach(var vertex in mesh.data.vertices) {
-				var gridCoordinate = Vector3.Scale(vertex.position - mesh.range.min, sizeReciprocal);
-				grid.AddPoint(vertex, gridCoordinate);
+				var gridCoordinate = Vector3.Scale(vertex.position - mesh.range.min, grid.dimensionsReciprocal);
+				grid.Add(vertex, gridCoordinate);
 			}
+
+			mesh.gridToLocalMatrix = Matrix4x4.TRS(
+				mesh.range.min,
+				Quaternion.identity,
+				mesh.range.max - mesh.range.min
+			);
 
 			return grid;
 		}
@@ -127,6 +131,10 @@ namespace Nianyi.Data {
 			yield return o - j;
 			yield return o - k;
 			yield return o;
+		}
+
+		public class GridSearchResult {
+			//
 		}
 	}
 }
