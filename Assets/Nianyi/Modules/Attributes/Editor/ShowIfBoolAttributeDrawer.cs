@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(ShowIfBoolAttribute))]
 	public class ShowIfBoolAttributeDrawer : PropertyDrawer {
 		bool show = false;

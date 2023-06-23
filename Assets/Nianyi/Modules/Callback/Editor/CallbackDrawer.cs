@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using System;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(Callback), true)]
 	public class CallbackDrawer : PropertyDrawerBase {
 		static Type[] types = new Type[] {

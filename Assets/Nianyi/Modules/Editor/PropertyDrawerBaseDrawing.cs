@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	public abstract partial class PropertyDrawerBase : PropertyDrawer {
 		#region Layout
 		protected void MakeHeight(float height) {

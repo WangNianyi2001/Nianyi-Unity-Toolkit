@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using DT = Nianyi.SerializableParameter.DrawerType;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(SerializableParameter))]
 	public class SerializableParameterDrawer : PropertyDrawerBase {
 		SerializableParameter parameter;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	public abstract partial class PropertyDrawerBase : PropertyDrawer {
 		#region Core fields
 		Rect space, next;

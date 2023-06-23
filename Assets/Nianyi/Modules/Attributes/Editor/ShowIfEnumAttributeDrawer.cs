@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(ShowIfEnumAttribute))]
 	public class ShowIfEnumAttributeDrawer : PropertyDrawerBase {
 		bool show = false;

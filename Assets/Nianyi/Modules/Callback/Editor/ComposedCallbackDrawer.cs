@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(ComposedCallback))]
 	public class ComposedCallbackDrawer : PropertyDrawerBase {
 		ComposedCallback composed;

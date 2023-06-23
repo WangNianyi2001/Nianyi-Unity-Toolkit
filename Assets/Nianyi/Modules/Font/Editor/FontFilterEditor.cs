@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomEditor(typeof(FontFilter))]
 	public class FontFilterEditor : UnityEditor.Editor {
 		static string[] customProperties = new string[] { "fontSet" };

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(ShowChildrenAttribute))]
 	public class ShowChildrenAttributeDrawer : PropertyDrawer {
 		List<float> heights;

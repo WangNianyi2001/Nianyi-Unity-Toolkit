@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	public static class GuiUtility {
 		public struct GUIStyles {
 			public GUIStyle PlainText, Label;

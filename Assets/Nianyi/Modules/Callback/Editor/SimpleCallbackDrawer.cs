@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Nianyi.Editor {
+namespace Nianyi {
 	[CustomPropertyDrawer(typeof(SimpleCallback), true)]
 	public class SimpleCallbackDrawer : PropertyDrawerBase {
 		List<SerializableParameterDrawer> parameterDrawers = new List<SerializableParameterDrawer>();
