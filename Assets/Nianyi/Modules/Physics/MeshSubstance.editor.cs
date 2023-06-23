@@ -1,8 +1,6 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using System;
-using System.Linq;
 
 namespace Nianyi {
 	[ExecuteAlways]
@@ -46,7 +44,7 @@ namespace Nianyi {
 		}
 
 		protected void OnEditUpdate() {
-			GizmosFilter.sharedMesh = mesh.sourceMesh;
+			GizmosFilter.sharedMesh = mesh?.sourceMesh;
 			GizmosRenderer.sharedMaterials = materials;
 		}
 
@@ -57,7 +55,7 @@ namespace Nianyi {
 		}
 
 		protected void OnDrawGizmos() {
-			if(!isActiveAndEnabled)
+			if(!isActiveAndEnabled || mesh == null)
 				return;
 			if(drawMeshGizmos)
 				mesh.DrawGizmos(transform, in meshGizmosOptions);

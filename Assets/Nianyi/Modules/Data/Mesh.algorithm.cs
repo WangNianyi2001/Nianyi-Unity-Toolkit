@@ -58,12 +58,21 @@ namespace Nianyi.Data {
 			return 2;
 		}
 
+		public static Grid3d<UnityDcel.Vertex> GenerateVertexGrid(Mesh mesh) {
+			int gridSize = mesh.importOptions.controlGridSize
+				? mesh.importOptions.desiredGridSize
+				: CalculateReasonableGridSize(mesh);
+			return GenerateVertexGrid(mesh, gridSize);
+		}
+
 		public static Grid3d<UnityDcel.Vertex> GenerateVertexGrid(Mesh mesh, int gridSize) {
 			var size = mesh.Size;
 			float volume = size.x * size.y * size.z;
+			if(volume <= 0)
+				return null;
 			int vertexCount = mesh.data.vertices.Count;
 			float desiredGridVolume = volume / vertexCount * gridSize;
-			float desiredGridSideLength = Mathf.Pow(desiredGridVolume, 1 / 3);
+			float desiredGridSideLength = Mathf.Pow(desiredGridVolume, 1f / 3);
 			var gridDimensions = new Vector3Int(
 				Mathf.FloorToInt(size[0] / desiredGridSideLength),
 				Mathf.FloorToInt(size[1] / desiredGridSideLength),
@@ -75,11 +84,49 @@ namespace Nianyi.Data {
 
 			var sizeReciprocal = size.Reciprocal();
 			foreach(var vertex in mesh.data.vertices) {
-				var gridCoordinate = Vector3.Scale(vertex.position - mesh.range.min, sizeReciprocal) + mesh.range.min;
+				var gridCoordinate = Vector3.Scale(vertex.position - mesh.range.min, sizeReciprocal);
 				grid.AddPoint(vertex, gridCoordinate);
 			}
 
 			return grid;
+		}
+
+		public static IEnumerable<Vector3Int> GridIndices(Mesh mesh) {
+			if(mesh.VertexGrid == null)
+				yield break;
+			var dimensions = mesh.vertexGrid.dimensions;
+			for(int i = 0; i < dimensions[0]; ++i) {
+				for(int j = 0; j < dimensions[1]; ++j) {
+					for(int k = 0; k < dimensions[2]; ++k)
+						yield return new Vector3Int(i, j, k);
+				}
+			}
+		}
+
+		public static IEnumerable<Vector3> GridVertices(Mesh mesh, Vector3Int gridIndex, Matrix4x4 under) {
+			if(mesh.VertexGrid == null)
+				yield break;
+			Vector3 diagonal = mesh.range.max - mesh.range.min;
+			Vector3
+				i = Vector3.right * diagonal[0] / mesh.VertexGrid.dimensions[0],
+				j = Vector3.up * diagonal[1] / mesh.VertexGrid.dimensions[1],
+				k = Vector3.forward * diagonal[2] / mesh.VertexGrid.dimensions[2];
+			Vector3 o = i * gridIndex[0] + j * gridIndex[1] + k * gridIndex[2];
+			o += mesh.range.min;
+			o = under.MultiplyPoint(o);
+			i = under * i;
+			j = under * j;
+			k = under * k;
+
+			yield return o;
+			yield return o + i;
+			yield return o + j;
+			yield return o + k;
+			o += i + j + k;
+			yield return o - i;
+			yield return o - j;
+			yield return o - k;
+			yield return o;
 		}
 	}
 }

@@ -69,11 +69,23 @@ namespace Nianyi.Data {
 			}
 		}
 
+		protected void DrawGrids(Transform transform, in GizmosOptions meshGizmosOptions) {
+			Gizmos.color = Color.blue;
+			foreach(var index in GridIndices(this)) {
+				var vertices = GridVertices(this, index, transform.localToWorldMatrix).ToArray();
+				for(int i = 1; i < vertices.Length; ++i)
+					Gizmos.DrawLine(vertices[i - 1], vertices[i]);
+			}
+		}
+
 		public void DrawGizmos(Transform transform, in GizmosOptions meshGizmosOptions) {
 			Gizmos.color = Color.white;
 			DrawEdges(transform, in meshGizmosOptions);
 			DrawVertices(transform, in meshGizmosOptions);
 			DrawSurfaceNormals(transform, in meshGizmosOptions);
+			if(VertexGrid != null) {
+				DrawGrids(transform, in meshGizmosOptions);
+			}
 		}
 	}
 }

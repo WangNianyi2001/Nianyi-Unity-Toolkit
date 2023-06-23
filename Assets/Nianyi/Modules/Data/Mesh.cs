@@ -18,7 +18,7 @@ namespace Nianyi.Data {
 		[Serializable]
 		public struct ImportOptions {
 			[Tooltip("Auto re-import mesh data when source mesh changes")]
-			public bool autoReimport;	// TODO: auto detect mesh change
+			public bool autoReimport;   // TODO: auto detect mesh change
 
 			public bool limitVertexCount;
 			[ShowIfBool("limitVertexCount")]
@@ -36,6 +36,12 @@ namespace Nianyi.Data {
 		#endregion
 
 		#region Public interfaces
+		public Vector3 Size => new Vector3(
+			Mathf.Abs(range.max[0] - range.min[0]),
+			Mathf.Abs(range.max[1] - range.min[1]),
+			Mathf.Abs(range.max[2] - range.min[2])
+		);
+
 		public UnityEngine.Mesh ImportedMesh {
 			get {
 				if(data == null)
@@ -45,11 +51,16 @@ namespace Nianyi.Data {
 				return importedMesh;
 			}
 		}
-		public Vector3 Size => new Vector3(
-			Mathf.Abs(range.max[0] - range.min[0]),
-			Mathf.Abs(range.max[1] - range.min[1]),
-			Mathf.Abs(range.max[2] - range.min[2])
-		);
+
+		public Grid3d<UnityDcel.Vertex> VertexGrid {
+			get {
+				if(!importOptions.useGridOptimization)
+					return null;
+				if(vertexGrid == null)
+					vertexGrid = GenerateVertexGrid(this);
+				return vertexGrid;
+			}
+		}
 
 		public void Reset() {
 			data = null;
@@ -65,12 +76,7 @@ namespace Nianyi.Data {
 
 			data = ConstructDataFromMesh(sourceMesh);
 			range = CalculateVertexRange(data);
-			if(importOptions.useGridOptimization) {
-				int gridSize = importOptions.controlGridSize
-					? importOptions.desiredGridSize
-					: CalculateReasonableGridSize(this);
-				vertexGrid = GenerateVertexGrid(this, gridSize);
-			}
+			vertexGrid = GenerateVertexGrid(this);
 		}
 		#endregion
 	}

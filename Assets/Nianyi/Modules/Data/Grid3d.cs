@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Nianyi.Data {
 	public class Grid3d<Point> where Point : class {
@@ -14,7 +13,7 @@ namespace Nianyi.Data {
 		protected int CoordinateToGridIndex(Vector3Int coordinates) {
 			int index = coordinates[0];
 			for(int i = 1; i < 3; ++i)
-				index = index * dimensions[i - 1] + coordinates[i];
+				index += coordinates[i] * (dimensions[i - 1] - 1);
 			return index;
 		}
 		#endregion
@@ -42,9 +41,8 @@ namespace Nianyi.Data {
 		}
 
 		public List<Point> GridAt(Vector3Int coordinates) {
+			coordinates.Clamp(Vector3Int.zero, dimensions - Vector3Int.one);
 			int index = CoordinateToGridIndex(coordinates);
-			if(index < 0 || index >= grids.Length)
-				throw new MemberAccessException("Grid access out of range");
 			return grids[index];
 		}
 		public List<Point> GridAt(Vector3 coordinates) {

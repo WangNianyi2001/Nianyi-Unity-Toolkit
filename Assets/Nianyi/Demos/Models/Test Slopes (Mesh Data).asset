@@ -342,4 +342,4 @@ MonoBehaviour:
     maxVertexCount: 82
     useGridOptimization: 1
     controlGridSize: 1
-    desiredVerticeCountPerGrid: 10
+    desiredGridSize: 100
