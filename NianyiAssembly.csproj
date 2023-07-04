@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{8F692C4C-C749-ED8A-B0C4-AC7C66DF9A6B}</ProjectGuid>
+    <ProjectGuid>{B9AF91A4-3137-65D1-38C9-4B677ABF6096}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>NianyiAssembly</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,8 +56,60 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Nianyi\Demos\Scripts\DummySingleton.cs" />
-    <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\UnityDcel.serialization.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\Substance.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Editor\MeshEditor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Attributes\Editor\ShowChildrenAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\UnityDcel.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\MathUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Reflection\Editor\EditorReflectionUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\DataUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\Editor\GuiUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SerializableParameterDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Interaction\Interaction.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Font\Editor\FontFilterEditor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Attributes\Editor\ShowIfEnumAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Reflection\ReflectionUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\SerializableParameter.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Interaction\CameraInteractor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\TransformUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Font\FontMap.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\ComposedCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Font\FontFilter.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\SimpleCallback.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Grid3d.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBase.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Attributes\ShowChildrenAttribute.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\LegacyCallback.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Interaction\Interactor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\HierarchyUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Mesh.algorithm.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Attributes\ShowIfEnumAttribute.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\SimpleCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\DebugUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\CoroutineHelper.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Editor\CallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBaseDrawing.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Dcel.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Utilities\TransformUtility.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\MinMaxRange.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Reflection\SingletonAttribute.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Reflection\MemberAccessor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Attributes\ShowIfBoolAttribute.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\Callback.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Interaction\InteractionSystem.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Data\Grid3d.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Callback\ComposedCallback.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Attributes\Editor\ShowIfBoolAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Physics\MeshSubstance.editor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\BehaviourBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Nianyi\Modules\Nianyi Assembly.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -308,6 +360,12 @@
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -675,31 +733,14 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InputSystem">
-      <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Nianyi.csproj">
-      <Project>{8CB8FCF9-9E5B-A576-E7E3-CB850716A256}</Project>
-      <Name>Nianyi</Name>
-    </ProjectReference>
-    <ProjectReference Include="Nianyi-Editor.csproj">
-      <Project>{FDE31184-FD7F-0239-66DF-E1292C2DB556}</Project>
-      <Name>Nianyi-Editor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

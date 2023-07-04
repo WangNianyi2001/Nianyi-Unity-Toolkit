@@ -8,11 +8,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
-    <ProjectGuid>{8F692C4C-C749-ED8A-B0C4-AC7C66DF9A6B}</ProjectGuid>
+    <RootNamespace>Nianyi.Editor</RootNamespace>
+    <ProjectGuid>{FDE31184-FD7F-0239-66DF-E1292C2DB556}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Nianyi-Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -48,7 +48,7 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.17</UnityProjectGeneratorVersion>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.3.18f1c1</UnityVersion>
   </PropertyGroup>
@@ -56,8 +56,22 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Nianyi\Demos\Scripts\DummySingleton.cs" />
-    <Compile Include="Assets\Nianyi\Demos\Scripts\Dummy.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Data\MeshEditor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Attributes\ShowChildrenAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Reflection\EditorReflectionUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Utilities\GuiUtility.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\SerializableParameterDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Font\FontFilterEditor.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Attributes\ShowIfEnumAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\ComposedCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBase.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\SimpleCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\CallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBaseDrawing.cs" />
+    <Compile Include="Assets\Nianyi\Modules\Editor\Attributes\ShowIfBoolAttributeDrawer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Nianyi\Modules\Editor\Nianyi Editor Assembly.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -308,6 +322,12 @@
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -675,17 +695,8 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1c1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InputSystem">
-      <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
@@ -695,10 +706,6 @@
     <ProjectReference Include="Nianyi.csproj">
       <Project>{8CB8FCF9-9E5B-A576-E7E3-CB850716A256}</Project>
       <Name>Nianyi</Name>
-    </ProjectReference>
-    <ProjectReference Include="Nianyi-Editor.csproj">
-      <Project>{FDE31184-FD7F-0239-66DF-E1292C2DB556}</Project>
-      <Name>Nianyi-Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
