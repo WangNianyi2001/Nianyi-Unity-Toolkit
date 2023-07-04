@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Security.Cryptography;
+using UnityEditor;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
@@ -11,32 +13,38 @@ namespace Nianyi {
 			editModeMessagePrefix = "OnEdit",
 			sceneModeMessagePrefix = "OnScene",
 			prefabModeMessagePrefix = "OnPrefab";
-		private void SendPrivateMessageByMode(string stem, params object[] parameters) {
+#if UNITY_EDITOR
+		private void EditorCallByMode(string stem, params object[] parameters) {
+			this.Call(editModeMessagePrefix + stem, parameters);
+			var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+			if(prefabStage == null)
+				this.Call(sceneModeMessagePrefix + stem, parameters);
+			else
+				this.Call(prefabModeMessagePrefix + stem, parameters);
+		}
+#endif
+		private void CallByMode(string stem, bool editorDelayed, params object[] parameters) {
 			if(Application.isPlaying) {
-				SendPrivateMessage(gameModeMessagePrefix + stem, parameters);
+				this.Call(gameModeMessagePrefix + stem, parameters);
 				return;
 			}
 #if UNITY_EDITOR
-			SendPrivateMessage(editModeMessagePrefix + stem, parameters);
-			var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-			if(prefabStage == null)
-				SendPrivateMessage(sceneModeMessagePrefix + stem, parameters);
-			else
-				SendPrivateMessage(prefabModeMessagePrefix + stem, parameters);
+			if(!editorDelayed) {
+				EditorCallByMode(stem, parameters);
+			}
+			else {
+				EditorApplication.delayCall += () => {
+					if(Application.isPlaying)
+						return;
+					EditorCallByMode(stem, parameters);
+					EditorApplication.QueuePlayerLoopUpdate();
+				};
+			}
 #endif
 		}
 		#endregion
 
 		#region Public functions
-		/// <summary>
-		/// Send a message to this component only.
-		/// </summary>
-		public void SendPrivateMessage(string name, params object[] parameters) {
-			if(!isActiveAndEnabled)
-				return;
-			this.Call(name, parameters);
-		}
-
 		public T EnsureComponent<T>(T result = null) where T : Component => gameObject.EnsureComponent<T>(result);
 		#endregion
 
@@ -60,22 +68,23 @@ namespace Nianyi {
 
 		// See https://docs.unity3d.com/Manual/ExecutionOrder.html
 		// Initialization
-		private void OnEnable() => SendPrivateMessageByMode("Enable");
+		private void OnEnable() => CallByMode("Enable", false);
 		// Editor
+		private void OnValidate() => CallByMode("Validate", true);
 		// Initialization
-		private void Start() => SendPrivateMessageByMode("Start");
+		private void Start() => CallByMode("Start", false);
 		// Physics
-		private void FixedUpdate() => SendPrivateMessageByMode("FixedUpdate");
+		private void FixedUpdate() => CallByMode("FixedUpdate", false);
 		// Game logic
-		private void Update() => SendPrivateMessageByMode("Update");
-		private void LateUpdate() => SendPrivateMessageByMode("LateUpdate");
+		private void Update() => CallByMode("Update", false);
+		private void LateUpdate() => CallByMode("LateUpdate", false);
 		// Scene rendering
 		// Gizmos rendering
-		private void OnDrawGizmos() => SendPrivateMessageByMode("DrawGizmos");
+		private void OnDrawGizmos() => CallByMode("DrawGizmos", false);
 		// GUI rendering
-		private void OnGUI() => SendPrivateMessageByMode("GUI");
+		private void OnGUI() => CallByMode("GUI", false);
 		// Decommissioning
-		private void OnDisable() => SendPrivateMessageByMode("Disable");
+		private void OnDisable() => CallByMode("Disable", false);
 		#endregion
 	}
 }

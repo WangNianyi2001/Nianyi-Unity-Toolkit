@@ -48,10 +48,8 @@ namespace Nianyi {
 			GizmosRenderer.sharedMaterials = materials;
 		}
 
-		protected void OnValidate() {
-			EditorApplication.delayCall += () => {
-				GizmosObject.SetActive(enabled);
-			};
+		protected void OnEditValidate() {
+			GizmosObject.SetActive(enabled);
 		}
 
 		protected void OnDrawGizmos() {
