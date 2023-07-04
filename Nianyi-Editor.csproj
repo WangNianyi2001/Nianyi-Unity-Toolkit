@@ -56,22 +56,22 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Nianyi\Modules\Editor\Data\MeshEditor.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Attributes\ShowChildrenAttributeDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Reflection\EditorReflectionUtility.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Utilities\GuiUtility.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\SerializableParameterDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Font\FontFilterEditor.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Attributes\ShowIfEnumAttributeDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\ComposedCallbackDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBase.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\SimpleCallbackDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Callback\CallbackDrawer.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\PropertyDrawerBaseDrawing.cs" />
-    <Compile Include="Assets\Nianyi\Modules\Editor\Attributes\ShowIfBoolAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Data\MeshEditor.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Attributes\ShowChildrenAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Reflection\EditorReflectionUtility.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Utilities\GuiUtility.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Callback\SerializableParameterDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Font\FontFilterEditor.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Attributes\ShowIfEnumAttributeDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Callback\ComposedCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\PropertyDrawerBase.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Callback\SimpleCallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Callback\CallbackDrawer.cs" />
+    <Compile Include="Assets\Nianyi\Editor\PropertyDrawerBaseDrawing.cs" />
+    <Compile Include="Assets\Nianyi\Editor\Attributes\ShowIfBoolAttributeDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Nianyi\Modules\Editor\Nianyi Editor Assembly.asmdef" />
+    <None Include="Assets\Nianyi\Editor\Nianyi Editor Assembly.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
