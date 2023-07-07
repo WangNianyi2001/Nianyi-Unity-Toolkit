@@ -1,11 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Nianyi.Data.Editor {
 	[CustomEditor(typeof(Mesh))]
 	public class MeshEditor : UnityEditor.Editor {
 		private Mesh mesh;
+
+		private bool sourceMeshInfoExpanded = false, importedMeshInfoExpanded = false;
 
 		private void Warning(string text) {
 			EditorGUILayout.HelpBox(new GUIContent(text));
@@ -40,11 +43,29 @@ namespace Nianyi.Data.Editor {
 						Warning("Vertices of the mesh exceeds the max count specified in the import options");
 				}
 			}
-			if(mesh.sourceMesh != null) {
-				int triangleCount = 0;
-				for(int i = 0; i < mesh.sourceMesh.subMeshCount; ++i)
-					triangleCount += mesh.sourceMesh.GetTriangles(i).Length;
-				GUILayout.Label($"Source mesh: {mesh.sourceMesh.vertexCount} vertices, {triangleCount} triangles");
+		}
+
+		private void DrawMeshInfoSection(UnityEngine.Mesh mesh, string prefix, ref bool expanded) {
+			if(mesh == null) {
+				GUILayout.Label($"{prefix}: (not imported)");
+				return;
+			}
+
+			List<int> triangleCounts = new List<int>();
+			int triangleCount = 0;
+			for(int i = 0; i < mesh.subMeshCount; ++i) {
+				int count = mesh.GetTriangles(i).Length;
+				triangleCount += count;
+				triangleCounts.Add(count);
+			}
+
+			expanded = EditorGUILayout.Foldout(expanded, $"{prefix} (total): {mesh.vertexCount} vertices, {triangleCount} triangles");
+			if(expanded) {
+				++EditorGUI.indentLevel;
+				for(int i = 0; i < mesh.subMeshCount; ++i) {
+					EditorGUILayout.LabelField($"Submesh {i}: {triangleCounts[i]} triangles");
+				}
+				--EditorGUI.indentLevel;
 			}
 		}
 
@@ -54,13 +75,7 @@ namespace Nianyi.Data.Editor {
 
 			if(GUILayout.Button("Re-import Mesh Data")) {
 				mesh.ReimportMeshData();
-			}
-
-			if(mesh.submeshData != null) {
-				GUILayout.Label($"Imported data: {mesh.VertexCount} vertices, {mesh.SurfaceCount} triangles");
-			}
-			else {
-				GUILayout.Label("Imported data: (not imported)");
+				return;
 			}
 		}
 
@@ -72,7 +87,9 @@ namespace Nianyi.Data.Editor {
 			EditorGUI.BeginChangeCheck();
 
 			DrawSourceMeshSection();
+			DrawMeshInfoSection(mesh.sourceMesh, "Source mesh", ref sourceMeshInfoExpanded);
 			DrawImportSection();
+			DrawMeshInfoSection(mesh.ImportedMesh, "Imported mesh", ref importedMeshInfoExpanded);
 
 			if(EditorGUI.EndChangeCheck())
 				serializedObject.ApplyModifiedProperties();

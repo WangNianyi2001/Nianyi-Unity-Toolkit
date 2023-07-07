@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Test Slopes (Mesh Data)
   m_EditorClassIdentifier: 
   sourceMesh: {fileID: 3146715176455497716, guid: cc8b4d6f237149846ad882a104183590, type: 3}
-  data:
-    serializedVertices:
+  submeshData:
+  - serializedVertices:
     - position: {x: 2, y: 0, z: -1}
       normal: {x: 0, y: 0, z: -1}
     - position: {x: 0, y: 0, z: -1}

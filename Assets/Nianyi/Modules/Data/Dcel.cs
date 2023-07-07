@@ -72,6 +72,10 @@ namespace Nianyi.Data {
 		#endregion
 
 		#region Public interfaces
+		public int VertexCount => vertices.Count;
+		public int HalfEdgeCount => halfEdges.Count;
+		public int SurfaceCount => surfaces.Count;
+
 		public V AddVertex() {
 			V vertex = new V();
 			vertices.Add(vertex);

@@ -47,7 +47,7 @@ namespace Nianyi.Data {
 			get {
 				int count = 0;
 				foreach(var submesh in submeshData)
-					count += submesh.vertices.Count;
+					count += submesh.VertexCount;
 				return count;
 			}
 		}
@@ -64,7 +64,7 @@ namespace Nianyi.Data {
 			get {
 				int count = 0;
 				foreach(var submesh in submeshData)
-					count += submesh.surfaces.Count;
+					count += submesh.SurfaceCount;
 				return count;
 			}
 		}
