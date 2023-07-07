@@ -56,8 +56,8 @@ namespace Nianyi.Data.Editor {
 				mesh.ReimportMeshData();
 			}
 
-			if(mesh.data != null) {
-				GUILayout.Label($"Imported data: {mesh.data.vertices.Count} vertices, {mesh.data.surfaces.Count} triangles");
+			if(mesh.submeshData != null) {
+				GUILayout.Label($"Imported data: {mesh.VertexCount} vertices, {mesh.SurfaceCount} triangles");
 			}
 			else {
 				GUILayout.Label("Imported data: (not imported)");

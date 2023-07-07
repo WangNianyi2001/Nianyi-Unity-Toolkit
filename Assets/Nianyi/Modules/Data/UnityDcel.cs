@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,18 +112,29 @@ namespace Nianyi.Data {
 			}
 		}
 
-		public UnityEngine.Mesh MakeMesh() {
-			var mesh = new UnityEngine.Mesh();
+		public void WriteToMesh(UnityEngine.Mesh mesh, int submeshIndex, int vertexIndexOffset = -1) {
+			if(vertexIndexOffset < 0)
+				vertexIndexOffset = mesh.vertexCount;
 
-			mesh.SetVertices(vertices.Select(v => v.position).ToList());
+			List<Vector3> vertexList = new List<Vector3>();
+			mesh.GetVertices(vertexList);
+			List<Vector3> newVertexList = vertices.Select(v => v.position).ToList();
+
+			int i;
+			// Replace vertices until reach the end of the original vertex list.
+			for(i = 0; i + vertexIndexOffset < vertexList.Count() && i < vertexList.Count(); ++i)
+				vertexList[i + vertexIndexOffset] = newVertexList[i];
+			newVertexList.RemoveRange(0, i);
+			// Add rest vertices.
+			vertexList.AddRange(newVertexList);
+
+			mesh.SetVertices(vertexList);
 			var triangles = new List<int>();
 			foreach(var surface in surfaces) {
 				foreach(var vertex in surface.Vertices)
-					triangles.Add(vertices.IndexOf(vertex));
+					triangles.Add(vertices.IndexOf(vertex) + vertexIndexOffset);
 			}
-			mesh.SetTriangles(triangles, 0);
-
-			return mesh;
+			mesh.SetTriangles(triangles, submeshIndex);
 		}
 		#endregion
 	}

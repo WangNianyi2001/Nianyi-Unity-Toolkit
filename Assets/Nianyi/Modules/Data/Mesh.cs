@@ -14,7 +14,7 @@ namespace Nianyi.Data {
 
 		#region Serialized fields
 		public UnityEngine.Mesh sourceMesh;
-		[HideInInspector] public UnityDcel data;
+		[HideInInspector] public List<UnityDcel> submeshData = new List<UnityDcel>();
 
 		[Serializable]
 		public struct ImportOptions {
@@ -43,12 +43,41 @@ namespace Nianyi.Data {
 			Mathf.Abs(range.max[2] - range.min[2])
 		);
 
+		public int VertexCount {
+			get {
+				int count = 0;
+				foreach(var submesh in submeshData)
+					count += submesh.vertices.Count;
+				return count;
+			}
+		}
+		public IEnumerable<UnityDcel.Vertex> Vertices {
+			get {
+				foreach(var submesh in submeshData) {
+					foreach(var vertex in submesh.vertices)
+						yield return vertex;
+				}
+			}
+		}
+
+		public int SurfaceCount {
+			get {
+				int count = 0;
+				foreach(var submesh in submeshData)
+					count += submesh.surfaces.Count;
+				return count;
+			}
+		}
+
 		public UnityEngine.Mesh ImportedMesh {
 			get {
-				if(data == null)
+				if(submeshData == null)
 					return importedMesh = null;
-				if(importedMesh == null)
-					importedMesh = data.MakeMesh();
+				if(importedMesh == null) {
+					importedMesh = new UnityEngine.Mesh();
+					for(int i = 0; i < submeshData.Count; ++i)
+						submeshData[i].WriteToMesh(importedMesh, i);
+				}
 				return importedMesh;
 			}
 		}
@@ -64,7 +93,7 @@ namespace Nianyi.Data {
 		}
 
 		public void Reset() {
-			data = null;
+			submeshData.Clear();
 			importedMesh = null;
 			range = new MinMaxRange<Vector3>(Vector3.one * Mathf.Infinity, -Vector3.one * Mathf.Infinity);
 			vertexGrid = null;
@@ -75,8 +104,9 @@ namespace Nianyi.Data {
 			if(sourceMesh == null || !sourceMesh.isReadable)
 				return;
 
-			data = ConstructDataFromMesh(sourceMesh);
-			range = CalculateVertexRange(data);
+			for(int i = 0; i < sourceMesh.subMeshCount; ++i)
+				submeshData.Add(ConstructSubmeshDataFromMesh(sourceMesh, i));
+			range = CalculateVertexRange(submeshData);
 			vertexGrid = GenerateVertexGrid(this);
 		}
 		#endregion
