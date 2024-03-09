@@ -8,7 +8,7 @@ namespace Nianyi {
 	public class ComposedCallback : Callback {
 		public List<Callback> sequence = new();
 
-		public override bool Asynchronousable => sequence.Any(callback => callback.Asynchronousable);
+		public override bool Asynchronousable => sequence.Any(callback => callback != null && callback.Asynchronousable);
 
 		public override void InvokeSync() {
 			foreach(var callback in sequence)
