@@ -10,10 +10,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>Nianyi.Editor</RootNamespace>
-    <ProjectGuid>{FDE31184-FD7F-0239-66DF-E1292C2DB556}</ProjectGuid>
+    <ProjectGuid>{4F8D4DCF-7688-18C2-BB34-24CF66AD8B5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Nianyi-Editor</AssemblyName>
+    <AssemblyName>Nianyi Unity Toolkit (editor)</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -50,7 +50,7 @@
     <UnityProjectGenerator>Package</UnityProjectGenerator>
     <UnityProjectGeneratorVersion>2.0.22</UnityProjectGeneratorVersion>
     <UnityProjectGeneratorStyle>Legacy</UnityProjectGeneratorStyle>
-    <UnityProjectType>Editor:5</UnityProjectType>
+    <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2022.3.16f1</UnityVersion>
   </PropertyGroup>
@@ -60,22 +60,28 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.16f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Callback\SerializableParameterDrawer.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Reflection\EditorReflectionUtility.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Font\FontFilterEditor.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Callback\CallbackDrawer.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Attributes\ShowChildrenAttributeDrawer.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Attributes\ShowIfEnumAttributeDrawer.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Attributes\ShowIfBoolAttributeDrawer.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Callback\ComposedCallbackDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Callback\Editor\SimpleCallbackDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Attributes\Editor\ShowIfEnumAttributeDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Font\Editor\FontFilterEditor.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Callback\Editor\CallbackDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Data\Editor\MeshEditor.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Utilities\Editor\GuiUtility.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Callback\Editor\ComposedCallbackDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Attributes\Editor\ShowIfBoolAttributeDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Attributes\Editor\ShowChildrenAttributeDrawer.cs" />
     <Compile Include="Packages\Nianyi Unity Toolkit\Editor\PropertyDrawerBaseDrawing.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Data\MeshEditor.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Callback\SimpleCallbackDrawer.cs" />
-    <Compile Include="Packages\Nianyi Unity Toolkit\Editor\Utilities\GuiUtility.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Callback\Editor\SerializableParameterDrawer.cs" />
+    <Compile Include="Packages\Nianyi Unity Toolkit\Reflection\Editor\EditorReflectionUtility.cs" />
     <Compile Include="Packages\Nianyi Unity Toolkit\Editor\PropertyDrawerBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages\Nianyi Unity Toolkit\Editor\Nianyi Editor Assembly.asmdef" />
+    <None Include="Packages\Nianyi Unity Toolkit\Reflection\Editor\Nianyi Unity Toolkit (editor) Assembly Reference.asmref" />
+    <None Include="Packages\Nianyi Unity Toolkit\Attributes\Editor\Nianyi Unity Toolkit (editor) Assembly Reference.asmref" />
+    <None Include="Packages\Nianyi Unity Toolkit\Editor\Nianyi Unity Toolkit (editor) Assembly.asmdef" />
+    <None Include="Packages\Nianyi Unity Toolkit\Data\Editor\Nianyi Unity Toolkit (editor) Assembly Reference.asmref" />
+    <None Include="Packages\Nianyi Unity Toolkit\Utilities\Editor\Nianyi Unity Toolkit (editor) Assembly Reference.asmref" />
+    <None Include="Packages\Nianyi Unity Toolkit\Font\Editor\Nianyi Unity Toolkit (editor) Assembly Reference.asmref" />
+    <None Include="Packages\Nianyi Unity Toolkit\Callback\Editor\Nianyi Unity Toolkit (editor) Assembly Reference.asmref" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -916,9 +922,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Nianyi.csproj">
-      <Project>{8CB8FCF9-9E5B-A576-E7E3-CB850716A256}</Project>
-      <Name>Nianyi</Name>
+    <ProjectReference Include="Nianyi Unity Toolkit.csproj">
+      <Project>{7E339652-B719-FFD3-6EC8-1B80946C8EAC}</Project>
+      <Name>Nianyi Unity Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

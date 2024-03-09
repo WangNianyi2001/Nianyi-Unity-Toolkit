@@ -1,0 +1,17 @@
+{
+  "name": "com.wangnianyi2001.nianyiunitytoolkit",
+  "displayName": "Nianyi Unity Toolkit",
+  "version": "0.0.0",
+  "description": "A toolkit presented by Nianyi Wang to extend the Unity engine's legacy ability.",
+  "keywords": [
+    "inspector",
+    "callback",
+    "editor",
+    "reflection"
+  ],
+  "category": "Extension",
+  "author": {
+    "name": "Nianyi Wang",
+    "url": "http://wangnianyi2001.com/"
+  }
+}

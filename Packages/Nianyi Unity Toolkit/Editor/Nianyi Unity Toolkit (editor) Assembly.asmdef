@@ -1,0 +1,16 @@
+{
+    "name": "Nianyi Unity Toolkit (editor)",
+    "rootNamespace": "Nianyi.Editor",
+    "references": [
+        "GUID:1695fd566ca2ea44eadd4e6b4ec64eae"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
