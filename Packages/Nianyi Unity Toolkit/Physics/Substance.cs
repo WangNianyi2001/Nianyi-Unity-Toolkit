@@ -1,4 +1,6 @@
+using UnityEngine;
+
 namespace Nianyi {
-	public abstract class Substance : BehaviourBase {
+	public abstract class Substance : MonoBehaviour {
 	}
 }

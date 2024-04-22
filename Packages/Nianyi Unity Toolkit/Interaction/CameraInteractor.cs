@@ -8,14 +8,5 @@ namespace Nianyi {
 		}
 		public InteractionModeEnum interactionMode;
 		#endregion
-
-		#region Internal functions
-		#endregion
-
-		#region Life cycle
-		protected void OnGameUpdate() {
-			//
-		}
-		#endregion
 	}
 }

@@ -12,7 +12,7 @@ namespace Nianyi {
 
 		#region Serialized fields
 		public bool drawMeshGizmos;
-		[ShowIfBool("drawMeshGizmos")] public Data.Mesh.GizmosOptions meshGizmosOptions;
+		[ShowIfBool("drawMeshGizmos")] public Mesh.GizmosOptions meshGizmosOptions;
 		#endregion
 
 		#region Internal functions

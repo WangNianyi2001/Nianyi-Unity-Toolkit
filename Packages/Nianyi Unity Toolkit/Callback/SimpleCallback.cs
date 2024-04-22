@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 
 namespace Nianyi {
 	[CreateAssetMenu(menuName = "Nianyi/Callback/Simple")]
@@ -29,7 +30,7 @@ namespace Nianyi {
 						return method;
 					method = null;
 				}
-				Type type = ReflectionUtility.GetTypeByName(typeName);
+				Type type = Reflection.GetTypeByName(typeName);
 				if(type == null)
 					return null;
 				foreach(var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {

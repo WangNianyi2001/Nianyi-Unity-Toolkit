@@ -7,10 +7,10 @@ namespace Nianyi.Demo {
 		public DummySingleton() => instance = this;
 
 		public static void LogFromStatic() {
-			Debug.Log("Log from dummy singleton static!");
+            UnityEngine.Debug.Log("Log from dummy singleton static!");
 		}
 		public void LogFromInstance() {
-			Debug.Log("Log from dummy singleton instance!");
+            UnityEngine.Debug.Log("Log from dummy singleton instance!");
 		}
 	}
 }

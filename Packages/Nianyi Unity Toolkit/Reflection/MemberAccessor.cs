@@ -79,10 +79,10 @@ namespace Nianyi {
 						return (T)((IList)from)[index];
 					case Type.Member:
 						System.Type type = from.GetType();
-						FieldInfo field = type.GetField(member, ReflectionUtility.bindingFlagsDontCare);
+						FieldInfo field = type.GetField(member, Reflection.bindingFlagsDontCare);
 						if(field != null)
 							return (T)field.GetValue(from);
-						PropertyInfo property = type.GetProperty(member, ReflectionUtility.bindingFlagsDontCare);
+						PropertyInfo property = type.GetProperty(member, Reflection.bindingFlagsDontCare);
 						if(property != null)
 							return (T)property.GetValue(from);
 						throw new MemberAccessException($"Cannot find member {member} in {type.Name}");
@@ -96,12 +96,12 @@ namespace Nianyi {
 						return;
 					case Type.Member:
 						System.Type type = from.GetType();
-						FieldInfo field = type.GetField(member, ReflectionUtility.bindingFlagsDontCare);
+						FieldInfo field = type.GetField(member, Reflection.bindingFlagsDontCare);
 						if(field != null) {
 							field.SetValue(from, value);
 							return;
 						}
-						PropertyInfo property = type.GetProperty(member, ReflectionUtility.bindingFlagsDontCare);
+						PropertyInfo property = type.GetProperty(member, Reflection.bindingFlagsDontCare);
 						if(property != null) {
 							property.SetValue(from, value);
 							return;

@@ -1,13 +1,19 @@
+# Unity
+
 /[Ll]ibrary
 /[Ll]ogs
 /[Oo]bj
 /[Tt]emp
 /[Uu]serSettings
 
-/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db*
-/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers*
+# System
 
+## Mac
 **/.DS_Store
 
+# IDE
+
+## Visual Studio
 /.vs*
 /*.sln
+/*.csproj

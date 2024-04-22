@@ -20,7 +20,7 @@ namespace Nianyi {
 		) {
 			foreach(var method in methods) {
 				menu.AddItem(
-					new GUIContent(path + ReflectionUtility.MethodSignature(method)),
+					new GUIContent(path + Reflection.MethodSignature(method)),
 					simple.Method == method,
 					() => {
 						simple.target = target;
@@ -66,20 +66,20 @@ namespace Nianyi {
 							if(!SingletonAttribute.HasOn(type)) {
 								AddMethodsToMenu(
 									script,
-									ReflectionUtility.GetInspectableStaticMethods(type),
+									Reflection.GetInspectableStaticMethods(type),
 									SimpleCallback.InvocationType.Static
 								);
 							}
 							else {
 								AddMethodsToMenu(
 									script,
-									ReflectionUtility.GetInspectableStaticMethods(type),
+									Reflection.GetInspectableStaticMethods(type),
 									SimpleCallback.InvocationType.Static,
 									"MonoScript Static/"
 								);
 								AddMethodsToMenu(
 									script,
-									ReflectionUtility.GetInspectableInstanceMethods(type),
+									Reflection.GetInspectableInstanceMethods(type),
 									SimpleCallback.InvocationType.Singleton,
 									"Singleton/"
 								);
@@ -88,7 +88,7 @@ namespace Nianyi {
 						case GameObject gameObject:
 							AddMethodsToMenu(
 								gameObject,
-								ReflectionUtility.GetInspectableInstanceMethods(typeof(GameObject)),
+								Reflection.GetInspectableInstanceMethods(typeof(GameObject)),
 								SimpleCallback.InvocationType.Instance,
 								"GameObject/"
 							);
@@ -96,7 +96,7 @@ namespace Nianyi {
 								Type componentType = component.GetType();
 								AddMethodsToMenu(
 									component,
-									ReflectionUtility.GetInspectableInstanceMethods(componentType),
+									Reflection.GetInspectableInstanceMethods(componentType),
 									SimpleCallback.InvocationType.Instance,
 									$"{componentType.Name}/"
 								);
@@ -105,7 +105,7 @@ namespace Nianyi {
 						default:
 							AddMethodsToMenu(
 								target,
-								ReflectionUtility.GetInspectableInstanceMethods(target.GetType()),
+								Reflection.GetInspectableInstanceMethods(target.GetType()),
 								SimpleCallback.InvocationType.Instance
 							);
 							break;

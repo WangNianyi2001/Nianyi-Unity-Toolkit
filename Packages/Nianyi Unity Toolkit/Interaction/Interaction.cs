@@ -1,8 +1,7 @@
 using UnityEngine;
 
 namespace Nianyi {
-	[ExecuteAlways]
-	public class Interaction : BehaviourBase {
+	public class Interaction : MonoBehaviour {
 		#region Serialized fields
 		public Callback onInteract;
 		#endregion

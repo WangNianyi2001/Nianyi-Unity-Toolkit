@@ -910,13 +910,57 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Nianyi Unity Toolkit (editor).csproj">
-      <Project>{4F8D4DCF-7688-18C2-BB34-24CF66AD8B5A}</Project>
-      <Name>Nianyi Unity Toolkit (editor)</Name>
+    <ProjectReference Include="Nianyi-Unity-Toolkit.csproj">
+      <Project>{33633B0B-3A98-7D60-FEBC-8CD5B2F73AFB}</Project>
+      <Name>Nianyi-Unity-Toolkit</Name>
     </ProjectReference>
-    <ProjectReference Include="Nianyi Unity Toolkit.csproj">
-      <Project>{7E339652-B719-FFD3-6EC8-1B80946C8EAC}</Project>
-      <Name>Nianyi Unity Toolkit</Name>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Serialization.csproj">
+      <Project>{A9ABADDE-9CD0-E9C6-B1AD-0BFD05E53061}</Project>
+      <Name>Nianyi-Unity-Toolkit-Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Reflection-Editor.csproj">
+      <Project>{4495F238-19BB-75A3-7E5F-51578062CF4A}</Project>
+      <Name>Nianyi-Unity-Toolkit-Reflection-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Mesh-Editor.csproj">
+      <Project>{A46AE165-20BA-DA46-5B98-048623434B5E}</Project>
+      <Name>Nianyi-Unity-Toolkit-Mesh-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Callback.csproj">
+      <Project>{9F39BB37-5D7C-4C61-9F7D-0E657D232392}</Project>
+      <Name>Nianyi-Unity-Toolkit-Callback</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Callback-Editor.csproj">
+      <Project>{634B36C0-483A-6CC9-0442-0EFE07D8B30C}</Project>
+      <Name>Nianyi-Unity-Toolkit-Callback-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-UI.csproj">
+      <Project>{60201DAE-C61B-AD4D-E700-38058957A719}</Project>
+      <Name>Nianyi-Unity-Toolkit-UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Editor.csproj">
+      <Project>{1CAF449B-4B08-FE4C-5EDA-C18A225DE9E7}</Project>
+      <Name>Nianyi-Unity-Toolkit-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Mesh.csproj">
+      <Project>{61C8E759-90C9-EEAC-BA00-A3648D869906}</Project>
+      <Name>Nianyi-Unity-Toolkit-Mesh</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Reflection.csproj">
+      <Project>{7EFD8A8C-AC80-29F4-DE48-053F858A928E}</Project>
+      <Name>Nianyi-Unity-Toolkit-Reflection</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-UI-Editor.csproj">
+      <Project>{2D2D0D14-E196-38AD-AF46-F37009749E4F}</Project>
+      <Name>Nianyi-Unity-Toolkit-UI-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Serialization-Editor.csproj">
+      <Project>{870182DB-7E11-E039-5DB5-C792F8A4D518}</Project>
+      <Name>Nianyi-Unity-Toolkit-Serialization-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Nianyi-Unity-Toolkit-Physics.csproj">
+      <Project>{36FD23BA-C0C6-5450-150C-897717DB8E36}</Project>
+      <Name>Nianyi-Unity-Toolkit-Physics</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

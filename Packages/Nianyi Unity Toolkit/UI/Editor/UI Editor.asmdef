@@ -1,0 +1,20 @@
+{
+    "name": "Nianyi-Unity-Toolkit-UI-Editor",
+    "rootNamespace": "Nianyi.Editor",
+    "references": [
+        "GUID:674b46253c30b1743bdc3d1e5cf072b1",
+        "GUID:490a1abc11f97ca46b98f641ea7899c7",
+        "GUID:38ea2d3921df28749abd9a51aa5d9b41"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

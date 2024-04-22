@@ -1,0 +1,17 @@
+{
+    "name": "Nianyi-Unity-Toolkit-UI",
+    "rootNamespace": "Nianyi",
+    "references": [
+        "GUID:1695fd566ca2ea44eadd4e6b4ec64eae",
+        "GUID:490a1abc11f97ca46b98f641ea7899c7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

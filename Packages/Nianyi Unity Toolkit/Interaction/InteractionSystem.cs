@@ -3,25 +3,63 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Nianyi {
-	using IInteractionList = IEnumerable<Interaction>;
-	using InteractionList = List<Interaction>;
-
 	/// <summary>
 	/// A system where elements that can be selected and interacted with.
 	/// </summary>
-	[ExecuteAlways]
-	public partial class InteractionSystem : BehaviourBase {
-		#region Internal fields
-		private IInteractionList previouslySelectedInteractions;
-		#endregion
-
+	public partial class InteractionSystem : MonoBehaviour {
 		#region Serialized fields
-		[SerializeField] private InteractionList selectedInteractions;
+		[SerializeField] private List<Interaction> selectedInteractions;
 		#endregion
 
-		#region Internal functions
-		private InteractionList RecifyInteractionList(IInteractionList list) {
-			var result = new InteractionList();
+		#region Life cycle
+		protected void Start() {
+			previouslySelectedInteractions = selectedInteractions;
+		}
+
+		protected void Update() {
+			selectedInteractions ??= new List<Interaction>();
+			previouslySelectedInteractions ??= new List<Interaction>(selectedInteractions);
+			UpdateSelectedInteractions();
+		}
+		#endregion
+
+		#region Message handlers
+		protected void OnInteract() => Interact();
+		#endregion
+
+		#region Properties
+		public IEnumerable<Interaction> SelectedInteractions {
+			get => previouslySelectedInteractions;
+			set => selectedInteractions = value.ToList();
+		}
+		#endregion
+
+		#region Interfaces
+		public void Select(Interaction i) {
+			selectedInteractions.Add(i);
+			UpdateSelectedInteractions();
+		}
+
+		public void Deselect(Interaction i) {
+			selectedInteractions.Remove(i);
+			UpdateSelectedInteractions();
+		}
+
+		public void Interact() {
+			foreach(var i in selectedInteractions) {
+				if(i != null)
+					i.SendMessage("OnInteract");
+			}
+		}
+		#endregion
+
+		#region Fields
+		private IEnumerable<Interaction> previouslySelectedInteractions;
+		#endregion
+
+		#region Functions
+		private List<Interaction> RecifyInteractionList(IEnumerable<Interaction> list) {
+			var result = new List<Interaction>();
 			if(list == null)
 				return result;
 			foreach(var i in list) {
@@ -35,15 +73,15 @@ namespace Nianyi {
 		}
 
 		private struct SelectionDiff {
-			public InteractionList toBeDeselected, toBeSelected, updated;
+			public List<Interaction> toBeDeselected, toBeSelected, updated;
 		}
-		private SelectionDiff CalculateSelectionDiff(IInteractionList previous, IInteractionList next) {
+		private SelectionDiff CalculateSelectionDiff(IEnumerable<Interaction> previous, IEnumerable<Interaction> next) {
 			previous = RecifyInteractionList(previous);
 			next = RecifyInteractionList(next);
 			var diff = new SelectionDiff {
-				toBeDeselected = new InteractionList(),
-				toBeSelected = new InteractionList(),
-				updated = new InteractionList(),
+				toBeDeselected = new List<Interaction>(),
+				toBeSelected = new List<Interaction>(),
+				updated = new List<Interaction>(),
 			};
 			foreach(var i in previous) {
 				if(!next.Contains(i))
@@ -78,46 +116,8 @@ namespace Nianyi {
 			// Update maintained list.
 			selectedInteractions = diff.updated;
 			// We don't want the two lists to share reference.
-			previouslySelectedInteractions = new InteractionList(selectedInteractions);
+			previouslySelectedInteractions = new List<Interaction>(selectedInteractions);
 		}
-		#endregion
-
-		#region Public functions
-		public IInteractionList SelectedInteractions {
-			get => previouslySelectedInteractions;
-			set => selectedInteractions = value.ToList();
-		}
-
-		public void Select(Interaction i) {
-			selectedInteractions.Add(i);
-			UpdateSelectedInteractions();
-		}
-
-		public void Deselect(Interaction i) {
-			selectedInteractions.Remove(i);
-			UpdateSelectedInteractions();
-		}
-
-		public void Interact() {
-			foreach(var i in selectedInteractions) {
-				if(i != null)
-					i.SendMessage("OnInteract");
-			}
-		}
-		#endregion
-
-		#region Message handlers
-		protected void OnGameStart() {
-			previouslySelectedInteractions = selectedInteractions;
-		}
-
-		protected void OnGameUpdate() {
-			selectedInteractions ??= new InteractionList();
-			previouslySelectedInteractions ??= new InteractionList(selectedInteractions);
-			UpdateSelectedInteractions();
-		}
-
-		protected void OnInteract() => Interact();
 		#endregion
 	}
 }

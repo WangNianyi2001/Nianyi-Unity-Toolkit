@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using UnityEditor;
 
 namespace Nianyi {
 	public class SerializableParameter : ScriptableObject {
@@ -89,14 +90,14 @@ namespace Nianyi {
 		public object Value {
 			get {
 				if(Type.IsValueType)
-					return ReflectionUtility.BytesToStruct(Type, serializedBytes);
+					return Reflection.BytesToStruct(Type, serializedBytes);
 				if(valueAccessor == null)
 					Type = _type;
 				return valueAccessor.GetValue(this);
 			}
 			set {
 				if(Type.IsValueType) {
-					serializedBytes = ReflectionUtility.StructToBytes(Type, value);
+					serializedBytes = Reflection.StructToBytes(Type, value);
 					return;
 				}
 				if(valueAccessor == null)

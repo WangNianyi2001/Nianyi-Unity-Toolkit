@@ -1,0 +1,19 @@
+{
+    "name": "Nianyi-Unity-Toolkit-Mesh-Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:38ea2d3921df28749abd9a51aa5d9b41",
+        "GUID:fff25434b7d450d4f8a91a5c7ae3cb7d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
