@@ -1,0 +1,16 @@
+{
+  "name": "com.nianyi-wang.unity-toolkit.base",
+  "displayName": "Nianyi Unity Toolkit - Base",
+  "version": "0.0.0",
+  "unity": "2019.1",
+  "description": "Makes Unity development easier.",
+  "license": "MIT",
+  "keywords": [
+    "base",
+    "enhancement"
+  ],
+  "author": {
+    "name": "Nianyi Wang",
+    "url": "http://wangnianyi2001.com/"
+  }
+}
