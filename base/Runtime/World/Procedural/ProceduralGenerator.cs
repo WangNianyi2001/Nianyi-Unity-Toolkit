@@ -50,6 +50,9 @@ namespace Nianyi.UnityToolkit
 
 		public bool ShouldAutomaticallyRegenerate()
 		{
+			if(this == null)
+				return false;
+
 			return Scene.GetCurrentMode() switch
 			{
 				Scene.SceneMode.Play => true,
