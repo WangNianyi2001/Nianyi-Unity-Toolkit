@@ -17,7 +17,6 @@ namespace Nianyi.UnityToolkit
 		#endregion
 
 		#region Interfaces
-		[ContextMenu("Regenerate")]
 		public override void Regenerate()
 		{
 #if UNITY_EDITOR
@@ -49,7 +48,7 @@ namespace Nianyi.UnityToolkit
 		private void GenerateNew()
 		{
 			List<GameObject> instances = new();
-			foreach(var index in IterateThroughIntBox(generation.count))
+			foreach(var index in EnumerateNaturalCoordinates(generation.count))
 			{
 				Vector4 pos = (Vector3)index;
 				pos.w = 1.0f;
@@ -62,13 +61,13 @@ namespace Nianyi.UnityToolkit
 			}
 		}
 
-		private IEnumerable<Vector3Int> IterateThroughIntBox(Vector3Int counts)
+		private IEnumerable<Vector3Int> EnumerateNaturalCoordinates(Vector3Int bounds)
 		{
-			for(int ix = 0; ix < counts.x; ++ix)
+			for(int ix = 0; ix < bounds.x; ++ix)
 			{
-				for(int iy = 0; iy < counts.y; ++iy)
+				for(int iy = 0; iy < bounds.y; ++iy)
 				{
-					for(int iz = 0; iz < counts.z; ++iz)
+					for(int iz = 0; iz < bounds.z; ++iz)
 					{
 						yield return new(ix, iy, iz);
 					}

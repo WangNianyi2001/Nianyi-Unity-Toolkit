@@ -5,18 +5,17 @@ using UnityEditor;
 
 namespace Nianyi.UnityToolkit
 {
-	[ExecuteAlways]
 	public abstract class ProceduralGenerator : MonoBehaviour
 	{
 		#region Serialized fields
 		[System.Serializable]
-		private struct UpdateOptions
+		public struct UpdateOptions
 		{
 			public bool updateWhenEditing;
 			[ShowWhen("updateWhenEditing", true)]
 			public bool updateInPrefabMode;
 		}
-		[SerializeField] private UpdateOptions updateOptions;
+		public UpdateOptions updateOptions;
 		#endregion
 
 		#region Interfaces
@@ -26,48 +25,12 @@ namespace Nianyi.UnityToolkit
 		#region Life cycle
 		protected void OnChanged()
 		{
-			switch(Scene.GetCurrentMode())
-			{
-				case Scene.SceneMode.Play:
-					OnChangedInPlayMode();
-					break;
-				case Scene.SceneMode.Edit:
-					OnChangedInEditMode();
-					break;
-				case Scene.SceneMode.Prefab:
-					OnChangedInPrefabMode();
-					break;
-			}
-		}
-
-		protected virtual void OnChangedInPlayMode()
-		{
-			Regenerate();
-		}
-
-		protected virtual void OnChangedInEditMode()
-		{
-			if(updateOptions.updateWhenEditing)
-				Regenerate();
-		}
-
-		protected virtual void OnChangedInPrefabMode()
-		{
-			if(updateOptions.updateWhenEditing && updateOptions.updateInPrefabMode)
+			if(ShouldAutomaticallyRegenerate())
 				Regenerate();
 		}
 		#endregion
 
 		#region Unity messages
-		protected void Update()
-		{
-			// Filter out normal in-play updates.
-			if(Application.isPlaying)
-				return;
-
-			OnChanged();
-		}
-
 #if UNITY_EDITOR
 		/// <remarks>
 		/// Should not trigger main-thread operations here.
@@ -84,6 +47,17 @@ namespace Nianyi.UnityToolkit
 			EditorApplication.update += TriggerOnChangeOnNextEditorUpdate;
 		}
 #endif
+
+		public bool ShouldAutomaticallyRegenerate()
+		{
+			return Scene.GetCurrentMode() switch
+			{
+				Scene.SceneMode.Play => true,
+				Scene.SceneMode.Edit => updateOptions.updateWhenEditing,
+				Scene.SceneMode.Prefab => updateOptions.updateWhenEditing && updateOptions.updateInPrefabMode,
+				_ => false,
+			};
+		}
 		#endregion
 	}
 }

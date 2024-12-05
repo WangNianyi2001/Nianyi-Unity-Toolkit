@@ -19,6 +19,15 @@ namespace Nianyi.UnityToolkit
 						true
 					);
 				}
+				else
+				{
+					if(!array.ShouldAutomaticallyRegenerate())
+					{
+						bool regenerate = GUILayout.Button(new GUIContent("Regenerate"));
+						if(regenerate)
+							array.Regenerate();
+					}
+				}
 			}
 
 			base.OnInspectorGUI();
