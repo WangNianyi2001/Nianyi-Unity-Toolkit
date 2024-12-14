@@ -7,7 +7,7 @@ namespace Nianyi.UnityToolkit
 		#region Profile
 		[SerializeField] private CharacterControllerProfile profile;
 		private bool profileInstantiated = false;
-		public CharacterControllerProfile Profile
+		public override CharacterControllerProfile Profile
 		{
 			get
 			{
@@ -31,7 +31,8 @@ namespace Nianyi.UnityToolkit
 
 		protected void FixedUpdate()
 		{
-			MotionFixedUpdate();
+			float dt = Time.fixedDeltaTime;
+			MotionFixedUpdate(dt);
 		}
 		#endregion
 
@@ -72,6 +73,13 @@ namespace Nianyi.UnityToolkit
 		}
 		#endregion
 
+		#region Anatomy
+		public override Transform Body => transform;
+
+		[SerializeField] private Transform head;
+		public override Transform Head => head;
+		#endregion
+
 		#region Physics
 #if DEBUG
 		new
@@ -105,36 +113,39 @@ namespace Nianyi.UnityToolkit
 		#endregion
 
 		#region Motion
-		public override Vector3 Position => transform.position;
-		public override Vector3 Velocity => Rigidbody.velocity;
-
-		private Vector3 bufferedInputVelocity = Vector3.zero;
-		public override Vector3 InputVelocity
+		private void MotionFixedUpdate(float dt)
 		{
-			get => Vector3.zero;
-			set => bufferedInputVelocity = value;
+			MovementUpdate(dt);
+			OrientationUpdate(dt);
 		}
 
-		public override Quaternion Orientation => transform.rotation;
-		public override Quaternion FacingDirection => transform.rotation;
+		#region Movement
+		public override Vector3 Position
+		{
+			get => Rigidbody.position;
+			set => Rigidbody.position = value;
+		}
+		public override Vector3 Velocity => Rigidbody.velocity;
 
-		private void MotionFixedUpdate()
+		public override Vector3 InputVelocity { get; set; }
+
+		private void MovementUpdate(float dt)
 		{
 			NormalizeBufferedInputVelocity();
-			Vector3 Impulse = CalculateImpulse(Time.fixedDeltaTime);
-			Debug.Log(Impulse);
+			Vector3 Impulse = CalculateImpulse(dt);
 			Rigidbody.AddForce(Impulse, ForceMode.Impulse);
+
 			// Reset buffered inputVelocity.
-			bufferedInputVelocity = Vector3.zero;
+			InputVelocity = Vector3.zero;
 		}
 
 		void NormalizeBufferedInputVelocity()
 		{
-			float magnitude = bufferedInputVelocity.magnitude;
+			float magnitude = InputVelocity.magnitude;
 			if(!float.IsNormal(magnitude))
-				bufferedInputVelocity = Vector3.zero;
+				InputVelocity = Vector3.zero;
 			else if(magnitude > Profile.maxVelocity)
-				bufferedInputVelocity *= Profile.maxVelocity / magnitude;
+				InputVelocity *= Profile.maxVelocity / magnitude;
 		}
 
 		Vector3 CalculateImpulse(float dt)
@@ -145,18 +156,46 @@ namespace Nianyi.UnityToolkit
 				return Vector3.zero;
 			}
 
-			Vector3 dv = bufferedInputVelocity - Velocity;
-			Vector3 force = dv / dt * Mass;
+			Vector3 dv = InputVelocity - Velocity;
+			Vector3 impulse = dv * Mass;
 
-			float forceLimit = bufferedInputVelocity.magnitude * Mass / dt;
+			float forceLimit = dv.magnitude * Mass / dt;
 			if(Profile.limitAcceleration)
 				forceLimit = Mathf.Min(forceLimit, Profile.maxForce);
-			float magnitude = force.magnitude;
-			if(magnitude > forceLimit)
-				force *= forceLimit / magnitude;
+			impulse = Vector3.ClampMagnitude(impulse, forceLimit * dt);
 
-			return force / Mass;
+			return impulse;
 		}
+		#endregion
+
+		#region Orientation
+		public override Quaternion BodyOrientation
+		{
+			get => Rigidbody.rotation;
+			set => Rigidbody.rotation = value;
+		}
+
+		public override Quaternion HeadOrientation
+		{
+			get => head.transform.rotation;
+			set => head.transform.rotation = value;
+		}
+
+		public override Vector3 AngularVelocity => Rigidbody.angularVelocity;
+
+		public override Vector3 InputAngularVelocity { get; set; }
+
+		private void OrientationUpdate(float dt)
+		{
+			Vector3 r = Vector3.ClampMagnitude(InputAngularVelocity * dt, Profile.maxAngularVelocity);
+			r = Quaternion.Inverse(HeadOrientation) * r;
+			BodyOrientation *= Quaternion.Euler(Vector3.Project(r, Body.up));
+			HeadOrientation *= Quaternion.Euler(Vector3.ProjectOnPlane(r, Body.up));
+
+			InputAngularVelocity = Vector3.zero;
+			Rigidbody.angularVelocity = Vector3.zero;
+		}
+		#endregion
 		#endregion
 	}
 }

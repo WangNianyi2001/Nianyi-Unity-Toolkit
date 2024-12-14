@@ -18,3 +18,4 @@ MonoBehaviour:
   maxVelocity: 3
   limitAcceleration: 1
   maxForce: 100
+  maxAngularVelocity: 10
