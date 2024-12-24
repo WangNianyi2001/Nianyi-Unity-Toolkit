@@ -1,0 +1,16 @@
+{
+    "name": "nianyi-wang.unity-toolkit.character-control",
+    "rootNamespace": "Nianyi.UnityToolkit",
+    "references": [
+        "GUID:d9b92547380df39428cf2d6a1a87be90"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

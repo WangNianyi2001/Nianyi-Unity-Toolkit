@@ -1,0 +1,20 @@
+{
+    "name": "nianyi-wang.unity-toolkit.base.Editor",
+    "rootNamespace": "Nianyi.UnityToolkit",
+    "references": [
+        "GUID:d9b92547380df39428cf2d6a1a87be90"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_EDITOR"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

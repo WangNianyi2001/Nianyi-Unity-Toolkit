@@ -1,0 +1,14 @@
+{
+    "name": "nianyi-wang.unity-toolkit.base",
+    "rootNamespace": "Nianyi.UnityToolkit",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
