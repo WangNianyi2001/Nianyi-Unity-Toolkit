@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fallback Character Controller Profile
   m_EditorClassIdentifier: 
   mass: 10
-  physicMaterial: {fileID: 13400000, guid: 37c92923aa871e145944bf61803ea60c, type: 2}
+  physicMaterial: {fileID: 0}
   radius: 0.3
   height: 1.7
   movement:
@@ -21,7 +21,7 @@ MonoBehaviour:
     limitAcceleration: 1
     maxForce: 200
     maxSlope: 30
-    ungroundedAttenuation: 0.4
+    ungroundedAttenuation: 0.3
     useAutoStepping: 1
     autoStepping:
       height: 0.25
