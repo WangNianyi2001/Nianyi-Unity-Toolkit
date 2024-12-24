@@ -2,9 +2,67 @@ using UnityEngine;
 
 namespace Nianyi.UnityToolkit
 {
-	public abstract class BaseCharacterController : MonoBehaviour
+	public abstract partial class BaseCharacterController : MonoBehaviour
 	{
-		public abstract CharacterControllerProfile Profile { get; }
+		#region Profile
+		[SerializeField] private CharacterControllerProfile profile;
+		public virtual CharacterControllerProfile Profile
+		{
+			get
+			{
+				if(profile == null)
+					profile = Resources.Load<CharacterControllerProfile>("Character/Fallback Character Controller Profile");
+				return profile;
+			}
+			set
+			{
+				if(profile != null)
+					DetachProfile();
+
+				profile = value;
+				profile = Profile;  // Make sure that `null` would be converted to the fallback profile.
+
+				ApplyProfile();
+				profile.OnChanged += ApplyProfile;
+			}
+		}
+
+		protected abstract void ApplyProfile();
+
+		protected virtual void DetachProfile()
+		{
+			if(profile == null)
+				return;
+			profile.OnChanged -= ApplyProfile;
+		}
+		#endregion
+
+		#region Life cycle
+		protected virtual void Start()
+		{
+			Profile = Profile;
+		}
+
+		protected virtual void OnDestroy()
+		{
+			DetachProfile();
+		}
+
+		protected virtual void FixedUpdate()
+		{
+			UpdateGrounding();
+		}
+
+		protected virtual void OnCollisionEnter(Collision collision)
+		{
+			AddGrounding(collision);
+		}
+
+		protected virtual void OnCollisionExit(Collision collision)
+		{
+			RemoveGrounding(collision);
+		}
+		#endregion
 
 		#region Geometry
 		/// <summary>How high the character is in shape.</summary>
@@ -16,33 +74,12 @@ namespace Nianyi.UnityToolkit
 		#region Anatomy
 		public abstract Transform Body { get; }
 		public abstract Transform Head { get; }
+		public abstract Vector3 Up { get; }
 		#endregion
 
 		#region Physics
 		/// <summary>How heavy the character is.</summary>
 		public abstract float Mass { get; set; }
-		#endregion
-
-		#region Motion
-		#region Movement
-		/// <summary>An abstract value representing the "pivot position" of the character.</summary>
-		public abstract Vector3 Position { get; set; }
-		/// <summary>The actual moving velocity in the world space.</summary>
-		public abstract Vector3 Velocity { get; }
-		/// <summary>The velocity that will be processed in the next physics frame.</summary>
-		public abstract Vector3 InputVelocity { get; set; }
-		#endregion
-
-		#region Orientation
-		/// <summary>An abstract value representing the orientation of the entire character.</summary>
-		public abstract Quaternion BodyOrientation { get; set; }
-
-		public abstract Quaternion HeadOrientation { get; set; }
-
-		public abstract Vector3 AngularVelocity { get; }
-
-		public abstract Vector3 InputAngularVelocity { get; set; }
-		#endregion
 		#endregion
 	}
 }
