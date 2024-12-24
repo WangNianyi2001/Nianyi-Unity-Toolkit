@@ -30,14 +30,14 @@ namespace Nianyi.UnityToolkit
 		{
 			if(!ShouldShow(property))
 				return 0f;
-			return base.GetPropertyHeight(property, label);
+			return EditorGUI.GetPropertyHeight(property, label, true);
 		}
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			if(!ShouldShow(property))
 				return;
-			EditorGUI.PropertyField(position, property, label);
+			EditorGUI.PropertyField(position, property, label, true);
 		}
 	}
 }
