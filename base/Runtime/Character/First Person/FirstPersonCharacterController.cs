@@ -19,7 +19,15 @@ namespace Nianyi.UnityToolkit
 			rigidbody.constraints =
 				RigidbodyConstraints.FreezeRotationX |
 				RigidbodyConstraints.FreezeRotationZ |
-				(Profile.orientation.couldPhysicsAffectsOrientation ? 0 : RigidbodyConstraints.FreezeRotationY);
+				(Profile.orientation.couldBeAffectedByPhysics ? 0 : RigidbodyConstraints.FreezeRotationY);
+
+			/* Collisionlayer mask */
+			collisionLayerMask = 0;
+			for(int layer = 0; layer < 32; ++layer)
+			{
+				bool interactive = !Physics.GetIgnoreLayerCollision(gameObject.layer, layer);
+				collisionLayerMask |= (interactive ? ~0 : 0) & (1 << layer);
+			}
 		}
 		#endregion
 
@@ -77,6 +85,8 @@ namespace Nianyi.UnityToolkit
 		#endregion
 
 		#region Physics
+		protected int collisionLayerMask = 0;
+
 #if DEBUG
 		new
 #endif

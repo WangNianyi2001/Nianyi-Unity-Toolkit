@@ -21,16 +21,20 @@ MonoBehaviour:
     limitAcceleration: 1
     maxForce: 200
     maxSlope: 45
+    useAutoStepping: 1
+    autoStepping:
+      height: 0.1
+      detectionRange: 0.1
   orientation:
     maxAngularVelocity: 10
-    couldPhysicsAffectsOrientation: 0
+    couldBeAffectedByPhysics: 0
   useJumping: 1
   jumping:
-    jumpHeight: 1
+    height: 1.5
     useMidAirAttenuation: 1
     midAirAttenuation:
       movement: 1
       orientation: 1
     midAirAllowance: 1
     useCoyoteTime: 1
-    coyoteTime: 1
+    coyoteTime: 0.5

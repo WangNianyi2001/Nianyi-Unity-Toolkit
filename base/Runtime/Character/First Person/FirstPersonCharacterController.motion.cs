@@ -35,6 +35,15 @@ namespace Nianyi.UnityToolkit
 			Vector3 impulse = CalculateMovementImpulse(dt);
 			Rigidbody.AddForce(impulse, ForceMode.Impulse);
 
+			// Perform auto stepping.
+			if(Profile.movement.useAutoStepping)
+			{
+				if(IsGrounded && InputVelocity.sqrMagnitude > 0f)
+				{
+					PerformAutoStepping();
+				}
+			}
+
 			// Reset buffered inputVelocity.
 			InputVelocity = Vector3.zero;
 		}
@@ -56,6 +65,25 @@ namespace Nianyi.UnityToolkit
 			impulse = Vector3.ClampMagnitude(impulse, forceLimit * dt);
 
 			return impulse;
+		}
+
+		void PerformAutoStepping() {
+			Vector3 castStart = Position + Up * Radius
+				+ Vector3.ProjectOnPlane(Velocity, Up).normalized * Profile.movement.autoStepping.detectionRange
+				+ Up * Profile.movement.autoStepping.height;
+			bool hasHit = Physics.SphereCast(
+				castStart, Radius, -Up,
+				out RaycastHit hit,
+				Profile.movement.autoStepping.height,
+				collisionLayerMask, QueryTriggerInteraction.Ignore
+			);
+			if(!hasHit)
+				return;
+
+			float dy = Vector3.Dot(hit.point - Position, Up);
+			if(dy < 1e-3f)
+				return;
+			Lift(dy);
 		}
 		#endregion
 
@@ -91,12 +119,13 @@ namespace Nianyi.UnityToolkit
 		#region Jumping
 		protected override void PerformJumping()
 		{
-			Lift(Profile.jumping.jumpHeight);
+			Lift(Profile.jumping.height);
 		}
 
-		private void Lift(float height)
+		void Lift(float height)
 		{
-			float dv = Mathf.Sqrt(2f * Physics.gravity.magnitude * height);
+			float vy = Mathf.Sqrt(2f * Physics.gravity.magnitude * height);
+			float dv = Mathf.Max(0, vy - Vector3.Dot(Velocity, Up));
 			Rigidbody.AddForce(Up * dv, ForceMode.VelocityChange);
 		}
 		#endregion

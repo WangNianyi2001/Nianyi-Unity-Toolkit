@@ -38,7 +38,6 @@ namespace Nianyi.UnityToolkit
 
 			if(IsGrounded)
 			{
-				lastGroundedTime = Time.time;
 				isJumping = false;
 				midAirJumpingAllowance = Profile.jumping.midAirAllowance;
 			}
@@ -54,6 +53,10 @@ namespace Nianyi.UnityToolkit
 		protected virtual void UpdateGrounding()
 		{
 			CleanExpiredGroundings();
+			if(IsGrounded)
+			{
+				lastGroundedTime = Time.time;
+			}
 		}
 
 		protected virtual void CleanExpiredGroundings()
@@ -103,7 +106,6 @@ namespace Nianyi.UnityToolkit
 				if(!isJumping)
 				{
 					float coyoteTime = Time.time - lastGroundedTime;
-					Debug.Log($"Coyote time: {coyoteTime}");
 					if(coyoteTime <= Profile.jumping.coyoteTime)
 						return true;
 				}
@@ -116,8 +118,8 @@ namespace Nianyi.UnityToolkit
 			}
 		}
 		/// <summary>Whether the character is mid-air due to the most recent active jumping.</summary>
-		bool isJumping = false;
-		int midAirJumpingAllowance = 0;
+		protected bool isJumping = false;
+		protected int midAirJumpingAllowance = 0;
 
 		public virtual void Jump()
 		{

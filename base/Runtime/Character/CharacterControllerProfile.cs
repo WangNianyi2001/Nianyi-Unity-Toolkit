@@ -48,6 +48,18 @@ namespace Nianyi.UnityToolkit
 			[Min(0)] public float maxForce;
 
 			[Range(0, 90)] public float maxSlope;
+
+			public bool useAutoStepping;
+
+			[ShowWhen("useAutoStepping", true)]
+			public AutoStepping autoStepping;
+
+			[System.Serializable]
+			public struct AutoStepping
+			{
+				[Min(0)] public float height;
+				[Min(0)] public float detectionRange;
+			}
 		}
 		#endregion
 
@@ -61,7 +73,7 @@ namespace Nianyi.UnityToolkit
 			[Tooltip("In degrees per second.")]
 			[Min(0)] public float maxAngularVelocity;
 
-			public bool couldPhysicsAffectsOrientation;
+			public bool couldBeAffectedByPhysics;
 		}
 		#endregion
 
@@ -75,7 +87,7 @@ namespace Nianyi.UnityToolkit
 		public struct Jumping
 		{
 
-			[Min(0)] public float jumpHeight;
+			[Min(0)] public float height;
 
 			public bool useMidAirAttenuation;
 
