@@ -55,7 +55,12 @@ namespace Nianyi.UnityToolkit
 
 		protected virtual void OnCollisionEnter(Collision collision)
 		{
-			AddGrounding(collision);
+			RecordGrounding(collision);
+		}
+
+		protected virtual void OnCollisionStay(Collision collision)
+		{
+			RecordGrounding(collision);
 		}
 
 		protected virtual void OnCollisionExit(Collision collision)

@@ -62,12 +62,15 @@ namespace Nianyi.UnityToolkit
 			float forceLimit = dv.magnitude * Mass / dt;
 			if(Profile.movement.limitAcceleration)
 				forceLimit = Mathf.Min(forceLimit, Profile.movement.maxForce);
+			if(!IsGrounded)
+				forceLimit *= Profile.movement.ungroundedAttenuation;
 			impulse = Vector3.ClampMagnitude(impulse, forceLimit * dt);
 
 			return impulse;
 		}
 
-		void PerformAutoStepping() {
+		void PerformAutoStepping()
+		{
 			Vector3 castStart = Position + Up * Radius
 				+ Vector3.ProjectOnPlane(Velocity, Up).normalized * Profile.movement.autoStepping.detectionRange
 				+ Up * Profile.movement.autoStepping.height;

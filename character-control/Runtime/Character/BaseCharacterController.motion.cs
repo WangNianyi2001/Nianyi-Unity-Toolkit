@@ -15,15 +15,17 @@ namespace Nianyi.UnityToolkit
 		}
 		protected Dictionary<Collider, GroundingInfo> groundings = new();
 
+		// Use static array for buffering to prevent unnecessary frequent memory allocation.
 		static ContactPoint[] groundingContacts = new ContactPoint[1];
-		protected virtual void AddGrounding(Collision collision)
+		protected virtual void RecordGrounding(Collision collision)
 		{
 			if(groundingContacts.Length < collision.contactCount)
 				groundingContacts = new ContactPoint[collision.contactCount];
 			collision.GetContacts(groundingContacts);
 
 			IEnumerable<ContactPoint> validContacts =
-				from contact in groundingContacts
+				// Make sure to take only the beginning elements because we're using a buffer array.
+				from contact in groundingContacts.Take(collision.contactCount)
 				where Vector3.Angle(contact.normal, Up) <= Profile.movement.maxSlope
 				select contact;
 

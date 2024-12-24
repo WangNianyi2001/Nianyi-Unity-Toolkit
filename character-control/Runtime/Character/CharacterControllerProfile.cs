@@ -48,6 +48,7 @@ namespace Nianyi.UnityToolkit
 			[Min(0)] public float maxForce;
 
 			[Range(0, 90)] public float maxSlope;
+			[Range(0f, 1f)] public float ungroundedAttenuation;
 
 			public bool useAutoStepping;
 
@@ -88,17 +89,6 @@ namespace Nianyi.UnityToolkit
 		{
 
 			[Min(0)] public float height;
-
-			public bool useMidAirAttenuation;
-
-			[System.Serializable]
-			public struct MidAirAttenuation
-			{
-				[Range(0f, 1f)] public float movement;
-				[Range(0f, 1f)] public float orientation;
-			}
-			[ShowWhen("useMidAirAttenuation", true)]
-			public MidAirAttenuation midAirAttenuation;
 
 			[Min(0)] public int midAirAllowance;
 
