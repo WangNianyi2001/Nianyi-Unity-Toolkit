@@ -41,6 +41,7 @@ namespace Nianyi.UnityToolkit
 		protected virtual void Start()
 		{
 			Profile = Profile;
+			OnGrounded += JumpingOnGrounded;
 		}
 
 		protected virtual void OnDestroy()

@@ -33,5 +33,7 @@ MonoBehaviour:
   jumping:
     height: 1.5
     midAirAllowance: 1
+    useBuffer: 1
+    bufferTime: 0.2
     useCoyoteTime: 1
-    coyoteTime: 0.5
+    coyoteTime: 0.2
