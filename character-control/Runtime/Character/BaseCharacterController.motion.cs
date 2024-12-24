@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Nianyi.UnityToolkit
 {
-	public abstract partial class BaseCharacterController
+	public abstract partial class BaseCharacterController<TProfile>
 	{
 		#region Grounding
 		protected class GroundingInfo

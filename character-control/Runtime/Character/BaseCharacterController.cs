@@ -2,16 +2,17 @@ using UnityEngine;
 
 namespace Nianyi.UnityToolkit
 {
-	public abstract partial class BaseCharacterController : MonoBehaviour
+	public abstract partial class BaseCharacterController<TProfile> : MonoBehaviour
+		where TProfile : CharacterControllerProfile
 	{
 		#region Profile
-		[SerializeField] private CharacterControllerProfile profile;
-		public virtual CharacterControllerProfile Profile
+		[SerializeField] private TProfile profile;
+		public virtual TProfile Profile
 		{
 			get
 			{
 				if(profile == null)
-					profile = Resources.Load<CharacterControllerProfile>("Character/Fallback Character Controller Profile");
+					profile = Resources.Load<TProfile>("Character/Fallback Character Controller Profile");
 				return profile;
 			}
 			set

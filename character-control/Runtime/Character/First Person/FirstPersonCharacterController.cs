@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Nianyi.UnityToolkit
 {
-	public partial class FirstPersonCharacterController : BaseCharacterController
+	public partial class FirstPersonCharacterController : BaseCharacterController<CharacterControllerProfile>
 	{
 		#region Profile
 		protected override void ApplyProfile()
