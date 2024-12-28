@@ -1,11 +1,11 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using static Nianyi.UnityToolkit.CharacterControllerProfile;
 
 namespace Nianyi.UnityToolkit
 {
-	public abstract partial class BaseCharacterController
+	public abstract partial class BaseCharacterController<TProfile>
 	{
 		#region Grounding
 		protected class GroundingInfo
@@ -14,6 +14,8 @@ namespace Nianyi.UnityToolkit
 			public ContactPoint[] contacts;
 		}
 		protected Dictionary<Collider, GroundingInfo> groundings = new();
+
+		public System.Action OnGrounded;
 
 		// Use static array for buffering to prevent unnecessary frequent memory allocation.
 		static ContactPoint[] groundingContacts = new ContactPoint[1];
@@ -29,6 +31,8 @@ namespace Nianyi.UnityToolkit
 				where Vector3.Angle(contact.normal, Up) <= Profile.movement.maxSlope
 				select contact;
 
+			bool wasGrounded = IsGrounded;
+
 			GroundingInfo grounding = new()
 			{
 				collider = collision.collider,
@@ -38,11 +42,8 @@ namespace Nianyi.UnityToolkit
 				return;
 			groundings[collision.collider] = grounding;
 
-			if(IsGrounded)
-			{
-				isJumping = false;
-				midAirJumpingAllowance = Profile.jumping.midAirAllowance;
-			}
+			if(!wasGrounded && IsGrounded)
+				OnGrounded?.Invoke();
 		}
 
 		protected virtual void RemoveGrounding(Collision collision)
@@ -120,13 +121,17 @@ namespace Nianyi.UnityToolkit
 			}
 		}
 		/// <summary>Whether the character is mid-air due to the most recent active jumping.</summary>
-		protected bool isJumping = false;
+		protected bool isJumping = false, isJumpingBuffered = false;
 		protected int midAirJumpingAllowance = 0;
 
 		public virtual void Jump()
 		{
 			if(!CanJump)
+			{
+				if(Profile.jumping.useBuffer)
+					StartCoroutine(nameof(JumpBuffer));
 				return;
+			}
 
 			if(!isJumping)
 				isJumping = true;
@@ -137,6 +142,25 @@ namespace Nianyi.UnityToolkit
 		}
 
 		protected abstract void PerformJumping();
+
+		IEnumerator JumpBuffer()
+		{
+			isJumpingBuffered = true;
+			yield return new WaitForSeconds(Profile.jumping.bufferTime);
+			isJumpingBuffered = false;
+		}
+
+		void JumpingOnGrounded()
+		{
+			isJumping = false;
+			midAirJumpingAllowance = Profile.jumping.midAirAllowance;
+			if(isJumpingBuffered)
+			{
+				StopCoroutine(nameof(JumpBuffer));
+				isJumpingBuffered = false;
+				Jump();
+			}
+		}
 		#endregion
 	}
 }

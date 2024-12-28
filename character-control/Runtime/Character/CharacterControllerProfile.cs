@@ -92,6 +92,11 @@ namespace Nianyi.UnityToolkit
 
 			[Min(0)] public int midAirAllowance;
 
+			public bool useBuffer;
+
+			[ShowWhen("useBuffer", true)]
+			[Min(0)] public float bufferTime;
+
 			public bool useCoyoteTime;
 
 			[ShowWhen("useCoyoteTime", true)]
