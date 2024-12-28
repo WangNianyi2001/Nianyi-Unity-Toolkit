@@ -15,8 +15,36 @@ namespace Nianyi.UnityToolkit
 		public override Vector3 Forward => Body.forward;
 		#endregion
 
+		#region Geometry
+		public override Bounds BoundingBox => Capsule.bounds;
+		#endregion
+
 		#region Physics
-		public override Rigidbody ProxyRigidbody => Rigidbody;
+		public override float Mass
+		{
+			get => Rigidbody.mass;
+			set => Rigidbody.mass = value;
+		}
+
+		public override Vector3 Velocity
+		{
+			get => Rigidbody.velocity;
+			set => Rigidbody.velocity = value;
+		}
+		public override void ApplyForce(Vector3 force)
+		{
+			Rigidbody.AddForce(force, ForceMode.Force);
+		}
+		public override void ApplyImpulse(Vector3 impulse)
+		{
+			Rigidbody.AddForce(impulse, ForceMode.Impulse);
+		}
+
+		public override Vector3 AngularVelocity
+		{
+			get => Rigidbody.angularVelocity;
+			set => Rigidbody.angularVelocity = value;
+		}
 		#endregion
 
 		#region Components
@@ -46,7 +74,7 @@ namespace Nianyi.UnityToolkit
 		}
 		#endregion
 
-		#region Property
+		#region Geometry
 		public float Height
 		{
 			get => Capsule.height;
@@ -67,17 +95,17 @@ namespace Nianyi.UnityToolkit
 		#region Life cycle
 		protected void OnCollisionEnter(Collision collision)
 		{
-			Character.onCollisionEnter?.Invoke(collision);
+			Shape.onCollisionEnter?.Invoke(collision);
 		}
 
 		protected void OnCollisionStay(Collision collision)
 		{
-			Character.onCollisionStay?.Invoke(collision);
+			Shape.onCollisionStay?.Invoke(collision);
 		}
 
 		protected void OnCollisionExit(Collision collision)
 		{
-			Character.onCollisionExit?.Invoke(collision);
+			Shape.onCollisionExit?.Invoke(collision);
 		}
 		#endregion
 	}

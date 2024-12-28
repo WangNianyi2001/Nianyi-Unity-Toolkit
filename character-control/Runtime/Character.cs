@@ -9,32 +9,32 @@ namespace Nianyi.UnityToolkit
 		[SerializeField] private List<CharacterShape> shapes;
 		public IList<CharacterShape> Shapes => shapes;
 		[SerializeField] private CharacterShape currentShape;
-		public CharacterShape CurrentShape => currentShape;
+		public CharacterShape Shape => currentShape;
 
 		[SerializeField] private List<CharacterMode> modes;
 		public IList<CharacterMode> Modes => modes;
 		[SerializeField] private CharacterMode currentMode;
-		public CharacterMode CurrentMode => currentMode;
+		public CharacterMode Mode => currentMode;
 		#endregion
 
-		#region Life cycle
-		#endregion
+#if UNITY_EDITOR
+		#region Editor
+		protected void OnDrawGizmos()
+		{
+			var bounds = Shape.BoundingBox;
 
-		#region Event hooks
-		#region Collision
-		public System.Action<Collision>
-			onCollisionEnter,
-			onCollisionStay,
-			onCollisionExit;
+			// Draw label.
+			var labelPos = bounds.center;
+			labelPos += Vector3.Project(bounds.max - bounds.center, Shape.Up);
+			UnityEditor.Handles.Label(
+				labelPos, name,
+				new GUIStyle(GUI.skin.label)
+				{
+					alignment = TextAnchor.LowerCenter,
+				}
+			);
+		}
 		#endregion
-		#endregion
-
-		#region Generic interfaces
-		public Vector3 Position => CurrentShape.Body.position;
-
-		public Vector3 Up => CurrentShape.Up;
-		public Vector3 Forward => CurrentShape.Forward;
-		public Vector3 LookingDirection => CurrentShape.Head.forward;
-		#endregion
+#endif
 	}
 }

@@ -12,8 +12,27 @@ namespace Nianyi.UnityToolkit
 		public abstract Vector3 Forward { get; }
 		#endregion
 
+		#region Geometry
+		public abstract Bounds BoundingBox { get; }
+		#endregion
+
 		#region Physics
-		public abstract Rigidbody ProxyRigidbody { get; }
+		public abstract float Mass { get; set; }
+
+		public abstract Vector3 Velocity { get; set; }
+		public abstract void ApplyForce(Vector3 force);
+		public abstract void ApplyImpulse(Vector3 impulse);
+
+		public abstract Vector3 AngularVelocity { get; set; }
+		#endregion
+
+		#region Event hooks
+		#region Collision
+		public System.Action<Collision>
+			onCollisionEnter,
+			onCollisionStay,
+			onCollisionExit;
+		#endregion
 		#endregion
 	}
 }

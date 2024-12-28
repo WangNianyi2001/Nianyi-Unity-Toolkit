@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement:
-    maxVelocity: 3
+    maxVelocity: 5
     limitAcceleration: 1
     maxForce: 200
     maxSlope: 30
@@ -91,7 +91,7 @@ MonoBehaviour:
   useJumping: 1
   jumping:
     height: 1.25
-    midAirAllowance: 0
+    midAirAllowance: 1
     useBuffer: 1
     bufferTime: 0.2
     useCoyoteTime: 1
@@ -203,6 +203,10 @@ PrefabInstance:
     - target: {fileID: 2164877024040381283, guid: deaf388a260276a468d1e0ced8f81cd3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2758145467509598848, guid: deaf388a260276a468d1e0ced8f81cd3, type: 3}
+      propertyPath: m_Icon
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2758145467509598848, guid: deaf388a260276a468d1e0ced8f81cd3, type: 3}
       propertyPath: m_Name

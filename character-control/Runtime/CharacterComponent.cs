@@ -15,7 +15,7 @@ namespace Nianyi.UnityToolkit
 			}
 		}
 
-		protected CharacterShape Shape => Character.CurrentShape;
-		protected CharacterMode Mode => Character.CurrentMode;
+		protected CharacterShape Shape => Character.Shape;
+		protected CharacterMode Mode => Character.Mode;
 	}
 }

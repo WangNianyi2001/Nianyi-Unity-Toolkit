@@ -1,7 +1,7 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Nianyi.UnityToolkit
 {
@@ -10,20 +10,22 @@ namespace Nianyi.UnityToolkit
 		#region Life cycle
 		protected void Start()
 		{
-			Character.onCollisionEnter += RecordGrounding;
-			Character.onCollisionStay += RecordGrounding;
-			Character.onCollisionExit += RemoveGrounding;
+			Shape.onCollisionEnter += RecordGrounding;
+			Shape.onCollisionStay += RecordGrounding;
+			Shape.onCollisionExit += RemoveGrounding;
 		}
 
 		protected void OnDestroy()
 		{
-			Character.onCollisionEnter -= RecordGrounding;
-			Character.onCollisionStay -= RecordGrounding;
-			Character.onCollisionExit -= RemoveGrounding;
+			Shape.onCollisionEnter -= RecordGrounding;
+			Shape.onCollisionStay -= RecordGrounding;
+			Shape.onCollisionExit -= RemoveGrounding;
 		}
 
 		protected void FixedUpdate()
 		{
+			UpdateGrounding();
+
 			float dt = Time.fixedDeltaTime;
 			UpdateMovement(dt);
 			UpdateOrientation(dt);
@@ -38,7 +40,7 @@ namespace Nianyi.UnityToolkit
 		}
 		protected Dictionary<Collider, GroundingInfo> groundings = new();
 
-		public System.Action OnGrounded;
+		public System.Action onGrounded;
 
 		// Use static array for buffering to prevent unnecessary frequent memory allocation.
 		static ContactPoint[] groundingContacts = new ContactPoint[1];
@@ -51,7 +53,7 @@ namespace Nianyi.UnityToolkit
 			IEnumerable<ContactPoint> validContacts =
 				// Make sure to take only the beginning elements because we're using a buffer array.
 				from contact in groundingContacts.Take(collision.contactCount)
-				where Vector3.Angle(contact.normal, Character.Up) <= movement.maxSlope
+				where Vector3.Angle(contact.normal, Shape.Up) <= movement.maxSlope
 				select contact;
 
 			bool wasGrounded = IsGrounded;
@@ -66,7 +68,7 @@ namespace Nianyi.UnityToolkit
 			groundings[collision.collider] = grounding;
 
 			if(!wasGrounded && IsGrounded)
-				OnGrounded?.Invoke();
+				onGrounded?.Invoke();
 		}
 
 		protected virtual void RemoveGrounding(Collision collision)
@@ -114,7 +116,7 @@ namespace Nianyi.UnityToolkit
 
 			// Apply impulse.
 			Vector3 impulse = CalculateMovementImpulse(dt);
-			Shape.ProxyRigidbody.AddForce(impulse, ForceMode.Impulse);
+			Shape.ApplyImpulse(impulse);
 
 			// Perform auto stepping.
 			if(movement.useAutoStepping)
@@ -137,10 +139,10 @@ namespace Nianyi.UnityToolkit
 				return Vector3.zero;
 			}
 
-			Vector3 dv = Vector3.ProjectOnPlane(InputVelocity - Shape.ProxyRigidbody.velocity, Character.Up);
-			Vector3 impulse = dv * Shape.ProxyRigidbody.mass;
+			Vector3 dv = Vector3.ProjectOnPlane(InputVelocity - Shape.Velocity, Shape.Up);
+			Vector3 impulse = dv * Shape.Mass;
 
-			float forceLimit = dv.magnitude * Shape.ProxyRigidbody.mass / dt;
+			float forceLimit = dv.magnitude * Shape.Mass / dt;
 			if(movement.limitAcceleration)
 				forceLimit = Mathf.Min(forceLimit, movement.maxForce);
 			if(!IsGrounded)
@@ -154,18 +156,18 @@ namespace Nianyi.UnityToolkit
 		{
 			// TODO: Cast.
 			float radius = 0.3f;
-			Vector3 castStart = Character.Position + Character.Up * radius
-				+ Vector3.ProjectOnPlane(Shape.ProxyRigidbody.velocity, Character.Up).normalized * movement.autoStepping.detectionRange
-				+ Character.Up * movement.autoStepping.height;
+			Vector3 castStart = Shape.Body.position + Shape.Up * radius
+				+ Vector3.ProjectOnPlane(Shape.Velocity, Shape.Up).normalized * movement.autoStepping.detectionRange
+				+ Shape.Up * movement.autoStepping.height;
 			bool hasHit = Physics.SphereCast(
-				castStart, radius, -Character.Up,
+				castStart, radius, -Shape.Up,
 				out RaycastHit hit,
 				movement.autoStepping.height
 			);
 			if(!hasHit)
 				return;
 
-			float dy = Vector3.Dot(hit.point - Character.Position, Character.Up);
+			float dy = Vector3.Dot(hit.point - Shape.Body.position, Shape.Up);
 			if(dy < 1e-3f)
 				return;
 			Lift(dy);
@@ -173,29 +175,17 @@ namespace Nianyi.UnityToolkit
 		#endregion
 
 		#region Orientation
-		public Quaternion BodyOrientation
-		{
-			get => Shape.Body.rotation;
-			set => Shape.Body.rotation = value;
-		}
-
-		public Quaternion HeadOrientation
-		{
-			get => Shape.Head.transform.rotation;
-			set => Shape.Head.transform.rotation = value;
-		}
-
 		public Vector3 InputAngularVelocity { get; set; }
 
 		private void UpdateOrientation(float dt)
 		{
 			Vector3 r = Vector3.ClampMagnitude(InputAngularVelocity * dt, orientation.maxAngularVelocity);
-			r = Quaternion.Inverse(HeadOrientation) * r;
-			BodyOrientation *= Quaternion.Euler(Vector3.Project(r, Shape.Body.up));
-			HeadOrientation *= Quaternion.Euler(Vector3.ProjectOnPlane(r, Shape.Body.up));
+			r = Quaternion.Inverse(Shape.Head.rotation) * r;
+			Shape.Body.rotation *= Quaternion.Euler(Vector3.Project(r, Shape.Body.up));
+			Shape.Head.rotation *= Quaternion.Euler(Vector3.ProjectOnPlane(r, Shape.Body.up));
 
 			InputAngularVelocity = Vector3.zero;
-			Shape.ProxyRigidbody.angularVelocity = Vector3.zero;
+			Shape.AngularVelocity = Vector3.zero;
 		}
 		#endregion
 
@@ -251,8 +241,8 @@ namespace Nianyi.UnityToolkit
 		void Lift(float height)
 		{
 			float vy = Mathf.Sqrt(2f * Physics.gravity.magnitude * height);
-			float dv = Mathf.Max(0, vy - Vector3.Dot(Shape.ProxyRigidbody.velocity, Character.Up));
-			Shape.ProxyRigidbody.AddForce(Character.Up * dv, ForceMode.VelocityChange);
+			float dv = Mathf.Max(0, vy - Vector3.Dot(Shape.Velocity, Shape.Up));
+			Shape.Velocity += Shape.Up * dv;
 		}
 
 		IEnumerator JumpBuffer()
