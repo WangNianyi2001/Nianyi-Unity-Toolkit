@@ -17,6 +17,23 @@ namespace Nianyi.UnityToolkit
 
 		#region Geometry
 		public override Bounds BoundingBox => Capsule.bounds;
+
+		public override bool SweepCast(
+			Vector3 direction, out RaycastHit hitInfo,
+			float maxDistance = float.PositiveInfinity,
+			Vector3 offset = default,
+			QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal
+		)
+		{
+			Vector3 oldPos = Rigidbody.position;
+
+			Rigidbody.position += offset;
+			bool hasHit = Rigidbody.SweepTest(direction, out hitInfo, maxDistance, queryTriggerInteraction);
+
+			Rigidbody.position = oldPos;
+
+			return hasHit;
+		}
 		#endregion
 
 		#region Physics

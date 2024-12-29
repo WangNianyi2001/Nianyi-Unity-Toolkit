@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement:
-    maxVelocity: 5
+    maxVelocity: 4
     limitAcceleration: 1
     maxForce: 200
     maxSlope: 30
@@ -84,7 +84,7 @@ MonoBehaviour:
     useAutoStepping: 1
     autoStepping:
       height: 0.25
-      detectionRange: 0.1
+      detectionRange: 0.3
   orientation:
     maxAngularVelocity: 10
     couldBeAffectedByPhysics: 0

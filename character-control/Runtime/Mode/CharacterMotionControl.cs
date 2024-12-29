@@ -152,23 +152,16 @@ namespace Nianyi.UnityToolkit
 			return impulse;
 		}
 
-		void PerformAutoStepping()
+		private void PerformAutoStepping()
 		{
-			// TODO: Cast.
-			float radius = 0.3f;
-			Vector3 castStart = Shape.Body.position + Shape.Up * radius
-				+ Vector3.ProjectOnPlane(Shape.Velocity, Shape.Up).normalized * movement.autoStepping.detectionRange
+			Vector3 offset =
+				Vector3.ProjectOnPlane(Shape.Velocity, Shape.Up).normalized * movement.autoStepping.detectionRange
 				+ Shape.Up * movement.autoStepping.height;
-			bool hasHit = Physics.SphereCast(
-				castStart, radius, -Shape.Up,
-				out RaycastHit hit,
-				movement.autoStepping.height
-			);
-			if(!hasHit)
+			if(!Shape.SweepCast(-Shape.Up, out RaycastHit hit, movement.autoStepping.height, offset))
 				return;
 
 			float dy = Vector3.Dot(hit.point - Shape.Body.position, Shape.Up);
-			if(dy < 1e-3f)
+			if(dy < movement.autoStepping.height * 0.05f)
 				return;
 			Lift(dy);
 		}

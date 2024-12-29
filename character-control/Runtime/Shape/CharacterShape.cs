@@ -14,6 +14,12 @@ namespace Nianyi.UnityToolkit
 
 		#region Geometry
 		public abstract Bounds BoundingBox { get; }
+
+		public abstract bool SweepCast(Vector3 direction,
+			out RaycastHit hitInfo,
+			float maxDistance = Mathf.Infinity,
+			Vector3 offset = default,
+			QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore);
 		#endregion
 
 		#region Physics
