@@ -10,8 +10,21 @@ namespace Nianyi.UnityToolkit
 
 		public abstract Vector3 Up { get; }
 		public abstract Vector3 Forward { get; }
-		public abstract float Azimuth { get; set; }
-		public abstract float Zenith { get; set; }
+		/// <summary>Relative to body.</summary>
+		public virtual Vector3 HeadLocalEuler
+		{
+			get
+			{
+				Vector3 euler = Head.localRotation.eulerAngles;
+				if(euler.x > 180f)
+					euler.x -= 360f;
+				return euler;
+			}
+			set
+			{
+				Head.localRotation = Quaternion.Euler(value);
+			}
+		}
 		#endregion
 
 		#region Geometry

@@ -87,6 +87,8 @@ MonoBehaviour:
       detectionRange: 0.3
   orientation:
     zenithRange: {x: -90, y: 90}
+    headAzimuthTolerance: 0
+    limitAngularVelocity: 0
     maxAngularVelocity: 10
     couldBeAffectedByPhysics: 0
   useJumping: 1

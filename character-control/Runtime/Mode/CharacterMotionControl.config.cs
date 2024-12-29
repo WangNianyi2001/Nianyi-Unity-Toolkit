@@ -40,6 +40,7 @@ namespace Nianyi.UnityToolkit
 		public struct Orientation
 		{
 			public Vector2 zenithRange;
+			[Min(0)] public float headAzimuthTolerance;
 
 			public bool limitAngularVelocity;
 			/// <remarks>In degrees per second.</remarks>

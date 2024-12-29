@@ -169,15 +169,36 @@ namespace Nianyi.UnityToolkit
 		#endregion
 
 		#region Orientation
-		public Vector3 InputAngularVelocity { get; set; }
+		public Vector3 InputAngularVelocity
+		{
+			get => Shape.Head.rotation * InputLocalAngularVelocity;
+			set => InputLocalAngularVelocity = Quaternion.Inverse(Shape.Head.rotation) * value;
+		}
+		public Vector3 InputLocalAngularVelocity { get; set; }
 
 		private void UpdateOrientation(float dt)
 		{
-			Vector3 dEuler = Quaternion.Inverse(Shape.Head.rotation) * (InputAngularVelocity * dt);
+			Vector3 dEuler = InputLocalAngularVelocity * dt;
 			if(orientation.limitAngularVelocity)
 				dEuler = Vector3.ClampMagnitude(dEuler, orientation.maxAngularVelocity);
-			Shape.Azimuth += dEuler.y;
-			Shape.Zenith = Mathf.Clamp(Shape.Zenith + dEuler.x, orientation.zenithRange.x, orientation.zenithRange.y);
+
+			// Limit zenith.
+			{
+				float afterZenith = Shape.HeadLocalEuler.x + dEuler.x;
+				float dZenith = Mathf.Clamp(afterZenith, orientation.zenithRange.x, orientation.zenithRange.y) - afterZenith;
+				dEuler.x += dZenith;
+			}
+
+			Shape.HeadLocalEuler += dEuler;
+
+			// Limit azimuth.
+			{
+				float azimuth = Shape.HeadLocalEuler.y;
+				float dAzimuth = azimuth - Mathf.Clamp(azimuth, -orientation.headAzimuthTolerance, orientation.headAzimuthTolerance);
+				Vector3 dAzimuthEuler = new(0f, dAzimuth, 0f);
+				Shape.HeadLocalEuler -= dAzimuthEuler;
+				Shape.Body.rotation *= Quaternion.Euler(dAzimuthEuler);
+			}
 
 			InputAngularVelocity = Vector3.zero;
 			Shape.AngularVelocity = Vector3.zero;
