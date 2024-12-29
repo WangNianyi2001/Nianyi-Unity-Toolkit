@@ -1,7 +1,7 @@
 {
   "name": "com.nianyi-wang.unity-toolkit.character-control",
   "displayName": "Nianyi Unity Toolkit - Character Control",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "unity": "2019.1",
   "description": "Convenient character control systems.",
   "license": "MIT",

@@ -2,39 +2,8 @@ using UnityEngine;
 
 namespace Nianyi.UnityToolkit
 {
-	[CreateAssetMenu(menuName = "Nianyi/Character/Character Controller Profile")]
-	public class CharacterControllerProfile : ScriptableObject
+	public partial class CharacterMotion
 	{
-		#region Event hooks
-		public System.Action OnChanged;
-
-#if UNITY_EDITOR
-		protected void OnValidate()
-		{
-			OnChanged?.Invoke();
-		}
-#endif
-		#endregion
-
-		#region Physics
-		[Header("Physics")]
-
-		[Min(0)] public float mass;
-
-		public PhysicMaterial physicMaterial;
-		#endregion
-
-		#region Geometry
-		[Header("Geometry")]
-
-		[Min(0)] public float radius;
-
-		[Min(0)] public float height;
-		#endregion
-
-		#region Motion
-		[Header("Motion")]
-
 		#region Movement
 		public Movement movement;
 
@@ -70,7 +39,12 @@ namespace Nianyi.UnityToolkit
 		[System.Serializable]
 		public struct Orientation
 		{
+			public Vector2 zenithRange;
+			[Min(0)] public float headAzimuthTolerance;
+
+			public bool limitAngularVelocity;
 			/// <remarks>In degrees per second.</remarks>
+			[ShowWhen("limitAngularVelocity", true)]
 			[Tooltip("In degrees per second.")]
 			[Min(0)] public float maxAngularVelocity;
 
@@ -102,7 +76,6 @@ namespace Nianyi.UnityToolkit
 			[ShowWhen("useCoyoteTime", true)]
 			[Min(0)] public float coyoteTime;
 		}
-		#endregion
 		#endregion
 	}
 }
