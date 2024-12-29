@@ -13,6 +13,36 @@ namespace Nianyi.UnityToolkit
 
 		public override Vector3 Up => Body.up;
 		public override Vector3 Forward => Body.forward;
+		// TODO: Make compatible for any `Up`.
+		public override float Azimuth
+		{
+			get
+			{
+				return Body.rotation.eulerAngles.y;
+			}
+			set
+			{
+				var euler = Body.rotation.eulerAngles;
+				euler.y = value;
+				Body.rotation = Quaternion.Euler(euler);
+			}
+		}
+		public override float Zenith
+		{
+			get
+			{
+				float value = Head.localRotation.eulerAngles.x;
+				if(value > 180f)
+					value -= 360f;
+				return value;
+			}
+			set
+			{
+				var euler = Head.localRotation.eulerAngles;
+				euler.x = value;
+				Head.localRotation = Quaternion.Euler(euler);
+			}
+		}
 		#endregion
 
 		#region Geometry

@@ -39,7 +39,11 @@ namespace Nianyi.UnityToolkit
 		[System.Serializable]
 		public struct Orientation
 		{
+			public Vector2 zenithRange;
+
+			public bool limitAngularVelocity;
 			/// <remarks>In degrees per second.</remarks>
+			[ShowWhen("limitAngularVelocity", true)]
 			[Tooltip("In degrees per second.")]
 			[Min(0)] public float maxAngularVelocity;
 

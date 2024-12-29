@@ -10,6 +10,8 @@ namespace Nianyi.UnityToolkit
 
 		public abstract Vector3 Up { get; }
 		public abstract Vector3 Forward { get; }
+		public abstract float Azimuth { get; set; }
+		public abstract float Zenith { get; set; }
 		#endregion
 
 		#region Geometry

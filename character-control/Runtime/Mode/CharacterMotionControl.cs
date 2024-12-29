@@ -173,10 +173,11 @@ namespace Nianyi.UnityToolkit
 
 		private void UpdateOrientation(float dt)
 		{
-			Vector3 r = Vector3.ClampMagnitude(InputAngularVelocity * dt, orientation.maxAngularVelocity);
-			r = Quaternion.Inverse(Shape.Head.rotation) * r;
-			Shape.Body.rotation *= Quaternion.Euler(Vector3.Project(r, Shape.Body.up));
-			Shape.Head.rotation *= Quaternion.Euler(Vector3.ProjectOnPlane(r, Shape.Body.up));
+			Vector3 dEuler = Quaternion.Inverse(Shape.Head.rotation) * (InputAngularVelocity * dt);
+			if(orientation.limitAngularVelocity)
+				dEuler = Vector3.ClampMagnitude(dEuler, orientation.maxAngularVelocity);
+			Shape.Azimuth += dEuler.y;
+			Shape.Zenith = Mathf.Clamp(Shape.Zenith + dEuler.x, orientation.zenithRange.x, orientation.zenithRange.y);
 
 			InputAngularVelocity = Vector3.zero;
 			Shape.AngularVelocity = Vector3.zero;
