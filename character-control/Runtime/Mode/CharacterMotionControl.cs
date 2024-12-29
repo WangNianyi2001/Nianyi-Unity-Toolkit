@@ -13,6 +13,7 @@ namespace Nianyi.UnityToolkit
 			Shape.onCollisionEnter += RecordGrounding;
 			Shape.onCollisionStay += RecordGrounding;
 			Shape.onCollisionExit += RemoveGrounding;
+			onGrounded += JumpingOnGrounded;
 		}
 
 		protected void OnDestroy()
@@ -231,21 +232,21 @@ namespace Nianyi.UnityToolkit
 			Lift(jumping.height);
 		}
 
-		void Lift(float height)
+		private void Lift(float height)
 		{
 			float vy = Mathf.Sqrt(2f * Physics.gravity.magnitude * height);
 			float dv = Mathf.Max(0, vy - Vector3.Dot(Shape.Velocity, Shape.Up));
 			Shape.Velocity += Shape.Up * dv;
 		}
 
-		IEnumerator JumpBuffer()
+		private IEnumerator JumpBuffer()
 		{
 			isJumpingBuffered = true;
 			yield return new WaitForSeconds(jumping.bufferTime);
 			isJumpingBuffered = false;
 		}
 
-		void JumpingOnGrounded()
+		private void JumpingOnGrounded()
 		{
 			isJumping = false;
 			midAirJumpingAllowance = jumping.midAirAllowance;
