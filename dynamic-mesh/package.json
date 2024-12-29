@@ -1,0 +1,16 @@
+{
+  "name": "com.nianyi-wang.unity-toolkit.dynamic-mesh",
+  "displayName": "Nianyi Unity Toolkit - Dynamic Mesh",
+  "version": "0.0.0",
+  "unity": "2019.1",
+  "description": "Create and modify meshes at runtime.",
+  "license": "MIT",
+  "keywords": ["mesh", "procedural"],
+  "author": {
+    "name": "Nianyi Wang",
+    "url": "http://wangnianyi2001.com/"
+  },
+  "dependencies": {
+    "com.nianyi-wang.unity-toolkit.base": ">=0.0.0"
+  }
+}
