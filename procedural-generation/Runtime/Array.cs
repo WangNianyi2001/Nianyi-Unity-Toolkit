@@ -34,6 +34,20 @@ namespace Nianyi.UnityToolkit
 			DestroyPreviousGeneration();
 			GenerateNew();
 		}
+
+		public override bool CouldGenerate(out string message)
+		{
+			if(!base.CouldGenerate(out message))
+				return false;
+
+			if(!Asset.IsAsset(generation.template))
+			{
+				message = "Template GameObject is not a prefab.";
+				return false;
+			}
+
+			return true;
+		}
 		#endregion
 
 		#region Functions

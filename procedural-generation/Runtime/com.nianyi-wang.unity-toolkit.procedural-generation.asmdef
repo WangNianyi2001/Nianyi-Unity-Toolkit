@@ -2,7 +2,8 @@
     "name": "com.nianyi-wang.unity-toolkit.procedural-generation",
     "rootNamespace": "Nianyi.UnityToolkit",
     "references": [
-        "GUID:d9b92547380df39428cf2d6a1a87be90"
+        "GUID:d9b92547380df39428cf2d6a1a87be90",
+        "GUID:a108af72989ec7e45bc6f6a2d1ec7131"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

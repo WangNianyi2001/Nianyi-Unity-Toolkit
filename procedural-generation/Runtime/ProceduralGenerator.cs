@@ -25,7 +25,7 @@ namespace Nianyi.UnityToolkit
 		#region Life cycle
 		protected void OnChanged()
 		{
-			if(ShouldAutomaticallyRegenerate())
+			if(CouldGenerate(out _) && ShouldAutomaticallyRegenerate())
 				Regenerate();
 		}
 		#endregion
@@ -47,12 +47,21 @@ namespace Nianyi.UnityToolkit
 			EditorApplication.update += TriggerOnChangeOnNextEditorUpdate;
 		}
 #endif
-
-		public bool ShouldAutomaticallyRegenerate()
+		public virtual bool CouldGenerate(out string message)
 		{
-			if(this == null)
-				return false;
+			message = null;
 
+			if(this == null)
+			{
+				message = "This procedural generator is already destroyed.";
+				return false;
+			}
+
+			return true;
+		}
+
+		public virtual bool ShouldAutomaticallyRegenerate()
+		{
 			return Scene.GetCurrentMode() switch
 			{
 				Scene.SceneMode.Play => true,
