@@ -156,7 +156,7 @@ namespace Nianyi.UnityToolkit
 			if(movement.limitAcceleration)
 				forceLimit = Mathf.Min(forceLimit, movement.maxForce);
 			if(!IsGrounded)
-				forceLimit *= movement.ungroundedAttenuation;
+				forceLimit *= movement.ungroundedFactor;
 			impulse = Vector3.ClampMagnitude(impulse, forceLimit * dt);
 
 			return impulse;
@@ -165,7 +165,7 @@ namespace Nianyi.UnityToolkit
 		private void PerformAutoStepping()
 		{
 			Vector3 offset =
-				Vector3.ProjectOnPlane(Shape.Velocity, Shape.Up).normalized * movement.autoStepping.detectionRange
+				Vector3.ProjectOnPlane(Shape.Velocity, Shape.Up).normalized * movement.autoStepping.detectionRadius
 				+ Shape.Up * movement.autoStepping.height;
 			if(!Shape.SweepCast(-Shape.Up, out RaycastHit hit, movement.autoStepping.height, offset))
 				return;
@@ -194,7 +194,7 @@ namespace Nianyi.UnityToolkit
 			// Limit zenith.
 			{
 				float afterZenith = Shape.HeadLocalEuler.x + dEuler.x;
-				float dZenith = Mathf.Clamp(afterZenith, orientation.zenithRange.x, orientation.zenithRange.y) - afterZenith;
+				float dZenith = Mathf.Clamp(afterZenith, orientation.pitchRange.x, orientation.pitchRange.y) - afterZenith;
 				dEuler.x += dZenith;
 			}
 
@@ -203,7 +203,7 @@ namespace Nianyi.UnityToolkit
 			// Limit azimuth.
 			{
 				float azimuth = Shape.HeadLocalEuler.y;
-				float dAzimuth = azimuth - Mathf.Clamp(azimuth, -orientation.headAzimuthTolerance, orientation.headAzimuthTolerance);
+				float dAzimuth = azimuth - Mathf.Clamp(azimuth, -orientation.headYawTolerance, orientation.headYawTolerance);
 				Vector3 dAzimuthEuler = new(0f, dAzimuth, 0f);
 				Shape.HeadLocalEuler -= dAzimuthEuler;
 				Shape.Body.rotation *= Quaternion.Euler(dAzimuthEuler);
@@ -245,7 +245,7 @@ namespace Nianyi.UnityToolkit
 		{
 			if(!CanJump)
 			{
-				if(jumping.useBuffer)
+				if(jumping.useBufferTime)
 					StartCoroutine(nameof(JumpBuffer));
 				return;
 			}

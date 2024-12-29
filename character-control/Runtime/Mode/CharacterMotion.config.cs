@@ -17,7 +17,7 @@ namespace Nianyi.UnityToolkit
 			[Min(0)] public float maxForce;
 
 			[Range(0, 90)] public float maxSlope;
-			[Range(0f, 1f)] public float ungroundedAttenuation;
+			[Range(0f, 1f)] public float ungroundedFactor;
 
 			public bool useAutoStepping;
 
@@ -28,7 +28,7 @@ namespace Nianyi.UnityToolkit
 			public struct AutoStepping
 			{
 				[Min(0)] public float height;
-				[Min(0)] public float detectionRange;
+				[Min(0)] public float detectionRadius;
 			}
 		}
 		#endregion
@@ -39,16 +39,14 @@ namespace Nianyi.UnityToolkit
 		[System.Serializable]
 		public struct Orientation
 		{
-			public Vector2 zenithRange;
-			[Min(0)] public float headAzimuthTolerance;
+			public Vector2 pitchRange;
+			[Min(0)] public float headYawTolerance;
 
 			public bool limitAngularVelocity;
 			/// <remarks>In degrees per second.</remarks>
 			[ShowWhen("limitAngularVelocity", true)]
 			[Tooltip("In degrees per second.")]
 			[Min(0)] public float maxAngularVelocity;
-
-			public bool couldBeAffectedByPhysics;
 		}
 		#endregion
 
@@ -66,9 +64,9 @@ namespace Nianyi.UnityToolkit
 
 			[Min(0)] public int midAirAllowance;
 
-			public bool useBuffer;
+			public bool useBufferTime;
 
-			[ShowWhen("useBuffer", true)]
+			[ShowWhen("useBufferTime", true)]
 			[Min(0)] public float bufferTime;
 
 			public bool useCoyoteTime;
