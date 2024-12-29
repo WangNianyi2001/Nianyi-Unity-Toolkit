@@ -13,11 +13,23 @@ namespace Nianyi.UnityToolkit
 			if(target == null)
 				return false;
 #if !UNITY_EDITOR
-			Debug.LogWarning("Shouldn't check if an Unity object is an asset in non-editor environment.");
 			return false;
 #else
 			return AssetDatabase.Contains(target);
 #endif
+		}
+
+		public static void Destroy(this Object target)
+		{
+			if(target.IsAsset())
+			{
+				Debug.LogWarning($"Attempting to destroy asset {target}, aborting.", target);
+				return;
+			}
+			if(Scene.GetCurrentMode() == Scene.SceneMode.Play)
+				Object.Destroy(target);
+			else
+				Object.DestroyImmediate(target);
 		}
 	}
 }

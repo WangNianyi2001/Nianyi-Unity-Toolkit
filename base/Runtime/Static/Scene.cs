@@ -104,6 +104,18 @@ namespace Nianyi.UnityToolkit
 			return SceneMode.Edit;
 #endif
 		}
+
+		public static Camera EditorSceneCamera
+		{
+			get
+			{
+#if UNITY_EDITOR
+				if(SceneView.currentDrawingSceneView != null)
+					return SceneView.currentDrawingSceneView.camera;
+#endif
+				return null;
+			}
+		}
 		#endregion
 	}
 }
