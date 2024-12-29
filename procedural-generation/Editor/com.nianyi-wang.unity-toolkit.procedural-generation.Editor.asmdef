@@ -1,0 +1,19 @@
+{
+    "name": "com.nianyi-wang.unity-toolkit.procedural-generation.Editor",
+    "rootNamespace": "Nianyi.UnityToolkit",
+    "references": [
+        "GUID:9894502e07003b240a62b16d2bab9a4a",
+        "GUID:d9b92547380df39428cf2d6a1a87be90"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
