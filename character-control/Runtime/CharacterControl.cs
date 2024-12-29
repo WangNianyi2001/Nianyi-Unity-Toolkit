@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Nianyi.UnityToolkit
 {
-	public partial class Character : MonoBehaviour
+	public partial class CharacterControl : MonoBehaviour
 	{
 		#region Configs
 		[SerializeField] private List<CharacterShape> shapes;

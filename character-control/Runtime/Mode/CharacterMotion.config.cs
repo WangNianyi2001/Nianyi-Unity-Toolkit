@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Nianyi.UnityToolkit
 {
-	public partial class CharacterMotionControl
+	public partial class CharacterMotion
 	{
 		#region Movement
 		public Movement movement;

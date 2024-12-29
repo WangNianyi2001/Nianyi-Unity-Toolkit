@@ -4,13 +4,13 @@ namespace Nianyi.UnityToolkit
 {
 	public abstract class CharacterComponent : MonoBehaviour
 	{
-		private Character character;
-		public Character Character
+		private CharacterControl character;
+		public CharacterControl Character
 		{
 			get
 			{
 				if(character == null)
-					character = GetComponentInParent<Character>();
+					character = GetComponentInParent<CharacterControl>();
 				return character;
 			}
 		}

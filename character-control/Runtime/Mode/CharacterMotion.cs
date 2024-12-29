@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Nianyi.UnityToolkit
 {
-	public partial class CharacterMotionControl : CharacterMode
+	public partial class CharacterMotion : CharacterMode
 	{
 		#region Life cycle
 		protected void Start()
