@@ -5,36 +5,69 @@ namespace Nianyi.UnityToolkit
 {
 	public partial class CharacterControl : MonoBehaviour
 	{
-		#region Configs
+		#region Life cycle
+		protected void Start()
+		{
+			foreach(var shape in shapes)
+				shape.enabled = shape == Shape;
+			foreach(var mode in modes)
+				mode.gameObject.SetActive(mode == Mode);
+		}
+		#endregion
+
+		#region Shape
 		[SerializeField] private List<CharacterShape> shapes;
 		public IList<CharacterShape> Shapes => shapes;
 		[SerializeField] private CharacterShape currentShape;
-		public CharacterShape Shape => currentShape;
+		public CharacterShape Shape
+		{
+			get => currentShape;
+			set
+			{
+				if(currentShape != null)
+					currentShape.enabled = false;
+				currentShape = value;
+				currentShape.enabled = true;
+			}
+		}
+		public void SwitchShape(string name)
+		{
+			var shape = shapes.Find(s => s.name == name);
+			if(shape == null)
+			{
+				Debug.LogError($"Cannot find shape with name \"{name}\".", this);
+				return;
+			}
+			Shape = shape;
+		}
+		#endregion
 
+		#region Mode
 		[SerializeField] private List<CharacterMode> modes;
 		public IList<CharacterMode> Modes => modes;
 		[SerializeField] private CharacterMode currentMode;
-		public CharacterMode Mode => currentMode;
-		#endregion
-
-#if UNITY_EDITOR
-		#region Editor
-		protected void OnDrawGizmos()
+		public CharacterMode Mode
 		{
-			var bounds = Shape.BoundingBox;
+			get => currentMode;
+			set
+			{
+				if(currentMode != null)
+					currentMode.gameObject.SetActive(false);
+				currentMode = value;
+				currentMode.gameObject.SetActive(true);
+			}
+		}
 
-			// Draw label.
-			var labelPos = bounds.center;
-			labelPos += Vector3.Project(bounds.max - bounds.center, Shape.Up);
-			UnityEditor.Handles.Label(
-				labelPos, name,
-				new GUIStyle(GUI.skin.label)
-				{
-					alignment = TextAnchor.LowerCenter,
-				}
-			);
+		public void SwitchMode(string name)
+		{
+			var mode = modes.Find(m => m.name == name);
+			if(mode == null)
+			{
+				Debug.LogError($"Cannot find mode with name \"{name}\".", this);
+				return;
+			}
+			Mode = mode;
 		}
 		#endregion
-#endif
 	}
 }

@@ -6,6 +6,39 @@ namespace Nianyi.UnityToolkit
 	[RequireComponent(typeof(Rigidbody))]
 	public class CharacterCapsule : CharacterShape
 	{
+		#region Life cycle
+		protected override void OnEnable()
+		{
+			base.OnEnable();
+
+			Capsule.enabled = true;
+		}
+
+		protected override void OnDisable()
+		{
+			Destroy(Rigidbody);
+			rigidbody = null;
+			Capsule.enabled = false;
+
+			base.OnDisable();
+		}
+
+		protected void OnCollisionEnter(Collision collision)
+		{
+			Shape.onCollisionEnter?.Invoke(collision);
+		}
+
+		protected void OnCollisionStay(Collision collision)
+		{
+			Shape.onCollisionStay?.Invoke(collision);
+		}
+
+		protected void OnCollisionExit(Collision collision)
+		{
+			Shape.onCollisionExit?.Invoke(collision);
+		}
+		#endregion
+
 		#region Anatomy
 		[SerializeField] private Transform head;
 		public override Transform Head => head;
@@ -106,23 +139,6 @@ namespace Nianyi.UnityToolkit
 		{
 			get => Capsule.radius;
 			set => Capsule.radius = value;
-		}
-		#endregion
-
-		#region Life cycle
-		protected void OnCollisionEnter(Collision collision)
-		{
-			Shape.onCollisionEnter?.Invoke(collision);
-		}
-
-		protected void OnCollisionStay(Collision collision)
-		{
-			Shape.onCollisionStay?.Invoke(collision);
-		}
-
-		protected void OnCollisionExit(Collision collision)
-		{
-			Shape.onCollisionExit?.Invoke(collision);
 		}
 		#endregion
 	}

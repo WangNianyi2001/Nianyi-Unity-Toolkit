@@ -31,6 +31,15 @@ namespace Nianyi.UnityToolkit
 			UpdateMovement(dt);
 			UpdateOrientation(dt);
 		}
+
+		protected override void OnDisable()
+		{
+			// Reset buffered input values.
+			InputVelocity = Vector3.zero;
+			InputLocalAngularVelocity = Vector3.zero;
+
+			base.OnDisable();
+		}
 		#endregion
 
 		#region Grounding
