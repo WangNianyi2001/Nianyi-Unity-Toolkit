@@ -17,7 +17,12 @@ namespace Nianyi.UnityToolkit
 				{
 					bool regenerate = GUILayout.Button(new GUIContent("Regenerate"));
 					if(regenerate)
+					{
+						GameObject go = generator.gameObject;
+						Undo.RegisterCompleteObjectUndo(go, $"Regenerate {go.name}");
 						generator.Regenerate();
+						EditorUtility.SetDirty(generator);
+					}
 				}
 			}
 
