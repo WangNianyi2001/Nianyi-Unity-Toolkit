@@ -70,7 +70,7 @@ namespace Nianyi.UnityToolkit
 			{
 				foreach(HalfEdge he in v.outGoingHalfEdges)
 				{
-					Vertex a = he.To, b = he.next.To;
+					Vertex a = he.To, b = he.Prev.from;
 					v.normal = Vector3.Cross(v.position - a.position, v.position - b.position).normalized;
 				}
 			}

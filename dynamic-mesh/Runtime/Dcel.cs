@@ -12,6 +12,21 @@ namespace Nianyi.UnityToolkit
 		{
 			public readonly List<HE> twins = new();
 			public HE next;
+			public HE Prev
+			{
+				get
+				{
+					for(HE ending = next, he = next; ;)
+					{
+						if(he.To == from)
+							return he;
+						he = he.next;
+						if(he == ending)
+							break;
+					}
+					return null;
+				}
+			}
 			public S surface;
 			public V from;
 			public V To
